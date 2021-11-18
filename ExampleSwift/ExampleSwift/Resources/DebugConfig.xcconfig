@@ -12,10 +12,10 @@
 // Use this file as example to generate needed config files
 
 //PX Environment - [alpha | beta | prod]
-PX_ENVIRONMENT=beta
+PX_ENVIRONMENT=alpha
 
 // Collector public key
-PX_COLLECTOR_PUBLIC_KEY=TEST-a463d259-b561-45fe-9dcc-0ce320d1a42f
+PX_COLLECTOR_PUBLIC_KEY=TEST-7c1ff20e-e34f-431d-af28-897058dfd3e6
 
 // Payer private key
-PX_PAYER_PRIVATE_KEY=TEST-982391008451128-040514-b988271bf377ab11b0ace4f1ef338fe6-737303098
+PX_PAYER_PRIVATE_KEY=TEST-4029950389826609-100419-d20a9ae5033960d8a633781650da5dc4-835451734
