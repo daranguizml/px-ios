@@ -5,20 +5,20 @@ has_app_changes = github.pr_diff.include?("MercadoPagoSDK/MercadoPagoSDK/*")
 has_test_changes = github.pr_diff.include?("MercadoPagoSDK/MercadoPagoSDKTests/*")
 
 # Lint
-# swiftlint.strict = false
-# swiftlint.max_num_violations = 150
-# swiftlint.config_file = 'ExampleSwift/.swiftlint.yml'
+swiftlint.strict = false
+swiftlint.max_num_violations = 150
+swiftlint.config_file = 'ExampleSwift/.swiftlint.yml'
 
-# diff = GitDiffParser::Patches.parse(github.pr_diff)
-# dir = "#{Dir.pwd}/"
+diff = GitDiffParser::Patches.parse(github.pr_diff)
+dir = "#{Dir.pwd}/"
 
-# swiftlint.lint_files(inline_mode: true, fail_on_error: true) { |violation|
-#     diff_filename = violation['file'].gsub(dir, '')
-#     patch = diff.find_patch_by_file(diff_filename)
-#     patch != nil && patch.changed_lines.any? { |line|
-#       !line.changed? && line.number == violation['line']
-#     }
-# }
+swiftlint.lint_files(inline_mode: true, fail_on_error: true) { |violation|
+    diff_filename = violation['file'].gsub(dir, '')
+    patch = diff.find_patch_by_file(diff_filename)
+    patch != nil && patch.changed_lines.any? { |line|
+      !line.changed? && line.number == violation['line']
+    }
+}
 
  # Verify if PR title contains Jira task
 tickets = github.pr_title.scan(/\[(\w{1,10}-\d+)\]/)
