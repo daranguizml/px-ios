@@ -112,6 +112,10 @@ lane :deploy_private do
 end
 
 lane :danger_pr do
+  cocoapods(
+    clean_install: true,
+    podfile: "./ExampleSwift/Podfile"
+  )
   danger(
     danger_id: "danger_pr",
     verbose: true,

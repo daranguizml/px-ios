@@ -8,16 +8,14 @@ has_test_changes = github.pr_diff.include?("MercadoPagoSDK/MercadoPagoSDKTests/*
 swiftlint.strict = false
 swiftlint.max_num_violations = 150
 swiftlint.config_file = 'ExampleSwift/.swiftlint.yml'
+swiftlint.binary_path = "ExampleSwift/Pods/SwiftLint/swiftlint"
 
 diff = GitDiffParser::Patches.parse(github.pr_diff)
 dir = "#{Dir.pwd}/"
-
-swiftlint.lint_files(inline_mode: true, fail_on_error: true) { |violation|
-    diff_filename = violation['file'].gsub(dir, '')
-    patch = diff.find_patch_by_file(diff_filename)
-    patch != nil && patch.changed_lines.any? { |line|
-      !line.changed? && line.number == violation['line']
-    }
+swiftlint.lint_files(inline_mode: true) { |violation|
+  diff_filename = violation['file'].gsub(dir, '')
+  file_patch = diff.find_patch_by_file(diff_filename)
+  file_patch != nil && file_patch.changed_lines.any? { |line| line.number == violation['line']}
 }
 
  # Verify if PR title contains Jira task
@@ -49,7 +47,7 @@ if podfile_updated
 end
 
 # Mainly to encourage writing up some reasoning about the PR, rather than just leaving a title
-fail "Please, follow the PR template to better document your changes." if github.pr_body.length < 5
+fail "Please, follow the PR template to better document your changes." if github.pr_body.length < 15
 
 # Add a CHANGELOG entry for app changes
 has_changelog_changes = git.modified_files.include?("CHANGELOG.md")
