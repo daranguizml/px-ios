@@ -1,9 +1,18 @@
+# v4.50.2
+🚀Private Release - 4.50.2 date: 19/11/2021 🚀
+- Remove ThreeDS SDK v1 support
+
+# v4.50.0
+🚀Private Release - 4.50.0 date: 18/11/2021 🚀
+- Summary restyling support
+- ThreeDS SDK v1 support
+
 # v4.49.2
 🚀Private Release - 4.49.2 date: 28/10/2021 🚀
 - Fixed error screen when there is no payer payment methods but offline methods
 
 # v4.49.1 
-🚀Private Release - 4.49.1 date: 19/10/2021 🚀
+🚀Private Release - 4.49.1 date: 14/10/2021 🚀
 - Include CFTEA when remedy is a credit
 
 # v4.49.0 
