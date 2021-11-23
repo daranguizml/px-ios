@@ -111,10 +111,14 @@ lane :deploy_private do
     )
 end
 
-lane :danger_pr do
+lane :pr_check do
   cocoapods(
     clean_install: true,
     podfile: "./ExampleSwift/Podfile"
+  )
+  run_tests(
+    workspace: "ExampleSwift/ExampleSwift.xcworkspace",
+    scheme: "ExampleSwift"
   )
   danger(
     danger_id: "danger_pr",

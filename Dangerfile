@@ -57,5 +57,12 @@ end
 
 # Warn when there is a big PR
 message "You and the size of your PR are awesome! 🚀" if git.lines_of_code < 500
-warn "Big PR, consider splitting into smaller ones." if git.lines_of_code >= 500 # && git.lines_of_code < 1000
-# fail "Big PR, consider splitting into smaller ones." if git.lines_of_code >= 1000
+warn "Big PR, consider splitting into smaller ones." if git.lines_of_code >= 500  && git.lines_of_code < 1500
+fail "Big PR, consider splitting into smaller ones." if git.lines_of_code >= 1500
+
+xcov.report(
+   scheme: 'ExampleSwift',
+   workspace: 'ExampleSwift/ExampleSwift.xcworkspace',
+   scheme: 'ExampleSwift',
+   minimum_coverage_percentage: 1.0
+)
