@@ -75,9 +75,14 @@ extension OneTapFlow {
         
         let pxOneTapContext = PXOneTapContext(hasInstallments: hasInstallments, hasSplit: hasSplit, hasCharges: hasCharges, hasDiscounts: hasDiscounts)
         
-        let viewController = PXOneTapViewController(viewModel: viewModel, pxOneTapContext: pxOneTapContext, timeOutPayButton: model.getTimeoutForOneTapReviewController(), callbackPaymentData: callbackPaymentData, callbackConfirm: callbackConfirm, callbackUpdatePaymentOption: callbackUpdatePaymentOption, callbackRefreshInit: callbackRefreshInit, callbackExit: callbackExit, finishButtonAnimation: finishButtonAnimation)
+        //let viewController = PXOneTapViewController(viewModel: viewModel, pxOneTapContext: pxOneTapContext, timeOutPayButton: model.getTimeoutForOneTapReviewController(), callbackPaymentData: callbackPaymentData, callbackConfirm: callbackConfirm, callbackUpdatePaymentOption: callbackUpdatePaymentOption, callbackRefreshInit: callbackRefreshInit, callbackExit: callbackExit, finishButtonAnimation: finishButtonAnimation)
 
-        pxNavigationHandler.pushViewController(viewController: viewController, animated: true)
+        //pxNavigationHandler.pushViewController(viewController: viewController, animated: true)
+        
+        let viewController = PXVipOneTapViewController()
+        
+        pxNavigationHandler.navigationController.pushViewController(viewController, animated: true)
+        pxNavigationHandler.dismissLoading()
     }
 
     func updateOneTapViewModel(cardId: String) {
