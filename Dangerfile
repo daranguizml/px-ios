@@ -49,16 +49,24 @@ end
 # Mainly to encourage writing up some reasoning about the PR, rather than just leaving a title
 fail "Please, follow the PR template to better document your changes." if github.pr_body.length < 15
 
-# Add a CHANGELOG entry for app changes
-has_changelog_changes = git.modified_files.include?("CHANGELOG.md")
-if has_app_changes && !has_changelog_changes
-  fail("Please include a CHANGELOG entry. \nYou can find it at [CHANGELOG.md](https://github.com/mercadopago/px-ios/blob/develop/CHANGELOG.md).")
+# Check if the PR title is in the correct format
+title_regex = /(\[[A-Z]{1,}-\d{1,}\]|())\(((Added)|(Fixed)|(Changed)|(Security)|(Deprecated)|(Removed))\) - \w+/
+if !github.pr_title.match(title_regex) 
+  fail "The PR title should follow the title convetion.\n[JIRA-XXX](Added|Changed|Deprecated|Removed|Fixed|Security) - \\*Some description here *\\"
+end
+
+# Add a CHANGELOG entry for app changes equal to PR title
+title_description_split_regex = /(\[[A-Z]{1,}-\d{1,}\]|())\(((Added)|(Fixed)|(Changed)|(Security)|(Deprecated)|(Removed))\) - /
+title_description = github.pr_title.split(title_description_split_regex).last
+
+if has_app_changes && File.read("CHANGELOG.md").match(title_description)
+  fail("Please include a CHANGELOG entry. \nYou can find it at [CHANGELOG.md](https://github.com/mercadopago/px-ios/blob/develop/CHANGELOG.md). The changelog entry should be equal to the PR title in the correct section: " + title_description)
 end
 
 # Warn when there is a big PR
 message "You and the size of your PR are awesome! 🚀" if git.lines_of_code < 500
-warn "Big PR, consider splitting into smaller ones." if git.lines_of_code >= 500  && git.lines_of_code < 1500
-fail "Big PR, consider splitting into smaller ones." if git.lines_of_code >= 1500
+warn "Big PR, consider splitting into smaller ones." if git.lines_of_code >= 500  && git.lines_of_code < 2500
+fail "Big PR, consider splitting into smaller ones." if git.lines_of_code >= 2500
 
 xcov.report(
    scheme: 'ExampleSwift',
