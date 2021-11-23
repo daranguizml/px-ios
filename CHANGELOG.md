@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
-- Added Danger and Swiftlint to the project
+- Added danger and swiftlint to the project
 
 ## v4.50.2
 🚀 Private Release - 4.50.2 date: 19/11/2021 🚀

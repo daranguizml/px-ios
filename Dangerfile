@@ -60,7 +60,7 @@ title_description_split_regex = /(\[[A-Z]{1,}-\d{1,}\]|())\(((Added)|(Fixed)|(Ch
 title_description = github.pr_title.split(title_description_split_regex).last
 
 if has_app_changes && File.read("CHANGELOG.md").match(title_description)
-  fail("Please include a CHANGELOG entry. \nYou can find it at [CHANGELOG.md](https://github.com/mercadopago/px-ios/blob/develop/CHANGELOG.md). The changelog entry should be equal to the PR title in the correct section: " + title_description)
+  fail("Please include a [CHANGELOG.md](https://github.com/mercadopago/px-ios/blob/develop/CHANGELOG.md) entry. The changelog entry should be equal to the PR title in the correct section: **" + title_description + "**")
 end
 
 # Warn when there is a big PR
