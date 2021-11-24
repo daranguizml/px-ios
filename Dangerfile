@@ -9,10 +9,11 @@ swiftlint.strict = false
 swiftlint.max_num_violations = 150
 swiftlint.config_file = 'ExampleSwift/.swiftlint.yml'
 swiftlint.binary_path = "ExampleSwift/Pods/SwiftLint/swiftlint"
+swiftlint.inline_mode = true
 
 diff = GitDiffParser::Patches.parse(github.pr_diff)
 dir = "#{Dir.pwd}/"
-swiftlint.lint_files(inline_mode: true) { |violation|
+swiftlint.lint_files { |violation|
   diff_filename = violation['file'].gsub(dir, '')
   file_patch = diff.find_patch_by_file(diff_filename)
   file_patch != nil && file_patch.changed_lines.any? { |line| line.number == violation['line']}
@@ -51,7 +52,7 @@ fail "Please, follow the PR template to better document your changes." if github
 
 # Check if the PR title is in the correct format
 title_regex = /(\[[A-Z]{1,}-\d{1,}\]|())\(((Added)|(Fixed)|(Changed)|(Security)|(Deprecated)|(Removed))\) - \w+/
-if !github.pr_title.match(title_regex) 
+if !github.pr_title.match?(title_regex) 
   fail "The PR title should follow the title convetion. [JIRA-XXX](Added\|Changed\|Deprecated\|Removed\|Fixed\|Security) - ${Some description here}".inspect
 end
 
@@ -59,7 +60,7 @@ end
 title_description_split_regex = /(\[[A-Z]{1,}-\d{1,}\]|())\(((Added)|(Fixed)|(Changed)|(Security)|(Deprecated)|(Removed))\) - /
 title_description = github.pr_title.split(title_description_split_regex).last
 
-if has_app_changes && !File.read("CHANGELOG.md").match(title_description)
+if has_app_changes && !File.read("CHANGELOG.md").match?(title_description)
   fail("Please include a [CHANGELOG.md](https://github.com/mercadopago/px-ios/blob/develop/CHANGELOG.md) entry. The changelog entry should be equal to the PR title in the correct section: **" + title_description + "**")
 end
 
