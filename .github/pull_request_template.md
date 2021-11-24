@@ -15,13 +15,6 @@
 ## What have changed?
 
 
-## Kind of pr:
-
-- [ ] BugFix 
-- [ ] Feature
-- [x] Improvement
-- [ ] Refactor
-
 ## How to test:
 
 
