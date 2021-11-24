@@ -1,6 +1,6 @@
 import Foundation
 
-public class PXPaymentTypeChargeRuleBuilder {
+public class PXPaymentTypeChargeRuleBuilder  {
     
     private var paymentTypeId: String
     private var amount: Double
