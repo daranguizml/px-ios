@@ -8,11 +8,11 @@
 
 import UIKit
 
-protocol PXVipOneTapRouterProtocol: class {
+protocol PXVipOneTapRouterInput: class {
     var viewController: PXVipOneTapViewController? {get set}
 }
 
-class PXVipOneTapRouter: PXVipOneTapRouterProtocol {
+class PXVipOneTapRouter: PXVipOneTapRouterInput {
 
     weak var viewController: PXVipOneTapViewController?
 

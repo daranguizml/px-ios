@@ -8,23 +8,23 @@
 
 import UIKit
 
-protocol PXVipOneTapInteractorProtocol: class {
-    var presenter: PXVipOneTapPresenterProtocol? {get set}
-    var apiWorker: PXVipOneTapApiWorkerProtocol? {get set}
+protocol PXVipOneTapInteractorInput: class {
+    var presenter: PXVipOneTapPresenterInput? {get set}
+    var apiWorker: PXVipOneTapApiWorkerInput? {get set}
 }
 
-class PXVipOneTapInteractor: PXVipOneTapInteractorProtocol {
+class PXVipOneTapInteractor: PXVipOneTapInteractorInput {
     
-    weak var presenter: PXVipOneTapPresenterProtocol?
-    weak var apiWorker: PXVipOneTapApiWorkerProtocol?
+    weak var presenter: PXVipOneTapPresenterInput?
+    weak var apiWorker: PXVipOneTapApiWorkerInput?
     
-    convenience init(_ presenter: PXVipOneTapPresenterProtocol?, _ apiWorker: PXVipOneTapApiWorkerProtocol?) {
+    convenience init(_ presenter: PXVipOneTapPresenterInput?, _ apiWorker: PXVipOneTapApiWorkerInput?) {
         self.init()
         self.presenter = presenter
         self.apiWorker = apiWorker
     }
 }
 
-extension PXVipOneTapInteractor: PXVipOneTapApiWorkerDelegate {
+extension PXVipOneTapInteractor: PXVipOneTapApiWorkerOutput {
     
 }

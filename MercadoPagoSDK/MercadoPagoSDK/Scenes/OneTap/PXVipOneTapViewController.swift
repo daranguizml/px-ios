@@ -8,12 +8,20 @@
 
 import UIKit
 
+protocol PXVipOneTapViewControllerInput: AnyObject {
+  
+}
+
+protocol PXVipOneTapViewControllerOutput: AnyObject {
+    
+}
+
 class PXVipOneTapViewController: UIViewController {
 
-    var router: PXVipOneTapRouterProtocol?
-    var interactor: PXVipOneTapInteractorProtocol?
-    var presenter: PXVipOneTapPresenterProtocol?
-    var apiWorker: PXVipOneTapApiWorkerProtocol?
+    var router: PXVipOneTapRouterInput?
+    var interactor: PXVipOneTapInteractorInput?
+    var presenter: PXVipOneTapPresenterInput?
+    var apiWorker: PXVipOneTapApiWorkerInput?
     
     override func loadView() {
         self.view = PXVipOneTapView(backgroundColor: .white)
@@ -28,6 +36,6 @@ class PXVipOneTapViewController: UIViewController {
     }
 }
 
-extension PXVipOneTapViewController: PXVipOneTapPresenterDelegate {
+extension PXVipOneTapViewController: PXVipOneTapViewControllerOutput {
     
 }

@@ -8,20 +8,16 @@
 
 import UIKit
 
-protocol PXVipOneTapPresenterProtocol: class {
-    var delegate: PXVipOneTapPresenterDelegate? {get set}
+protocol PXVipOneTapPresenterInput: class {
+    var viewController: PXVipOneTapViewControllerOutput? {get set}
 }
 
-protocol PXVipOneTapPresenterDelegate: class {
+class PXVipOneTapPresenter: PXVipOneTapPresenterInput {
     
-}
-
-class PXVipOneTapPresenter: PXVipOneTapPresenterProtocol {
+    weak var viewController: PXVipOneTapViewControllerOutput?
     
-    weak var delegate: PXVipOneTapPresenterDelegate?
-    
-    convenience init(_ delegate: PXVipOneTapPresenterDelegate?) {
+    convenience init(_ viewController: PXVipOneTapViewControllerOutput?) {
         self.init()
-        self.delegate = delegate
+        self.viewController = viewController
     }
 }

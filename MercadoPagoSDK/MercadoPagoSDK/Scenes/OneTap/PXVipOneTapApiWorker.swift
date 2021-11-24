@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol PXVipOneTapApiWorkerProtocol: class {
+protocol PXVipOneTapApiWorkerInput: class {
     
 }
 
-protocol PXVipOneTapApiWorkerDelegate: class {
+protocol PXVipOneTapApiWorkerOutput: class {
     
 }
 
-class PXVipOneTapApiWorker: PXVipOneTapApiWorkerProtocol {
+class PXVipOneTapApiWorker: PXVipOneTapApiWorkerInput {
 
 }
