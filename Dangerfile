@@ -52,7 +52,7 @@ fail "Please, follow the PR template to better document your changes." if github
 # Check if the PR title is in the correct format
 title_regex = /(\[[A-Z]{1,}-\d{1,}\]|())\(((Added)|(Fixed)|(Changed)|(Security)|(Deprecated)|(Removed))\) - \w+/
 if !github.pr_title.match(title_regex) 
-  fail "The PR title should follow the title convetion.\n[JIRA-XXX](Added|Changed|Deprecated|Removed|Fixed|Security) - \\*Some description here *\\"
+  fail "The PR title should follow the title convetion.\n[JIRA-XXX]\(Added|Changed|Deprecated|Removed|Fixed|Security\) - ${Some description here}"
 end
 
 # Add a CHANGELOG entry for app changes equal to PR title
