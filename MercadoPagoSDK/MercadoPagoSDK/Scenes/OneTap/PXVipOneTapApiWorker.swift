@@ -9,7 +9,7 @@
 import UIKit
 
 protocol PXVipOneTapApiWorkerInput: class {
-    
+    var interactor: PXVipOneTapApiWorkerOutput? {get set}
 }
 
 protocol PXVipOneTapApiWorkerOutput: class {
@@ -18,4 +18,11 @@ protocol PXVipOneTapApiWorkerOutput: class {
 
 class PXVipOneTapApiWorker: PXVipOneTapApiWorkerInput {
 
+    weak var interactor: PXVipOneTapApiWorkerOutput?
+    
+    convenience init(_ interactor: PXVipOneTapApiWorkerOutput?) {
+        self.init()
+        
+        self.interactor = interactor
+    }
 }

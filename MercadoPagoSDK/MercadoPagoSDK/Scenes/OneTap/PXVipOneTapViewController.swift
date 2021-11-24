@@ -19,7 +19,7 @@ protocol PXVipOneTapViewControllerOutput: AnyObject {
 class PXVipOneTapViewController: UIViewController {
 
     var router: PXVipOneTapRouterInput?
-    var interactor: PXVipOneTapInteractorInput?
+    var interactor: PXVipOneTapApiWorkerOutput?
     var presenter: PXVipOneTapPresenterInput?
     var apiWorker: PXVipOneTapApiWorkerInput?
     
@@ -33,6 +33,7 @@ class PXVipOneTapViewController: UIViewController {
         router = PXVipOneTapRouter(self)
         presenter = PXVipOneTapPresenter(self)
         interactor = PXVipOneTapInteractor(presenter, apiWorker)
+        apiWorker = PXVipOneTapApiWorker(interactor)
     }
 }
 
