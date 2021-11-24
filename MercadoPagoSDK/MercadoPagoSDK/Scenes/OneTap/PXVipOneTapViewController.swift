@@ -15,9 +15,8 @@ class PXVipOneTapViewController: UIViewController {
     var presenter: PXVipOneTapPresenterProtocol?
     var apiWorker: PXVipOneTapApiWorkerProtocol?
     
-    convenience init() {
-        self.init(nibName:nil, bundle:nil)
-        self.view = PXVipOneTapView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+    override func loadView() {
+        self.view = PXVipOneTapView(backgroundColor: .white)
     }
     
     override func viewDidLoad() {
