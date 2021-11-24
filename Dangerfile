@@ -9,11 +9,10 @@ swiftlint.strict = false
 swiftlint.max_num_violations = 150
 swiftlint.config_file = 'ExampleSwift/.swiftlint.yml'
 swiftlint.binary_path = "ExampleSwift/Pods/SwiftLint/swiftlint"
-swiftlint.inline_mode = true
 
 diff = GitDiffParser::Patches.parse(github.pr_diff)
 dir = "#{Dir.pwd}/"
-swiftlint.lint_files { |violation|
+swiftlint.lint_files(inline_mode: true) { |violation|
   diff_filename = violation['file'].gsub(dir, '')
   file_patch = diff.find_patch_by_file(diff_filename)
   file_patch != nil && file_patch.changed_lines.any? { |line| line.number == violation['line']}
