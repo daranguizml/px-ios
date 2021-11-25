@@ -66,7 +66,6 @@
 			isa = PBXGroup;
 			children = (
 				23EDA1352147DFC90085CA7A /* ExampleSwift */,
-				23EDA1362147DFC90085CA7A /* AppDelegate.swift */,
 				23EDA1342147DFC90085CA7A /* Products */,
 				E78B46C2DAA0D8FEAEDDB9E1 /* Pods */,
 				435E4A121A2F1015230619CA /* Frameworks */,
@@ -84,6 +83,7 @@
 		23EDA1352147DFC90085CA7A /* ExampleSwift */ = {
 			isa = PBXGroup;
 			children = (
+				23EDA1362147DFC90085CA7A /* AppDelegate.swift */,
 				5AE825FB2590C876002C7F74 /* Helpers */,
 				23EDA1482147DFEA0085CA7A /* Storyboards */,
 				23EDA14A2147E0050085CA7A /* Controllers */,
@@ -279,7 +279,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run SwiftLint\nSTART_DATE=$(date +\"%s\")\nSWIFT_LINT=\"${PODS_ROOT}/SwiftLint/swiftlint\"\n\nif which swiftlint >/dev/null; then\n    echo \"SwiftLint version: $(swiftlint version)\"\n    # Run for both staged and unstaged files\n    git diff --name-only --relative --diff-filter=d -- '*.swift' | while read filename; do \"$SWIFT_LINT\" lint --lenient --path \"${filename}\"; done\n    git diff --cached --name-only --relative --diff-filter=d -- '*.swift' | while read filename; do \"$SWIFT_LINT\" lint --lenient --path \"${filename}\"; done\nelse\n    echo \"swiftlint is not installed.\"\n    exit 0\nfi\n\nEND_DATE=$(date +\"%s\")\n\nDIFF=$(($END_DATE - $START_DATE))\necho \"SwiftLint took $(($DIFF / 60)) minutes and $(($DIFF % 60)) seconds to complete.\"\n";
+			shellScript = "# Run SwiftLint\nSTART_DATE=$(date +\"%s\")\nSWIFT_LINT=\"${PODS_ROOT}/SwiftLint/swiftlint\"\n\nif [[ -e \"${SWIFT_LINT}\" ]]; then\n    echo \"SwiftLint version: $(${SWIFT_LINT} version)\"\n    # Run for both staged and unstaged files\n    ${SWIFT_LINT} autocorrect\n    ${SWIFT_LINT} lint --lenient\n    END_DATE=$(date +\"%s\")\n\n    DIFF=$(($END_DATE - $START_DATE))\n    echo \"SwiftLint took $(($DIFF / 60)) minutes and $(($DIFF % 60)) seconds to complete.\"\nelse\n    echo \"${SWIFT_LINT} is not installed. Please run pod install to get swiftlint script in your Pods.\"\n    exit 0\nfi\n";
 		};
 		F1FA247132DA0A1B83FD456D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

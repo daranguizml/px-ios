@@ -50,13 +50,13 @@ end
 fail "Please, follow the PR template to better document your changes." if github.pr_body.length < 15
 
 # Check if the PR title is in the correct format
-title_regex = /(\[[A-Z]{1,}-\d{1,}\]|())\(((Added)|(Fixed)|(Changed)|(Security)|(Deprecated)|(Removed))\) - \w+/
+title_regex = /(\([A-Z]{1,}-\d{1,}\)|())\[((Added)|(Fixed)|(Changed)|(Security)|(Deprecated)|(Removed))\] - \w+/
 if !github.pr_title.match?(title_regex) 
-  fail "The PR title should follow the title convetion. [JIRA-XXX](Added,Changed,Deprecated,Removed,Fixed,Security) - ${Some description here}".inspect
+  fail "The PR title should follow the title convetion. \(JIRA-XXX\)\[Added,Changed,Deprecated,Removed,Fixed,Security\] - ${Some description here}"
 end
 
 # Add a CHANGELOG entry for app changes equal to PR title
-title_description_split_regex = /(\[[A-Z]{1,}-\d{1,}\]|())\(((Added)|(Fixed)|(Changed)|(Security)|(Deprecated)|(Removed))\) - /
+title_description_split_regex = /(\([A-Z]{1,}-\d{1,}\)|())\[((Added)|(Fixed)|(Changed)|(Security)|(Deprecated)|(Removed))\] - /
 title_description = github.pr_title.split(title_description_split_regex).last
 
 if has_app_changes && !File.read("CHANGELOG.md").match?(title_description)
