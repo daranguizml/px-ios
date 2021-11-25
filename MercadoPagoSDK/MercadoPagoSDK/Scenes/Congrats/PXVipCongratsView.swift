@@ -1,5 +1,5 @@
 //
-//  PXVipOneTapView.swift
+//  PXVipCongratsView.swift
 //  MercadoPagoSDK
 //
 //  Created by Ricardo Couto D Alambert on 23/11/21.
@@ -140,7 +140,7 @@ extension UIView {
     }
 }
 
-class PXVipOneTapView: UIView {
+class PXVipCongratsView: UIView {
     
     convenience init(backgroundColor: UIColor?) {
         self.init()
