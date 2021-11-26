@@ -79,7 +79,7 @@ extension OneTapFlow {
 
         //pxNavigationHandler.pushViewController(viewController: viewController, animated: true)
         
-        let viewController = PXVipOneTapViewController()
+        let viewController = PXVipCongratsViewController()
         
         pxNavigationHandler.navigationController.pushViewController(viewController, animated: true)
         pxNavigationHandler.dismissLoading()

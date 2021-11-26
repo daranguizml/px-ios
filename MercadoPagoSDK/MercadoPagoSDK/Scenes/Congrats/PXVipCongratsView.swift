@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AndesUI
 
 typealias viewCallbackHandler = ((_ parentView: UIView?) -> Void)?
 
@@ -140,15 +141,54 @@ extension UIView {
     }
 }
 
+extension UIStackView {
+    
+    func VStack(_ callbackHandler: viewCallbackHandler = nil ) -> UIStackView { return UIStackView.XStackView(self) { callbackHandler?($0) } }
+    
+    static func XStackView(_ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> UIStackView {
+        
+        let newView = UIStackView()
+        
+        newView.translatesAutoresizingMaskIntoConstraints = false
+        
+        parentView?.addSubview(newView)
+        
+        handler?(newView)
+        
+        return newView
+    }
+    
+}
+
 class PXVipCongratsView: UIView {
     
     convenience init(backgroundColor: UIColor?) {
         self.init()
+        
         _ = self.backgroundColor(backgroundColor)
         
         buildInterface()
     }
     
+    func buildInterface() {
+        
+        
+        
+        let button = AndesButton(text: "Continuar",
+                                 hierarchy: .loud,
+                                 size: .large,
+                                 icon: nil)
+        
+        self.addSubview(button)
+        
+        NSLayoutConstraint.activate([
+            button.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16),
+            button.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16),
+            button.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16)
+        ])
+    }
+    
+    /*
     func buildInterface() {
         
         _ = View {
@@ -174,5 +214,5 @@ class PXVipCongratsView: UIView {
         }.position(x: 0, y: 0, width: 256, height: 512)
          .backgroundColor(.gray)
          .defaultConstraints()
-    }
+    }*/
 }

@@ -10,7 +10,12 @@ class PXPaymentCongratsViewModel {
 
     func launch(navigationHandler: PXNavigationHandler, showWithAnimation animated: Bool, finishButtonAnimation: (() -> Void)? = nil) {
         let viewController = PXNewResultViewController(viewModel: self, finishButtonAnimation: finishButtonAnimation)
-        navigationHandler.pushViewController(viewController: viewController, animated: animated)
+        let nv = UINavigationController()
+        nv.pushViewController(viewController, animated: true)
+        navigationHandler.viewControllerBase?.present(nv, animated: true, completion: {
+            
+        })
+        //navigationHandler.pushViewController(viewController: viewController, animated: animated)
     }
 
     // MARK: Private methods
