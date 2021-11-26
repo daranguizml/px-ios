@@ -651,6 +651,7 @@
 		4BFD451F1E4220BB006F9F62 /* TotalPayerCostRowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFD451D1E4220BB006F9F62 /* TotalPayerCostRowTableViewCell.swift */; };
 		4BFD45201E4220BB006F9F62 /* TotalPayerCostRowTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BFD451E1E4220BB006F9F62 /* TotalPayerCostRowTableViewCell.xib */; };
 		4BFD90C21F58554C00ABC348 /* DateExtensionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFD90C11F58554C00ABC348 /* DateExtensionTest.swift */; };
+		4E3543782751533A00A993B4 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3543772751533A00A993B4 /* Bindable.swift */; };
 		4E7FA8AB274D617100338060 /* PXVipCongratsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7FA8AA274D617100338060 /* PXVipCongratsViewController.swift */; };
 		4E7FA8AC274D617100338060 /* PXVipCongratsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7FA8AA274D617100338060 /* PXVipCongratsViewController.swift */; };
 		4E7FA8AE274D619600338060 /* PXVipCongratsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7FA8AD274D619600338060 /* PXVipCongratsRouter.swift */; };
@@ -1416,6 +1417,7 @@
 		4BFD451D1E4220BB006F9F62 /* TotalPayerCostRowTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalPayerCostRowTableViewCell.swift; sourceTree = "<group>"; };
 		4BFD451E1E4220BB006F9F62 /* TotalPayerCostRowTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TotalPayerCostRowTableViewCell.xib; sourceTree = "<group>"; };
 		4BFD90C11F58554C00ABC348 /* DateExtensionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExtensionTest.swift; sourceTree = "<group>"; };
+		4E3543772751533A00A993B4 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Bindable.swift; path = Core/Entities/Bindable.swift; sourceTree = "<group>"; };
 		4E7FA8AA274D617100338060 /* PXVipCongratsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PXVipCongratsViewController.swift; sourceTree = "<group>"; };
 		4E7FA8AD274D619600338060 /* PXVipCongratsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PXVipCongratsRouter.swift; sourceTree = "<group>"; };
 		4E7FA8B0274D61C200338060 /* PXVipCongratsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PXVipCongratsInteractor.swift; sourceTree = "<group>"; };
@@ -1748,6 +1750,7 @@
 				4B05C2AA212724B900A1A264 /* ResourceManager.swift */,
 				4BDB6470212DCF7700A891DD /* PXSites.swift */,
 				4BDB647A21303C5600A891DD /* PXPaymentTypes.swift */,
+				4E3543772751533A00A993B4 /* Bindable.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -4010,6 +4013,7 @@
 				FC3FC8491FBCC98F00CF29E1 /* PXInstructionsSubtitleComponent.swift in Sources */,
 				4B2EC4A620FFC2A5008D03F8 /* InitFlow.swift in Sources */,
 				23CDA33321370D8D008CE025 /* PXLifecycleProtocol.swift in Sources */,
+				4E3543782751533A00A993B4 /* Bindable.swift in Sources */,
 				23A07FCF204837AB0074CB64 /* PXSummaryFullComponentView.swift in Sources */,
 				76128AC11DD10BA600D3B3CD /* MercadoPagoUIScrollViewController.swift in Sources */,
 				4B9F3B75213590F70024412F /* PXDiscount.swift in Sources */,
