@@ -279,7 +279,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run SwiftLint\nSTART_DATE=$(date +\"%s\")\nSWIFT_LINT=\"${PODS_ROOT}/SwiftLint/swiftlint\"\n\nif [[ -e \"${SWIFT_LINT}\" ]]; then\n    echo \"SwiftLint version: $(${SWIFT_LINT} version)\"\n    # Run for both staged and unstaged files\n    ${SWIFT_LINT} autocorrect\n    ${SWIFT_LINT} lint --lenient\n    END_DATE=$(date +\"%s\")\n\n    DIFF=$(($END_DATE - $START_DATE))\n    echo \"SwiftLint took $(($DIFF / 60)) minutes and $(($DIFF % 60)) seconds to complete.\"\nelse\n    echo \"${SWIFT_LINT} is not installed. Please run pod install to get swiftlint script in your Pods.\"\n    exit 0\nfi\n";
+			shellScript = "# Run SwiftLint\nSTART_DATE=$(date +\"%s\")\nSWIFT_LINT=\"${PODS_ROOT}/SwiftLint/swiftlint\"\n\nif [[ -e \"${SWIFT_LINT}\" ]]; then\n    echo \"SwiftLint version: $(${SWIFT_LINT} version)\"\n    cd ..\n    \n    # Auto correct\n    git diff develop...HEAD --name-only --relative -- '*.swift' | while read filename; do \n        ${SWIFT_LINT} lint --fix --path \"${filename}\"\n    done\n    \n    # Lint\n    git diff develop...HEAD --name-only --relative -- '*.swift' | while read filename; do \n        ${SWIFT_LINT} lint --lenient --path \"${filename}\"\n    done\n    \n    END_DATE=$(date +\"%s\")\n    DIFF=$(($END_DATE - $START_DATE))\n    echo \"SwiftLint took $(($DIFF / 60)) minutes and $(($DIFF % 60)) seconds to complete.\"\n    cd \nelse\n    echo \"${SWIFT_LINT} is not installed. Please run pod install to get swiftlint script in your Pods.\"\n    exit 0\nfi\n";
 		};
 		F1FA247132DA0A1B83FD456D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
