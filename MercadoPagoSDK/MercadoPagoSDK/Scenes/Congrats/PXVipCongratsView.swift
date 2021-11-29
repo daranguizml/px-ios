@@ -19,7 +19,7 @@ class PXVipCongratsView: UIView {
         
         _ = self.backgroundColor(backgroundColor)
         
-        buildInterface()
+        buildInterface2()
         
         bind(presenter)
     }
@@ -63,31 +63,58 @@ class PXVipCongratsView: UIView {
         
     }
     
-    /*
-    func buildInterface() {
+    
+    func buildInterface2() {
         
-        _ = View {
+        let topBar = View {
+            _ = $0
+        }.topConstraint(constant: 0)
+         .leadingConstraint(constant: 0)
+         .trailingConstraint(constant: 0)
+         .dimensionConstraints(height: 256)
+         .backgroundColor(.green)
+        
+        let bottomArea = View {
             
-            _ = $0?.View {
+            _ = $0?.AndesDefaultButton {
+                _ = $0
+            }?.leadingConstraint(constant: 16)
+                .trailingConstraint(constant: 16)
+                .bottomConstraint(constant: 16)
+            
+        }.bottomConstraint(constant: 16)
+         .leadingConstraint(constant: 0)
+         .trailingConstraint(constant: 0)
+         .dimensionConstraints(height: 128)
+        
+        let contentArea = View {
+            
+            _ = $0?.VStack {
                 
-                _ = $0?.View { _ in
-                
+                _ = $0?.View {
+                   _ = $0
                 }.backgroundColor(.red)
-                 .paddingConstraints(top: 4, left: 4, right: 4, bottom: 4)
+                 .dimensionConstraints(height: 16)
                 
+                _ = $0?.View {
+                    _ = $0
+                }.backgroundColor(.orange)
+                 .dimensionConstraints(height: 32)
+                
+                _ = $0?.View {
+                    _ = $0
+                }.backgroundColor(.lightGray)
             }
-             .backgroundColor(.green)
-             .dimensionConstraints(height: 48)
-             .paddingConstraints(left: 16, right: 16, bottom: 16)
-            
-                _ = $0?.View()
-                .backgroundColor(.pxOrangeMp)
-                .dimensionConstraints(height: 256)
-                .leftConstraint(relatedView: <#T##UIView?#>, constant: <#T##CGFloat#>)
+             .topConstraint(constant: 0)
+             .leadingConstraint(constant: 0)
+             .trailingConstraint(constant: 0)
+             .bottomConstraint(constant: 0)
+             .backgroundColor(.blue)
                 
-        
-        }.position(x: 0, y: 0, width: 256, height: 512)
-         .backgroundColor(.gray)
-         .defaultConstraints()
-    }*/
+        }.backgroundColor(.white)
+            .topConstraint(relatedView: topBar, relatedTo: .bottom, constant: 0)
+         .leadingConstraint(constant: 0)
+         .trailingConstraint(constant: 0)
+         .bottomConstraint(relatedView: bottomArea, relatedTo: .top, constant: 0)
+    }
 }

@@ -13,15 +13,28 @@ typealias viewCallbackHandler = ((_ parentView: UIView?) -> Void)?
 
 extension UIView {
     
+    static func addAsChildView(_ parentView: UIView, _ newView: UIView) {
+        
+        if parentView is UIStackView {
+            (parentView as? UIStackView)?.addArrangedSubview(newView)
+        }
+        else {
+            newView.translatesAutoresizingMaskIntoConstraints = false
+            parentView.addSubview(newView)
+        }
+    }
+    
+    // UIView
+    
     func View(_ callbackHandler: viewCallbackHandler = nil ) -> UIView { return UIView.XView(self) { callbackHandler?($0) } }
     
     static func XView(_ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> UIView {
         
         let newView = UIView()
         
-        newView.translatesAutoresizingMaskIntoConstraints = false
-        
-        parentView?.addSubview(newView)
+        if let parentView = parentView {
+            addAsChildView(parentView, newView)
+        }
         
         handler?(newView)
         
@@ -55,46 +68,66 @@ extension UIView {
         return self
     }
     
-    func topConstraint(relatedView: UIView? = nil, constant: CGFloat) -> UIView {
+    func topConstraint(relatedView: UIView? = nil, relatedTo: NSLayoutConstraint.Attribute? = nil, constant: CGFloat? = nil) -> UIView {
         
         guard let workView = (relatedView != nil ? relatedView : self.superview) else { return self }
         
-        NSLayoutConstraint.activate([
-            self.topAnchor.constraint(equalTo: workView.topAnchor, constant: constant)
-        ])
+        let constraint: NSLayoutConstraint = NSLayoutConstraint(item: self,
+                                                                attribute: NSLayoutConstraint.Attribute.top,
+                                                                relatedBy: NSLayoutConstraint.Relation.equal,
+                                                                toItem: workView,
+                                                                attribute: relatedTo ?? NSLayoutConstraint.Attribute.top,
+                                                                multiplier: 1,
+                                                                constant: constant ?? 0.0)
+        NSLayoutConstraint.activate([constraint])
         
         return self
     }
     
-    func leftConstraint(relatedView: UIView? = nil, constant: CGFloat) -> UIView {
+    func leadingConstraint(relatedView: UIView? = nil, relatedTo: NSLayoutConstraint.Attribute? = nil, constant: CGFloat? = nil) -> UIView {
         
         guard let workView = (relatedView != nil ? relatedView : self.superview) else { return self }
         
-        NSLayoutConstraint.activate([
-            self.leftAnchor.constraint(equalTo: workView.leftAnchor, constant: constant)
-        ])
+        let constraint: NSLayoutConstraint = NSLayoutConstraint(item: self,
+                                                                attribute: NSLayoutConstraint.Attribute.leading,
+                                                                relatedBy: NSLayoutConstraint.Relation.equal,
+                                                                toItem: workView,
+                                                                attribute: relatedTo ?? NSLayoutConstraint.Attribute.leading,
+                                                                multiplier: 1,
+                                                                constant: constant ?? 0.0)
+        NSLayoutConstraint.activate([constraint])
         
         return self
     }
     
-    func rightConstraint(relatedView: UIView? = nil, constant: CGFloat) -> UIView {
+    func trailingConstraint(relatedView: UIView? = nil, relatedTo: NSLayoutConstraint.Attribute? = nil, constant: CGFloat? = nil) -> UIView {
         
         guard let workView = (relatedView != nil ? relatedView : self.superview) else { return self }
         
-        NSLayoutConstraint.activate([
-            self.rightAnchor.constraint(equalTo: workView.rightAnchor, constant: -constant)
-        ])
+        let constraint: NSLayoutConstraint = NSLayoutConstraint(item: self,
+                                                                attribute: NSLayoutConstraint.Attribute.trailing,
+                                                                relatedBy: NSLayoutConstraint.Relation.equal,
+                                                                toItem: workView,
+                                                                attribute: relatedTo ?? NSLayoutConstraint.Attribute.trailing,
+                                                                multiplier: 1,
+                                                                constant: -(constant ?? 0.0))
+        NSLayoutConstraint.activate([constraint])
         
         return self
     }
     
-    func bottomConstraint(relatedView: UIView? = nil, constant: CGFloat) -> UIView {
+    func bottomConstraint(relatedView: UIView? = nil, relatedTo: NSLayoutConstraint.Attribute? = nil, constant: CGFloat? = nil) -> UIView {
         
         guard let workView = (relatedView != nil ? relatedView : self.superview) else { return self }
         
-        NSLayoutConstraint.activate([
-            self.bottomAnchor.constraint(equalTo: workView.bottomAnchor, constant: -constant)
-        ])
+        let constraint: NSLayoutConstraint = NSLayoutConstraint(item: self,
+                                                                attribute: NSLayoutConstraint.Attribute.bottom,
+                                                                relatedBy: NSLayoutConstraint.Relation.equal,
+                                                                toItem: workView,
+                                                                attribute: relatedTo ?? NSLayoutConstraint.Attribute.bottom,
+                                                                multiplier: 1,
+                                                                constant: -(constant ?? 0.0))
+        NSLayoutConstraint.activate([constraint])
         
         return self
     }
@@ -130,18 +163,19 @@ extension UIView {
         
         guard let superview = self.superview else { return self }
         
+        let constant = defaultConstant ?? 0.0
+        
         NSLayoutConstraint.activate([
-            self.topAnchor.constraint(equalTo: superview.topAnchor, constant: defaultConstant ?? 0.0),
-            self.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: defaultConstant ?? 0.0),
-            self.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: defaultConstant ?? 0.0),
-            self.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: defaultConstant ?? 0.0)
+            self.topAnchor.constraint(equalTo: superview.topAnchor, constant: constant),
+            self.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: constant),
+            self.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: -constant),
+            self.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: -constant)
         ])
         
         return self
     }
-}
 
-extension UIStackView {
+    // VStack
     
     func VStack(_ callbackHandler: viewCallbackHandler = nil ) -> UIStackView { return UIStackView.XStackView(self) { callbackHandler?($0) } }
     
@@ -150,12 +184,34 @@ extension UIStackView {
         let newView = UIStackView()
         
         newView.translatesAutoresizingMaskIntoConstraints = false
+        newView.axis = .vertical
+        newView.distribution = .fill
+        newView.alignment = .fill
+        newView.spacing = 0
         
         parentView?.addSubview(newView)
         
         handler?(newView)
         
         return newView
+    }
+    
+    // Button
+    
+    func AndesDefaultButton(_ callbackHandler: viewCallbackHandler = nil ) -> AndesButton? { return UIView.AndesButtonView(self) { callbackHandler?($0) } }
+    
+    static func AndesButtonView(_ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> AndesButton? {
+        
+        let newButton = AndesButton(text: "Continuar",
+                                 hierarchy: .loud,
+                                 size: .large,
+                                 icon: nil)
+        
+        if let parentView = parentView {
+            addAsChildView(parentView, newButton)
+        }
+        
+        return newButton
     }
     
 }
