@@ -10,6 +10,23 @@ import UIKit
 import AndesUI
 
 typealias viewCallbackHandler = ((_ parentView: UIView?) -> Void)?
+typealias actionCallbackHandler = () -> ()
+
+/// Target-Action helper.
+final class Action: NSObject {
+
+    private let _action: actionCallbackHandler?
+
+    init(_ action: actionCallbackHandler?) {
+        _action = action
+        super.init()
+    }
+
+    @objc func action() {
+        _action?()
+    }
+
+}
 
 extension UIView {
     
@@ -195,12 +212,12 @@ extension UIView {
         
         return newView
     }
-    
+
     // Button
     
-    func AndesDefaultButton(_ callbackHandler: viewCallbackHandler = nil ) -> AndesButton? { return UIView.AndesButtonView(self) { callbackHandler?($0) } }
+    func AndesDefaultButton(_ callbackHandler: viewCallbackHandler = nil) -> AndesButton { return UIView.AndesButtonView(self) { callbackHandler?($0) } }
     
-    static func AndesButtonView(_ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> AndesButton? {
+    static func AndesButtonView(_ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> AndesButton {
         
         let newButton = AndesButton(text: "Continuar",
                                  hierarchy: .loud,
@@ -211,7 +228,19 @@ extension UIView {
             addAsChildView(parentView, newButton)
         }
         
+        handler?(newButton)
+        
         return newButton
     }
     
+    func setAction(_ event: UIControl.Event, _ actionHandler: actionCallbackHandler? = nil) -> UIView {
+        
+        if self is AndesButton {
+            let instance = self as? AndesButton
+            let action = Action(actionHandler)
+            instance?.addTarget(action, action: #selector(action.action), for: event)
+        }
+        
+        return self
+    }
 }

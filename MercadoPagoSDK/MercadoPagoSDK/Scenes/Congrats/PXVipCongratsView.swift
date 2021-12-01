@@ -8,6 +8,7 @@
 
 import UIKit
 import AndesUI
+import AVFoundation
 
 class PXVipCongratsView: UIView {
     
@@ -74,13 +75,18 @@ class PXVipCongratsView: UIView {
          .dimensionConstraints(height: 256)
          .backgroundColor(.green)
         
+
+        
         let bottomArea = View {
             
             _ = $0?.AndesDefaultButton {
                 _ = $0
-            }?.leadingConstraint(constant: 16)
-                .trailingConstraint(constant: 16)
-                .bottomConstraint(constant: 16)
+            }.setAction(.touchUpInside) {
+                print("foi hein?")
+            }
+             .leadingConstraint(constant: 16)
+             .trailingConstraint(constant: 16)
+             .bottomConstraint(constant: 16)
             
         }.bottomConstraint(constant: 16)
          .leadingConstraint(constant: 0)
