@@ -88,6 +88,7 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
         unsubscribeFromNotifications()
         removePulseViewNotifications()
         removeNavigationTapGesture()
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -161,7 +162,7 @@ extension PXOneTapViewController {
     }
 
     private func setupUI() {
-        view.backgroundColor = .clear
+        view.backgroundColor = ThemeManager.shared.navigationBar().backgroundColor
         if view.subviews.isEmpty {
             viewModel.createCardSliderViewModel(cardType: cardType)
             if let preSelectedCard = viewModel.getCardSliderViewModel().first {
