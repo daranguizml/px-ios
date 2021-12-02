@@ -124,10 +124,10 @@ module CIHelper
             errors <<  "[!] To make a deployment add '[ci deploy]' anywhere in the commit message\n"
         end
 
-        if CIHelper::has_untracked_changes?
-            errors <<  "[!] Uncommitted or untracked files are detected. Please commit them and try again\n"
-            errors <<  ">>> Untracked changes: " << untracked_changes
-        end
+        # if CIHelper::has_untracked_changes?
+        #     errors <<  "[!] Uncommitted or untracked files are detected. Please commit them and try again\n"
+        #     errors <<  ">>> Untracked changes: " << untracked_changes
+        # end
 
         if errors.length>0
             $stderr.puts errors
