@@ -36,6 +36,8 @@ class PXVipCongratsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.isNavigationBarHidden = true
+        
         presenter?.apiReturn()
     }
 }

@@ -215,9 +215,55 @@ extension UIView {
 
     // Button
     
-    func AndesDefaultButton(_ callbackHandler: viewCallbackHandler = nil) -> AndesButton { return UIView.AndesButtonView(self) { callbackHandler?($0) } }
+    func DefaultButton(_ callbackHandler: viewCallbackHandler = nil) -> UIButton { return UIView.XButtonView(self) { callbackHandler?($0) } }
     
-    static func AndesButtonView(_ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> AndesButton {
+    static func XButtonView(_ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> UIButton {
+        
+        let newButton = UIButton()
+        
+        newButton.setTitle("Continuar", for: .normal)
+        
+        if let parentView = parentView {
+            addAsChildView(parentView, newButton)
+        }
+        
+        handler?(newButton)
+        
+        return newButton
+    }
+    
+    func setButtonImage(_ imagePath: String?) -> UIView {
+        
+        if self is UIButton, let imagePath = imagePath {
+            let instance = self as? UIButton
+            instance?.setImage(UIImage(named: imagePath), for: .normal)
+        }
+        
+        return self
+    }
+    
+    func setButtonTitle(_ title: String?) -> UIView {
+        
+        if let title = title {
+            
+            if self is UIButton {
+                let instance = self as? UIButton
+                instance?.setTitle(title, for: .normal)
+            } else if self is AndesButton {
+                let instance = self as? AndesButton
+                instance?.text = title
+            }
+                        
+        }
+        
+        return self
+    }
+    
+    //AndesButton
+    
+    func AndesDefaultButton(_ callbackHandler: viewCallbackHandler = nil) -> AndesButton { return UIView.XAndesButtonView(self) { callbackHandler?($0) } }
+    
+    static func XAndesButtonView(_ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> AndesButton {
         
         let newButton = AndesButton(text: "Continuar",
                                  hierarchy: .loud,
@@ -242,5 +288,22 @@ extension UIView {
         }
         
         return self
+    }
+    
+    // Image
+    
+    func Image(_ imagePath: String?, _ callbackHandler: viewCallbackHandler = nil) -> UIImageView { return UIView.XImageView(imagePath, self) { callbackHandler?($0) } }
+    
+    static func XImageView(_ imagePath: String?, _ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> UIImageView {
+        
+        let newImage = UIImageView(image: UIImage(named: imagePath ?? String()))
+        
+        if let parentView = parentView {
+            addAsChildView(parentView, newImage)
+        }
+        
+        handler?(newImage)
+        
+        return newImage
     }
 }

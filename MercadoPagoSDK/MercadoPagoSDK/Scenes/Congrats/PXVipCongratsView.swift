@@ -61,32 +61,45 @@ class PXVipCongratsView: UIView {
         presenter?.valor?.bind { value in
             self.label?.text = value
         }
-        
     }
     
     
     func buildInterface2() {
         
         let topBar = View {
-            _ = $0
+            
+            _ = $0?.DefaultButton {
+                _ = $0
+            }.setButtonTitle("X")
+             .leadingConstraint(constant: 16)
+             .topConstraint(constant: 48)
+             .dimensionConstraints(width: 32, height: 32)
+            
         }.topConstraint(constant: 0)
          .leadingConstraint(constant: 0)
          .trailingConstraint(constant: 0)
-         .dimensionConstraints(height: 256)
-         .backgroundColor(.green)
-        
-
+         .dimensionConstraints(height: 192)
+         .backgroundColor(UIColor.Andes.green500)
         
         let bottomArea = View {
             
-            _ = $0?.AndesDefaultButton {
+            let secondButton = $0?.AndesDefaultButton {
                 _ = $0
             }.setAction(.touchUpInside) {
-                print("foi hein?")
-            }
+                print("Continuar")
+            }.setButtonTitle("Ir para conta")
              .leadingConstraint(constant: 16)
              .trailingConstraint(constant: 16)
              .bottomConstraint(constant: 16)
+            
+            let firstButton = $0?.AndesDefaultButton {
+                _ = $0
+            }.setAction(.touchUpInside) {
+                print("Verificar")
+            }.setButtonTitle("Continuar")
+             .leadingConstraint(constant: 16)
+             .trailingConstraint(constant: 16)
+             .bottomConstraint(relatedView:secondButton, relatedTo: .top, constant: 8)
             
         }.bottomConstraint(constant: 16)
          .leadingConstraint(constant: 0)
@@ -98,18 +111,24 @@ class PXVipCongratsView: UIView {
             _ = $0?.VStack {
                 
                 _ = $0?.View {
-                   _ = $0
-                }.backgroundColor(.red)
-                 .dimensionConstraints(height: 16)
-                
-                _ = $0?.View {
-                    _ = $0
-                }.backgroundColor(.orange)
-                 .dimensionConstraints(height: 32)
-                
-                _ = $0?.View {
-                    _ = $0
+                   
+                    _ = $0?.Image("chevronML") {
+                        _ = $0
+                    }.leadingConstraint(constant: 16)
+                     .topConstraint(constant: 16)
+                     .dimensionConstraints(width: 64, height: 64)
+                    
                 }.backgroundColor(.lightGray)
+                 .dimensionConstraints(height: 192)
+                
+                _ = $0?.View {
+                    _ = $0
+                }.backgroundColor(.lightBlue())
+                 .dimensionConstraints(height: 64)
+                
+                _ = $0?.View {
+                    _ = $0
+                }.backgroundColor(.white)
             }
              .topConstraint(constant: 0)
              .leadingConstraint(constant: 0)
