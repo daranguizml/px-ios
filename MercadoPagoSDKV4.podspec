@@ -29,7 +29,6 @@ Pod::Spec.new do |s|
     s.dependency 'AndesUI/AndesBottomSheet', '~> 3.0'
   end
 
-
   s.subspec 'ESC' do |esc|
     esc.dependency 'MercadoPagoSDKV4/Default'
     esc.pod_target_xcconfig = {
