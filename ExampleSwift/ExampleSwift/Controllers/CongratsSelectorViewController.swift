@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-
 import MercadoPagoSDKV4
 
 class CongratsSelectorViewController: UITableViewController, PXTrackerListener {
@@ -21,6 +20,11 @@ class CongratsSelectorViewController: UITableViewController, PXTrackerListener {
     }
 
     private var congratsData: [CongratsType] = []
+
+    private struct CongratsType {
+        let congratsName: String
+        let congratsData: PXPaymentCongrats
+    }
 
     private lazy var commonCongrats: CongratsType = {
         let points: PXPoints = PXPoints(
@@ -201,7 +205,7 @@ class CongratsSelectorViewController: UITableViewController, PXTrackerListener {
         )
     }()
 
-    private lazy var congratsWithInstallments : CongratsType = {
+    private lazy var congratsWithInstallments: CongratsType = {
         return CongratsType(
             congratsName: "Payment many installments",
             congratsData: PXPaymentCongrats()
@@ -485,10 +489,5 @@ class CongratsSelectorViewController: UITableViewController, PXTrackerListener {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let navController = navigationController else { return }
         congratsData[indexPath.row].congratsData.start(using: navController)
-    }
-
-    private struct CongratsType {
-        let congratsName: String
-        let congratsData: PXPaymentCongrats
     }
 }

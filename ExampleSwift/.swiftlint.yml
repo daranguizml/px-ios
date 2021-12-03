@@ -70,3 +70,8 @@ line_length:
   warning: 120
   ignores_interpolated_strings: true
   ignores_urls: true
+# implicitly 
+closure_body_length: 150
+line_length: 800
+file_length: 3000
+type_body_length: 1500
