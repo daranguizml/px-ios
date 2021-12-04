@@ -30,6 +30,23 @@ final class Action: NSObject {
 
 extension UIView {
     
+    private struct actionHolder {
+        static var _actionComputedProperty = [String: Action]()
+    }
+        
+    var viewInteractAction: Action? {
+        get {
+            return actionHolder._actionComputedProperty["\(Unmanaged<AnyObject>.passUnretained(self as AnyObject).toOpaque())"]
+        }
+        set(newValue) {
+            actionHolder._actionComputedProperty["\(Unmanaged<AnyObject>.passUnretained(self as AnyObject).toOpaque())"] = newValue
+        }
+    }
+    
+    @objc func executeInteractAction() {
+        self.viewInteractAction?.action()
+    }
+    
     static func addAsChildView(_ parentView: UIView, _ newView: UIView) {
         
         if parentView is UIStackView {
@@ -41,7 +58,7 @@ extension UIView {
         }
     }
     
-    // UIView
+    // UIView semantic methods
     
     func View(_ callbackHandler: viewCallbackHandler = nil ) -> UIView { return UIView.XView(self) { callbackHandler?($0) } }
     
@@ -191,12 +208,15 @@ extension UIView {
         
         return self
     }
+}
 
-    // VStack
+extension UIView {
     
-    func VStack(_ callbackHandler: viewCallbackHandler = nil ) -> UIStackView { return UIStackView.XStackView(self) { callbackHandler?($0) } }
+    // VStack semantic methods
     
-    static func XStackView(_ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> UIStackView {
+    func VStack(_ callbackHandler: viewCallbackHandler = nil ) -> UIStackView { return UIStackView.XVerticalStackView(self) { callbackHandler?($0) } }
+    
+    static func XVerticalStackView(_ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> UIStackView {
         
         let newView = UIStackView()
         
@@ -212,14 +232,37 @@ extension UIView {
         
         return newView
     }
+    
+    // HStack
+    func HStack(_ callbackHandler: viewCallbackHandler = nil ) -> UIStackView { return UIStackView.XHorizontalStackView(self) { callbackHandler?($0) } }
+    
+    static func XHorizontalStackView(_ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> UIStackView {
+        
+        let newView = UIStackView()
+        
+        newView.translatesAutoresizingMaskIntoConstraints = false
+        newView.axis = .horizontal
+        newView.distribution = .fill
+        newView.alignment = .fill
+        newView.spacing = 0
+        
+        parentView?.addSubview(newView)
+        
+        handler?(newView)
+        
+        return newView
+    }
+}
 
-    // Button
+extension UIView {
+
+    // Button semantic methods
     
     func DefaultButton(_ callbackHandler: viewCallbackHandler = nil) -> UIButton { return UIView.XButtonView(self) { callbackHandler?($0) } }
     
     static func XButtonView(_ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> UIButton {
         
-        let newButton = UIButton()
+        let newButton = UIButton(type: .custom)
         
         newButton.setTitle("Continuar", for: .normal)
         
@@ -259,6 +302,19 @@ extension UIView {
         return self
     }
     
+    func setAction(_ event: UIControl.Event, _ actionHandler: actionCallbackHandler? = nil) -> UIView {
+        
+        self.viewInteractAction = Action(actionHandler)
+        
+        if self is AndesButton {
+            (self as? AndesButton)?.addTarget(self, action: #selector(executeInteractAction), for: event)
+        } else if self is UIButton {
+            (self as? UIButton)?.addTarget(self, action: #selector(executeInteractAction), for: event)
+        }
+        
+        return self
+    }
+    
     //AndesButton
     
     func AndesDefaultButton(_ callbackHandler: viewCallbackHandler = nil) -> AndesButton { return UIView.XAndesButtonView(self) { callbackHandler?($0) } }
@@ -278,19 +334,11 @@ extension UIView {
         
         return newButton
     }
+}
+
+extension UIView {
     
-    func setAction(_ event: UIControl.Event, _ actionHandler: actionCallbackHandler? = nil) -> UIView {
-        
-        if self is AndesButton {
-            let instance = self as? AndesButton
-            let action = Action(actionHandler)
-            instance?.addTarget(action, action: #selector(action.action), for: event)
-        }
-        
-        return self
-    }
-    
-    // Image
+    // Image semantic methods
     
     func Image(_ imagePath: String?, _ callbackHandler: viewCallbackHandler = nil) -> UIImageView { return UIView.XImageView(imagePath, self) { callbackHandler?($0) } }
     
@@ -303,7 +351,7 @@ extension UIView {
         }
         
         handler?(newImage)
-        
+
         return newImage
     }
 }

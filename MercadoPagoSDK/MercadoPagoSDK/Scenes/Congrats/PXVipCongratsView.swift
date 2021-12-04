@@ -10,13 +10,21 @@ import UIKit
 import AndesUI
 import AVFoundation
 
+protocol PXVipCongratsViewOutput: AnyObject {
+    func didPushExitButton()
+}
+
 class PXVipCongratsView: UIView {
+    
+    weak var viewController: PXVipCongratsViewOutput?
     
     var button: AndesButton?
     var label: UILabel?
     
-    convenience init(backgroundColor: UIColor?, presenter: PXVipCongratsPresenterInput? = nil) {
+    convenience init(backgroundColor: UIColor?, viewController: PXVipCongratsViewOutput?, presenter: PXVipCongratsPresenterInput? = nil) {
         self.init()
+        
+        self.viewController = viewController
         
         _ = self.backgroundColor(backgroundColor)
         
@@ -74,6 +82,9 @@ class PXVipCongratsView: UIView {
              .leadingConstraint(constant: 16)
              .topConstraint(constant: 48)
              .dimensionConstraints(width: 32, height: 32)
+             .setAction(.touchUpInside) {
+                 self.viewController?.didPushExitButton()
+             }
             
         }.topConstraint(constant: 0)
          .leadingConstraint(constant: 0)

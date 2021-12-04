@@ -488,6 +488,13 @@ class CongratsSelectorViewController: UITableViewController, PXTrackerListener {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let navController = navigationController else { return }
-        congratsData[indexPath.row].congratsData.start(using: navController)
+
+        switch congratsData[indexPath.row].congratsName {
+        case "VIP":
+            let vipController = PXVipCongratsViewController()
+            navController.pushViewController(vipController, animated: true)
+        default:
+            congratsData[indexPath.row].congratsData.start(using: navController)
+        }
     }
 }
