@@ -15,17 +15,20 @@ typealias actionCallbackHandler = () -> ()
 /// Target-Action helper.
 final class Action: NSObject {
 
-    private let _action: actionCallbackHandler?
+    private var _action: actionCallbackHandler?
 
     init(_ action: actionCallbackHandler?) {
         _action = action
         super.init()
     }
+    
+    deinit {
+        _action = nil
+    }
 
     @objc func action() {
         _action?()
     }
-
 }
 
 extension UIView {
@@ -41,6 +44,10 @@ extension UIView {
         set(newValue) {
             actionHolder._actionComputedProperty["\(Unmanaged<AnyObject>.passUnretained(self as AnyObject).toOpaque())"] = newValue
         }
+    }
+    
+    func deInit() {
+        self.viewInteractAction = nil
     }
     
     @objc func executeInteractAction() {

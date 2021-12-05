@@ -23,6 +23,10 @@ public class PXVipCongratsViewController: UIViewController {
     var presenter: PXVipCongratsPresenterInput?
     var apiWorker: PXVipCongratsApiWorkerInput?
     
+    deinit {
+        self.view.clearSubViews()
+    }
+    
     public override func loadView() {
         
         router = PXVipCongratsRouter(self)

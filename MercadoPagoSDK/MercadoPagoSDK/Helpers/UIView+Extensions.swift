@@ -15,6 +15,8 @@ extension UIView {
                 clearSubViews(subView)
             }
         }
+        
+        view?.deInit()
         view?.removeFromSuperview()
     }
 }

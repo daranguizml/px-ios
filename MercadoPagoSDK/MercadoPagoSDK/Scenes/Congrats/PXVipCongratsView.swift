@@ -33,6 +33,10 @@ class PXVipCongratsView: UIView {
         bind(presenter)
     }
     
+    deinit {
+        self.clearSubViews()
+    }
+    
     func buildInterface() {
 
         label = UILabel()
