@@ -1,5 +1,6 @@
 import Foundation
 import MLCardForm
+import UIKit
 
 class PXOneTapViewControllerTransition: NSObject, UIViewControllerAnimatedTransitioning {
     
@@ -54,7 +55,7 @@ class PXOneTapViewControllerTransition: NSObject, UIViewControllerAnimatedTransi
         // topView is a view containing a snapshot of the navigationbar and a snapshot of the headerView
         let topView = buildTopView(containerView: containerView, navigationSnapshot: navigationSnapshot, headerSnapshot: headerSnapshot, footerSnapshot: footerSnapshot)
 
-        topView.addSubview(buildTopViewOverlayColor(color: oneTapVC.view.backgroundColor, topView: topView))
+        topView.addSubview(buildTopViewOverlayColor(color: UIColor.Andes.white, topView: topView))
         containerView.addSubview(securityCodeVC.view)
 
         securityCodeVC.view.frame = transitionContext.finalFrame(for: securityCodeVC)
@@ -220,7 +221,7 @@ class PXOneTapViewControllerTransition: NSObject, UIViewControllerAnimatedTransi
         // topViewBackground is a blue placeholder background to use as a temporary navigationbar and headerView background
         // This view will show initially offset as the navigationbar and will expand to cover the headerView area
         let topViewBackground = UIView(frame: topView.frame)
-        topViewBackground.backgroundColor = oneTapVC.view.backgroundColor
+        topViewBackground.backgroundColor = UIColor.Andes.white
         backgroundView.addSubview(topViewBackground)
         backgroundView.addSubview(topView)
         backgroundView.addSubview(footerSnapshot)
