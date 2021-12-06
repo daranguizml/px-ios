@@ -200,6 +200,28 @@ extension UIView {
         return self
     }
     
+    func relatedConstraint(relatedView: UIView? = nil,
+                           thisConstraint: NSLayoutConstraint.Attribute? = nil,
+                           relatedTo: NSLayoutConstraint.Attribute? = nil,
+                           relatedBy: NSLayoutConstraint.Relation? = nil,
+                           multiplier: CGFloat? = nil,
+                           constant: CGFloat? = nil) -> UIView {
+        
+        guard let workView = (relatedView != nil ? relatedView : self.superview) else { return self }
+        
+        let constraint: NSLayoutConstraint = NSLayoutConstraint(item: self,
+                                                                attribute: thisConstraint ?? NSLayoutConstraint.Attribute.top,
+                                                                relatedBy: relatedBy ?? NSLayoutConstraint.Relation.equal,
+                                                                toItem: workView,
+                                                                attribute: relatedTo ?? NSLayoutConstraint.Attribute.top,
+                                                                multiplier: multiplier ?? 1.0,
+                                                                constant: constant ?? 0.0)
+        NSLayoutConstraint.activate([constraint])
+        
+        
+        return self
+    }
+    
     func defaultConstraints(defaultConstant: CGFloat? = nil) -> UIView {
         
         guard let superview = self.superview else { return self }
@@ -345,13 +367,77 @@ extension UIView {
 
 extension UIView {
     
+    func Label(_ contentText: String?, _ callbackHandler: viewCallbackHandler = nil) -> UILabel { return UIView.XUILabel(contentText, self) { callbackHandler?($0) } }
+    
+    static func XUILabel(_ contentText: String?, _ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> UILabel {
+        
+        let newLabel = UILabel()
+        
+        if let contentText = contentText {
+            newLabel.text = contentText
+        }
+        
+        if let parentView = parentView {
+            addAsChildView(parentView, newLabel)
+        }
+        
+        handler?(newLabel)
+
+        return newLabel
+    }
+    
+    func fontType(fontName: String? = nil, font: UIFont? = nil, size: CGFloat? = nil) -> UIView {
+        
+        if self is UILabel {
+            
+            let instance = self as? UILabel
+            
+            if let fontName = fontName {
+                instance?.font = UIFont(name: fontName, size: size ?? 14.0)
+            } else if let font = font {
+                instance?.font = font
+            }
+        }
+        
+        return self
+    }
+    
+    func fontColor(_ color: UIColor?) -> UIView {
+        
+        if self is UILabel {
+            
+            let instance = self as? UILabel
+        
+            instance?.textColor = color ?? .black
+        }
+        
+        return self
+    }
+    
+    func numberOfLines(_ count: Int?) -> UIView {
+        
+        if self is UILabel {
+            
+            let instance = self as? UILabel
+        
+            instance?.numberOfLines = count ?? 1
+        }
+        
+        return self
+    }
+}
+
+extension UIView {
+    
     // Image semantic methods
     
     func Image(_ imagePath: String?, _ callbackHandler: viewCallbackHandler = nil) -> UIImageView { return UIView.XImageView(imagePath, self) { callbackHandler?($0) } }
     
     static func XImageView(_ imagePath: String?, _ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> UIImageView {
         
-        let newImage = UIImageView(image: UIImage(named: imagePath ?? String()))
+        let newImage = UIImageView(image: UIImage( named: imagePath ?? String(), in: MercadoPagoSDKV4.MercadoPagoBundle.bundle(), compatibleWith: nil))
+        
+        newImage.contentMode = .scaleAspectFit
         
         if let parentView = parentView {
             addAsChildView(parentView, newImage)
@@ -360,5 +446,31 @@ extension UIView {
         handler?(newImage)
 
         return newImage
+    }
+}
+
+extension UIView: UIScrollViewDelegate {
+    
+    // Scrollview semantic methods
+    
+    func ScrollView(_ callbackHandler: viewCallbackHandler = nil) -> UIScrollView { return UIView.XScrollView(self) { callbackHandler?($0) } }
+    
+    static func XScrollView(_ parentView: UIView? = nil, _ handler: viewCallbackHandler = nil) -> UIScrollView {
+        
+        let scrollView = UIScrollView()
+        
+        scrollView.delegate = scrollView
+        
+        if let parentView = parentView {
+            addAsChildView(parentView, scrollView)
+        }
+        
+        handler?(scrollView)
+
+        return scrollView
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
     }
 }

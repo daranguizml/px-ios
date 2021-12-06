@@ -18,6 +18,11 @@ class PXVipCongratsView: UIView {
     
     weak var viewController: PXVipCongratsViewOutput?
     
+    var scrollView: UIScrollView?
+    var topAreaView: UIView?
+    var bottomAreaView: UIView?
+    var contentAreaView: UIView?
+    
     var button: AndesButton?
     var label: UILabel?
     
@@ -75,12 +80,37 @@ class PXVipCongratsView: UIView {
         }
     }
     
-    
     func buildInterface2() {
         
-        let topBar = View {
+        self.scrollView = ScrollView {
             
-            _ = $0?.DefaultButton {
+            _ = $0?.VStack {
+                
+                self.topAreaView = self.topBar($0)
+                
+                self.contentAreaView = self.contentArea($0)
+                
+                self.bottomAreaView = self.bottomArea($0)
+                
+                _ = $0?.View()
+
+            }.relatedConstraint(
+                thisConstraint: .width,
+                relatedTo: .width,
+                relatedBy: .equal
+            ).defaultConstraints()
+            
+        }.defaultConstraints()
+        
+        
+        as? UIScrollView
+    }
+    
+    private func topBar(_ parentView: UIView?) -> UIView? {
+        
+        let topBarView = parentView?.View {
+            
+            let exitButton = $0?.DefaultButton {
                 _ = $0
             }.setButtonTitle("X")
              .leadingConstraint(constant: 16)
@@ -90,13 +120,29 @@ class PXVipCongratsView: UIView {
                  self.viewController?.didPushExitButton()
              }
             
-        }.topConstraint(constant: 0)
-         .leadingConstraint(constant: 0)
-         .trailingConstraint(constant: 0)
-         .dimensionConstraints(height: 192)
-         .backgroundColor(UIColor.Andes.green500)
+            _ = $0?.Label("Listo! Ya pagaste a Supermarket")
+                .fontType(fontName: "Verdana", size: 18)
+                .fontColor(.white)
+                .numberOfLines(2)
+                .topConstraint(relatedView: exitButton, relatedTo: .bottom, constant: 8)
+                .leadingConstraint(constant: 16)
+                .bottomConstraint(relatedView: $0, relatedTo: .bottom, constant: 16)
+                .dimensionConstraints(width: 256)
+            
+            let productLogo = $0?.Image("testeImage")
+                .trailingConstraint(constant: 16)
+                .bottomConstraint(relatedView: $0, relatedTo: .bottom, constant: 16)
+                .dimensionConstraints(width: 64, height: 64)
+        }
+            .dimensionConstraints(height: 192)
+            .backgroundColor(UIColor.Andes.green500)
         
-        let bottomArea = View {
+        return topBarView
+    }
+    
+    private func bottomArea(_ parentView: UIView?) -> UIView? {
+     
+        let bottomAreaView = parentView?.View {
             
             let secondButton = $0?.AndesDefaultButton {
                 _ = $0
@@ -115,23 +161,32 @@ class PXVipCongratsView: UIView {
              .leadingConstraint(constant: 16)
              .trailingConstraint(constant: 16)
              .bottomConstraint(relatedView:secondButton, relatedTo: .top, constant: 8)
-            
-        }.bottomConstraint(constant: 16)
-         .leadingConstraint(constant: 0)
-         .trailingConstraint(constant: 0)
-         .dimensionConstraints(height: 128)
+
+        }
+            .dimensionConstraints(height: 128)
         
-        let contentArea = View {
+        return bottomAreaView
+    }
+        
+    private func contentArea(_ parentView: UIView?) -> UIView? {
+        
+        let contentArea = parentView?.View {
             
             _ = $0?.VStack {
                 
                 _ = $0?.View {
                    
-                    _ = $0?.Image("chevronML") {
+                    let image = $0?.Image("testeImage") {
                         _ = $0
                     }.leadingConstraint(constant: 16)
                      .topConstraint(constant: 16)
-                     .dimensionConstraints(width: 64, height: 64)
+                     .dimensionConstraints(width: 32, height: 42)
+                    
+                    _ = $0?.Label("teste")
+                        .leadingConstraint(relatedView: image, relatedTo: .trailing, constant: 16)
+                        .topConstraint(constant: 16)
+                        .fontType(fontName: "Verdana", size: 18.0)
+                        .fontColor(.white)
                     
                 }.backgroundColor(.lightGray)
                  .dimensionConstraints(height: 192)
@@ -152,9 +207,8 @@ class PXVipCongratsView: UIView {
              .backgroundColor(.blue)
                 
         }.backgroundColor(.white)
-            .topConstraint(relatedView: topBar, relatedTo: .bottom, constant: 0)
-         .leadingConstraint(constant: 0)
-         .trailingConstraint(constant: 0)
-         .bottomConstraint(relatedView: bottomArea, relatedTo: .top, constant: 0)
+         .dimensionConstraints(height: 1024)
+        
+        return contentArea
     }
 }

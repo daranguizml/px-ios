@@ -381,7 +381,7 @@ open class FSPagerView: UIView, UICollectionViewDataSource, UICollectionViewDele
         function(self, cell as! FSPagerViewCell, index)
     }
 
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    public override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if self.numberOfItems > 0 {
             // In case someone is using KVO
             let currentIndex = lround(Double(self.scrollOffset)) % self.numberOfItems
