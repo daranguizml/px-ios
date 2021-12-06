@@ -88,6 +88,7 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
         unsubscribeFromNotifications()
         removePulseViewNotifications()
         removeNavigationTapGesture()
+        headerView?.alpha = 0
         self.navigationController?.setNavigationBarHidden(shouldHideOneTapNavBar, animated: animated)
         cardSliderContentView?.layer.masksToBounds = true
         shouldHideOneTapNavBar = false
@@ -190,7 +191,7 @@ extension PXOneTapViewController {
         contentView.distribution = .fill
         contentView.addBackground(color: UIColor.Andes.white)
         view.addSubview(contentView)
-        
+
         PXLayout.matchWidth(ofView: contentView)
         PXLayout.setHeight(owner: contentView, height: contentViewHeight)
         PXLayout.pinBottom(view: contentView)
@@ -470,7 +471,6 @@ extension PXOneTapViewController {
     }
 
     private func handlePayButton() {
-        headerView?.alpha = 0
         if let selectedCard = getSuspendedCardSliderViewModel(), let selectedApplication = selectedCard.selectedApplication {
             if let tapPayBehaviour = selectedApplication.behaviours?[PXBehaviour.Behaviours.tapPay.rawValue] {
                 handleBehaviour(tapPayBehaviour, isSplit: false)
