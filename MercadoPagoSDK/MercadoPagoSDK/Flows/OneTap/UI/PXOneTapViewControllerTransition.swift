@@ -3,13 +3,18 @@ import MLCardForm
 import UIKit
 
 class PXOneTapViewControllerTransition: NSObject, UIViewControllerAnimatedTransitioning {
-    
     struct Offsets {
         static let small: CGFloat = 65
         static let large: CGFloat = 88
     }
-    
-    //make this zero for now and see if it matters when it comes time to make it interactive
+
+    struct TransitionColors {
+        static let topViewBackgroundColor = UIColor.Andes.white
+        static let backgroundViewBackgroundColor = UIColor.Andes.white
+        static let oneTapVCAlpha: CGFloat = 0
+    }
+
+    // make this zero for now and see if it matters when it comes time to make it interactive
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 1.0
     }
@@ -45,6 +50,7 @@ class PXOneTapViewControllerTransition: NSObject, UIViewControllerAnimatedTransi
                 return
         }
 
+        oneTapVC.headerView?.alpha = TransitionColors.oneTapVCAlpha
         let containerView = transitionContext.containerView
 
         let fixedFrames = buildFrames(oneTapVC: oneTapVC, containerView: containerView)
@@ -55,7 +61,7 @@ class PXOneTapViewControllerTransition: NSObject, UIViewControllerAnimatedTransi
         // topView is a view containing a snapshot of the navigationbar and a snapshot of the headerView
         let topView = buildTopView(containerView: containerView, navigationSnapshot: navigationSnapshot, headerSnapshot: headerSnapshot, footerSnapshot: footerSnapshot)
 
-        topView.addSubview(buildTopViewOverlayColor(color: UIColor.Andes.white, topView: topView))
+        topView.addSubview(buildTopViewOverlayColor(color: TransitionColors.topViewBackgroundColor, topView: topView))
         containerView.addSubview(securityCodeVC.view)
 
         securityCodeVC.view.frame = transitionContext.finalFrame(for: securityCodeVC)
@@ -149,11 +155,11 @@ class PXOneTapViewControllerTransition: NSObject, UIViewControllerAnimatedTransi
         let topView = buildTopView(containerView: containerView, navigationSnapshot: navigationSnapshot, headerSnapshot: headerSnapshot, footerSnapshot: footerSnapshot)
         // backgroundView is a white placeholder background using the entire view area
         let backgroundView = UIView(frame: containerView.frame)
-        backgroundView.backgroundColor = UIColor.white
+        backgroundView.backgroundColor = TransitionColors.backgroundViewBackgroundColor
         // topViewBackground is a blue placeholder background to use as a temporary navigationbar and headerView background
         // This view will show initially offset as the navigationbar and will expand to cover the headerView area
         let topViewBackground = UIView(frame: topView.frame)
-        topViewBackground.backgroundColor = UIColor.Andes.white
+        topViewBackground.backgroundColor = TransitionColors.topViewBackgroundColor
         backgroundView.addSubview(topViewBackground)
         backgroundView.addSubview(topView)
         backgroundView.addSubview(footerSnapshot)
@@ -217,11 +223,12 @@ class PXOneTapViewControllerTransition: NSObject, UIViewControllerAnimatedTransi
         let topView = buildTopView(containerView: containerView, navigationSnapshot: navigationSnapshot, headerSnapshot: headerSnapshot, footerSnapshot: footerSnapshot)
         // backgroundView is a white placeholder background using the entire view area
         let backgroundView = UIView(frame: containerView.frame)
-        backgroundView.backgroundColor = UIColor.white
+        backgroundView.backgroundColor = TransitionColors.backgroundViewBackgroundColor
         // topViewBackground is a blue placeholder background to use as a temporary navigationbar and headerView background
         // This view will show initially offset as the navigationbar and will expand to cover the headerView area
         let topViewBackground = UIView(frame: topView.frame)
-        topViewBackground.backgroundColor = UIColor.Andes.white
+        topViewBackground.backgroundColor = TransitionColors.topViewBackgroundColor
+
         backgroundView.addSubview(topViewBackground)
         backgroundView.addSubview(topView)
         backgroundView.addSubview(footerSnapshot)
@@ -242,9 +249,9 @@ class PXOneTapViewControllerTransition: NSObject, UIViewControllerAnimatedTransi
         cardSnapshot.transform = CGAffineTransform.identity.scaledBy(x: 0.6, y: 0.6)
         let startOrigin = securityCodeVC.cardContainerView.superview?.convert(securityCodeVC.cardContainerView.frame.origin, to: nil) ?? CGPoint.zero
         cardSnapshot.frame.origin = startOrigin
-        
+
         var endOrigin = cell.superview?.convert(cell.frame.origin, to: nil) ?? CGPoint.zero
-        
+
         endOrigin.y -= navigationSnapshot?.frame.height ?? 0
         endOrigin.y -= oneTapVC.navigationController?.navigationBar.frame.height ?? 0
 

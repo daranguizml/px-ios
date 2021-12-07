@@ -5,6 +5,12 @@ import AndesUI
 import MLCardDrawer
 
 final class PXOneTapViewController: MercadoPagoUIViewController {
+    // MARK: Constants
+
+    struct OneTapUI {
+        static let headerViewAlpha: CGFloat = 1
+    }
+
     // MARK: Definitions
     lazy var itemViews = [UIView]()
     fileprivate var viewModel: PXOneTapViewModel
@@ -70,6 +76,7 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         super.shouldHideNavigationBar = true
@@ -88,8 +95,7 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
         unsubscribeFromNotifications()
         removePulseViewNotifications()
         removeNavigationTapGesture()
-        headerView?.alpha = 0
-        self.navigationController?.setNavigationBarHidden(shouldHideOneTapNavBar, animated: animated)
+        navigationController?.setNavigationBarHidden(shouldHideOneTapNavBar, animated: animated)
         cardSliderContentView?.layer.masksToBounds = true
         shouldHideOneTapNavBar = false
     }
@@ -165,7 +171,7 @@ extension PXOneTapViewController {
     }
 
     private func setupUI() {
-        headerView?.alpha = 1
+        headerView?.alpha = OneTapUI.headerViewAlpha
         view.backgroundColor = ThemeManager.shared.navigationBar().backgroundColor
         if view.subviews.isEmpty {
             viewModel.createCardSliderViewModel(cardType: cardType)
