@@ -21,7 +21,6 @@ class MercadoPagoServices: NSObject {
     // MARK: - Open perperties
     open var publicKey: String
     open var privateKey: String?
-    open var checkoutType: String?
 
     // MARK: - Initialization
     init(
@@ -30,16 +29,14 @@ class MercadoPagoServices: NSObject {
         customService: CustomService = CustomServiceImpl(),
         remedyService: RemedyService = RemedyServiceImpl(),
         gatewayService: TokenService = TokenServiceImpl(),
-        checkoutService: CheckoutService = CheckoutServiceImpl(),
-        checkoutType: String? = nil
+        paymentService: PaymentService = PaymentServiceImpl()
     ) {
         self.publicKey = publicKey
         self.privateKey = privateKey
         self.customService = customService
         self.remedyService = remedyService
         self.gatewayService = gatewayService
-        self.checkoutService = checkoutService
-        self.checkoutType = checkoutType
+        self.paymentService = paymentService
         super.init()
         addReachabilityObserver()
     }
@@ -65,7 +62,7 @@ class MercadoPagoServices: NSObject {
 
     func getOpenPrefInitSearch(pref: PXCheckoutPreference, cardsWithEsc: [String], oneTapEnabled: Bool, splitEnabled: Bool, discountParamsConfiguration: PXDiscountParamsConfiguration?, flow: String?, charges: [PXPaymentTypeChargeRule], headers: [String: String]?, newCardId: String?, callback : @escaping (PXInitDTO) -> Void, failure: @escaping ((_ error: PXError) -> Void)) {
         let bodyFeatures = PXInitFeatures(oneTap: oneTapEnabled, split: splitEnabled)
-        let body = PXInitBody(preference: pref, publicKey: publicKey, flow: flow, cardsWithESC: cardsWithEsc, charges: charges, discountConfiguration: discountParamsConfiguration, features: bodyFeatures, newCardId: newCardId, checkoutType: checkoutType)
+        let body = PXInitBody(preference: pref, publicKey: publicKey, flow: flow, cardsWithESC: cardsWithEsc, charges: charges, discountConfiguration: discountParamsConfiguration, features: bodyFeatures, newCardId: newCardId)
 
         let bodyJSON = try? body.toJSON()
 
@@ -79,7 +76,7 @@ class MercadoPagoServices: NSObject {
 
     func getClosedPrefInitSearch(preferenceId: String, cardsWithEsc: [String], oneTapEnabled: Bool, splitEnabled: Bool, discountParamsConfiguration: PXDiscountParamsConfiguration?, flow: String?, charges: [PXPaymentTypeChargeRule], headers: [String: String]?, newCardId: String?, callback : @escaping (PXInitDTO) -> Void, failure: @escaping ((_ error: PXError) -> Void)) {
         let bodyFeatures = PXInitFeatures(oneTap: oneTapEnabled, split: splitEnabled)
-        let body = PXInitBody(preference: nil, publicKey: publicKey, flow: flow, cardsWithESC: cardsWithEsc, charges: charges, discountConfiguration: discountParamsConfiguration, features: bodyFeatures, newCardId: newCardId, checkoutType: checkoutType)
+        let body = PXInitBody(preference: nil, publicKey: publicKey, flow: flow, cardsWithESC: cardsWithEsc, charges: charges, discountConfiguration: discountParamsConfiguration, features: bodyFeatures, newCardId: newCardId)
 
         let bodyJSON = try? body.toJSON()
 

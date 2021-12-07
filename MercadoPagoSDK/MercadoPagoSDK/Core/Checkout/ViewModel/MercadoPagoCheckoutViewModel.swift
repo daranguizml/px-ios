@@ -17,9 +17,8 @@ class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
     private var advancedConfig: PXAdvancedConfiguration = PXAdvancedConfiguration()
     var trackingConfig: PXTrackingConfiguration?
 
-    var publicKey: String
-    var privateKey: String?
-    var checkoutType: String?
+    internal var publicKey: String
+    internal var privateKey: String?
 
     var lifecycleProtocol: PXLifeCycleProtocol?
 
@@ -98,17 +97,16 @@ class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
 
     lazy var pxNavigationHandler: PXNavigationHandler = PXNavigationHandler.getDefault()
 
-    init(checkoutPreference: PXCheckoutPreference, publicKey: String, privateKey: String?, advancedConfig: PXAdvancedConfiguration? = nil, trackingConfig: PXTrackingConfiguration? = nil, checkoutType: String?) {
+    init(checkoutPreference: PXCheckoutPreference, publicKey: String, privateKey: String?, advancedConfig: PXAdvancedConfiguration? = nil, trackingConfig: PXTrackingConfiguration? = nil) {
         self.publicKey = publicKey
         self.privateKey = privateKey
-        self.checkoutType = checkoutType
         self.checkoutPreference = checkoutPreference
 
         if let advancedConfig = advancedConfig {
             self.advancedConfig = advancedConfig
         }
         self.trackingConfig = trackingConfig
-        mercadoPagoServices = MercadoPagoServices(publicKey: publicKey, privateKey: privateKey, checkoutType: checkoutType)
+        mercadoPagoServices = MercadoPagoServices(publicKey: publicKey, privateKey: privateKey)
         super.init()
         if String.isNullOrEmpty(checkoutPreference.id), checkoutPreference.payer != nil {
             paymentData.updatePaymentDataWith(payer: checkoutPreference.getPayer())
@@ -121,7 +119,7 @@ class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
     }
 
     public func copy(with zone: NSZone? = nil) -> Any {
-        let copyObj = MercadoPagoCheckoutViewModel(checkoutPreference: self.checkoutPreference, publicKey: publicKey, privateKey: privateKey, checkoutType: checkoutType)
+        let copyObj = MercadoPagoCheckoutViewModel(checkoutPreference: self.checkoutPreference, publicKey: publicKey, privateKey: privateKey)
         copyObj.setNavigationHandler(handler: pxNavigationHandler)
         return copyObj
     }

@@ -37,7 +37,7 @@ public class PXPaymentTypeChargeRuleBuilder {
     }
     
     public func build() -> PXPaymentTypeChargeRule {
-        let chargeRule = PXPaymentTypeChargeRule(paymentTypeId: paymentTypeId, amountCharge: amount, detailModal: detailModal)
+        var chargeRule = PXPaymentTypeChargeRule(paymentTypeId: paymentTypeId, amountCharge: amount, detailModal: detailModal)
         
         chargeRule.label = label
         chargeRule.taxable = taxable

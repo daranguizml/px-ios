@@ -11,11 +11,10 @@ open class MercadoPagoCheckout: NSObject {
         case lazy
     }
 
-    var initMode: InitMode = .normal
-    var initProtocol: PXLazyInitProtocol?
-    static var currentCheckout: MercadoPagoCheckout?
-    var paymentConfiguration: PXPaymentConfiguration?
-    var viewModel: MercadoPagoCheckoutViewModel
+    internal var initMode: InitMode = .normal
+    internal var initProtocol: PXLazyInitProtocol?
+    internal static var currentCheckout: MercadoPagoCheckout?
+    internal var viewModel: MercadoPagoCheckoutViewModel
     // This struct will hold the value of the new card added by MLCardForm
     // until the init flow is refreshed with this new payment method
     struct InitFlowRefresh {
@@ -37,6 +36,7 @@ open class MercadoPagoCheckout: NSObject {
      */
     public init(builder: MercadoPagoCheckoutBuilder) {
         var choPref: PXCheckoutPreference
+
         if let preferenceId = builder.preferenceId {
             choPref = PXCheckoutPreference(preferenceId: preferenceId)
         } else if let preference = builder.checkoutPreference {
@@ -44,8 +44,8 @@ open class MercadoPagoCheckout: NSObject {
         } else {
             fatalError("CheckoutPreference or preferenceId must be mandatory.")
         }
-        let checkoutType = builder.paymentConfig?.getProcessorType()
-        viewModel = MercadoPagoCheckoutViewModel(checkoutPreference: choPref, publicKey: builder.publicKey, privateKey: builder.privateKey, advancedConfig: builder.advancedConfig, trackingConfig: builder.trackingConfig, checkoutType: checkoutType)
+
+        viewModel = MercadoPagoCheckoutViewModel(checkoutPreference: choPref, publicKey: builder.publicKey, privateKey: builder.privateKey, advancedConfig: builder.advancedConfig, trackingConfig: builder.trackingConfig)
 
         // Set Theme.
         if let customTheme = builder.advancedConfig?.theme {
@@ -53,6 +53,7 @@ open class MercadoPagoCheckout: NSObject {
         } else if let defaultColor = builder.defaultUIColor {
             ThemeManager.shared.setDefaultColor(color: defaultColor)
         }
+
         if let paymentConfiguration = builder.paymentConfig {
             let (chargeRules, paymentPlugin) = paymentConfiguration.getPaymentConfiguration()
 
@@ -62,6 +63,7 @@ open class MercadoPagoCheckout: NSObject {
             // Payment plugin (paymentProcessor).
             viewModel.paymentPlugin = paymentPlugin
         }
+
         viewModel.updateInitFlow()
     }
 }

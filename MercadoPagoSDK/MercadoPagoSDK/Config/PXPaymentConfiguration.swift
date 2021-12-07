@@ -10,7 +10,6 @@ open class PXPaymentConfiguration: NSObject {
     private let splitPaymentProcessor: PXSplitPaymentProcessor
     private var chargeRules: [PXPaymentTypeChargeRule] = [PXPaymentTypeChargeRule]()
     private var paymentMethodPlugins: [PXPaymentMethodPlugin] = [PXPaymentMethodPlugin]()
-    private var choiceProcessorType: PXCheckoutType = .DEFAULT_REGULAR
 
     // MARK: Init.
     /**
@@ -23,12 +22,6 @@ open class PXPaymentConfiguration: NSObject {
 
     public init(splitPaymentProcessor: PXSplitPaymentProcessor) {
         self.splitPaymentProcessor = splitPaymentProcessor
-        self.choiceProcessorType = .CUSTOM_REGULAR
-    }
-
-    public init(scheduledPaymentProcessor: PXPaymentProcessor) {
-        self.splitPaymentProcessor = PXScheduledPaymentProcessorAdapter(paymentProcessor: scheduledPaymentProcessor)
-        self.choiceProcessorType = .CUSTOM_SCHEDULED
     }
 }
 
@@ -69,6 +62,7 @@ extension PXPaymentConfiguration {
         return (chargeRules, splitPaymentProcessor)
     }
 }
+<<<<<<< HEAD
 
 extension PXPaymentConfiguration {
     func getProcessorType() -> String {
@@ -82,3 +76,5 @@ extension PXPaymentConfiguration {
         }
     }
 }
+=======
+>>>>>>> parent of dcd988c7c (Feature/pxn 2629 (#2588))

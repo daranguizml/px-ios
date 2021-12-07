@@ -1,6 +1,6 @@
 import Foundation
 
-public class PXPaymentProcessorAdapter: NSObject, PXSplitPaymentProcessor {
+internal class PXPaymentProcessorAdapter: NSObject, PXSplitPaymentProcessor {
 
     let paymentProcessor: PXPaymentProcessor
 
@@ -8,15 +8,15 @@ public class PXPaymentProcessorAdapter: NSObject, PXSplitPaymentProcessor {
         self.paymentProcessor = paymentProcessor
     }
 
-    public func paymentProcessorViewController() -> UIViewController? {
+    func paymentProcessorViewController() -> UIViewController? {
         return paymentProcessor.paymentProcessorViewController()
     }
 
-    public func support() -> Bool {
+    func support() -> Bool {
         return paymentProcessor.support()
     }
 
-    public func supportSplitPaymentMethodPayment(checkoutStore: PXCheckoutStore) -> Bool {
+    func supportSplitPaymentMethodPayment(checkoutStore: PXCheckoutStore) -> Bool {
         return false
     }
 

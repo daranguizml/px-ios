@@ -10,9 +10,8 @@ struct PXInitBody: Codable {
     let charges: [PXPaymentTypeChargeRule]
     let discountConfiguration: PXDiscountParamsConfiguration?
     let features: PXInitFeatures
-    let checkoutType: String?
 
-    init(preference: PXCheckoutPreference?, publicKey: String, flow: String?, cardsWithESC: [String], charges: [PXPaymentTypeChargeRule], discountConfiguration: PXDiscountParamsConfiguration?, features: PXInitFeatures, newCardId: String?, checkoutType: String?) {
+    init(preference: PXCheckoutPreference?, publicKey: String, flow: String?, cardsWithESC: [String], charges: [PXPaymentTypeChargeRule], discountConfiguration: PXDiscountParamsConfiguration?, features: PXInitFeatures, newCardId: String?) {
         self.preference = preference
         self.publicKey = publicKey
         self.flow = flow
@@ -21,7 +20,6 @@ struct PXInitBody: Codable {
         self.discountConfiguration = discountConfiguration
         self.features = features
         self.newCardId = newCardId
-        self.checkoutType = checkoutType
     }
 
     enum CodingKeys: String, CodingKey {
@@ -33,7 +31,6 @@ struct PXInitBody: Codable {
         case discountConfiguration = "discount_configuration"
         case features
         case newCardId = "new_card_id"
-        case checkoutType = "checkout_type"
     }
 
     public func toJSON() throws -> Data {
