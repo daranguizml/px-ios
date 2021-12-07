@@ -8,11 +8,11 @@
 
 import UIKit
 
-protocol PXVipCongratsApiWorkerInput: class {
+protocol PXVipCongratsApiWorkerInput: AnyObject {
     var interactor: PXVipCongratsApiWorkerOutput? {get set}
 }
 
-protocol PXVipCongratsApiWorkerOutput: class {
+protocol PXVipCongratsApiWorkerOutput: AnyObject {
     
 }
 

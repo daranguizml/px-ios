@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol PXVipCongratsInteractorInput: class {
+protocol PXVipCongratsInteractorInput: AnyObject {
     var presenter: PXVipCongratsPresenterInput? {get set}
     var apiWorker: PXVipCongratsApiWorkerInput? {get set}
 }

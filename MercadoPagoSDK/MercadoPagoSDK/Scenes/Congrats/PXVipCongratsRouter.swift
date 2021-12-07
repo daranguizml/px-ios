@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol PXVipCongratsRouterInput: class {
+protocol PXVipCongratsRouterInput: AnyObject {
     var viewController: PXVipCongratsViewController? {get set}
 }
 

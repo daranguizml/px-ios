@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol PXVipCongratsPresenterInput: class {
+protocol PXVipCongratsPresenterInput: AnyObject {
     var viewController: PXVipCongratsViewControllerOutput? {get set}
     var valor: Bindable<String>? {get set}
     
