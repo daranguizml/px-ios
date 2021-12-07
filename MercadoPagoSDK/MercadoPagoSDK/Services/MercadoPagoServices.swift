@@ -29,14 +29,14 @@ class MercadoPagoServices: NSObject {
         customService: CustomService = CustomServiceImpl(),
         remedyService: RemedyService = RemedyServiceImpl(),
         gatewayService: TokenService = TokenServiceImpl(),
-        paymentService: PaymentService = PaymentServiceImpl()
+        checkoutService: CheckoutService = CheckoutServiceImpl()
     ) {
         self.publicKey = publicKey
         self.privateKey = privateKey
         self.customService = customService
         self.remedyService = remedyService
         self.gatewayService = gatewayService
-        self.paymentService = paymentService
+        self.checkoutService = checkoutService
         super.init()
         addReachabilityObserver()
     }

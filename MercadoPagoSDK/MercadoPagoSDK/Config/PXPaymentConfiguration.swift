@@ -62,19 +62,3 @@ extension PXPaymentConfiguration {
         return (chargeRules, splitPaymentProcessor)
     }
 }
-<<<<<<< HEAD
-
-extension PXPaymentConfiguration {
-    func getProcessorType() -> String {
-        switch choiceProcessorType {
-        case .CUSTOM_SCHEDULED:
-            return PXCheckoutType.CUSTOM_SCHEDULED.rawValue
-        case .CUSTOM_REGULAR:
-            return PXCheckoutType.CUSTOM_REGULAR.rawValue
-        case .DEFAULT_REGULAR:
-            return PXCheckoutType.DEFAULT_REGULAR.rawValue
-        }
-    }
-}
-=======
->>>>>>> parent of dcd988c7c (Feature/pxn 2629 (#2588))
