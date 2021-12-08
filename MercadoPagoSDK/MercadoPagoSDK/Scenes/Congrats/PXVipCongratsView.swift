@@ -117,26 +117,9 @@ class PXVipCongratsView: UIView {
         return parentView?.View {
             
             _ = $0?.VStack {
-                
-                _ = $0?.View {
-                   
-                    let image = $0?.Image("testeImage")
-                        .leadingConstraint(constant: 16)
-                        .topConstraint(constant: 16)
-                        .dimensionConstraints(width: 32, height: 42)
-                    
-                    _ = $0?.Label("teste")
-                        .leadingConstraint(relatedView: image, relatedTo: .trailing, constant: 16)
-                        .topConstraint(constant: 16)
-                        .fontType(fontName: "Verdana", size: 18.0)
-                        .fontColor(.white)
-                    
-                }.backgroundColor(.lightGray)
-                 .dimensionConstraints(height: 192)
-                
-                _ = $0?.View()
-                    .backgroundColor(.lightBlue())
-                    .dimensionConstraints(height: 64)
+                for i in 1...50 {
+                    _ = self.viewFragment(parent: $0, text: "\texto \(i)")
+                }
                 
                 _ = $0?.View()
                     .backgroundColor(.white)
@@ -148,7 +131,6 @@ class PXVipCongratsView: UIView {
              .backgroundColor(.blue)
                 
         }.backgroundColor(.white)
-         .dimensionConstraints(height: 1024)
     }
     
     private func bottomArea(_ parentView: UIView?) -> UIView? {
@@ -174,5 +156,23 @@ class PXVipCongratsView: UIView {
                 .bottomConstraint(relatedView:secondButton, relatedTo: .top, constant: 8)
         }
             .dimensionConstraints(height: 128)
+    }
+    
+    func viewFragment(parent: UIView?, text: String?) -> UIView? {
+        
+        return parent?.View {
+            let image = $0?.Image("testeImage")
+                .leadingConstraint(constant: 16)
+                .topConstraint(constant: 16)
+                .dimensionConstraints(width: 64, height: 64)
+            
+            _ = $0?.Label(text)
+                .leadingConstraint(relatedView: image, relatedTo: .trailing, constant: 16)
+                .trailingConstraint(constant: 16)
+                .topConstraint(constant: 16)
+                .dimensionConstraints(height: 64)
+        }
+        .dimensionConstraints(height: 96)
+        .backgroundColor(.white)
     }
 }
