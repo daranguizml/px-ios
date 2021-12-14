@@ -27,6 +27,7 @@ platform :ios do
       clean_install: true,
       podfile: "./Podfile"
     )
+    match(app_identifier: "com.mercadolibre.*", type: "development", readonly: true)
     gym
     sh "bash ../scripts/saucelabs.sh"
   end
