@@ -15,7 +15,7 @@ scheme("ExampleSwift")
 export_options({
    method: "package",
    provisioningProfiles: {
-     "JS.ExampleSwift" => "JS.ExampleSwift",
+     "JS.ExampleSwift" => "match Development com.mercadolibre.*",
         }
 })
 output_directory("./build")
