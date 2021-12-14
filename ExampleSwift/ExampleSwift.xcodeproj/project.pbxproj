@@ -462,7 +462,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/ExampleSwift/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MP_ENVIRONMENT = beta;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mercadolibre.-";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mercadolibre.PxExampleSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.mercadolibre.*";
 				SWIFT_VERSION = 4.0;
@@ -481,7 +481,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/ExampleSwift/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MP_ENVIRONMENT = prod;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mercadolibre.-";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mercadolibre.PxExampleSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.mercadolibre.*";
 				SWIFT_VERSION = 4.0;
