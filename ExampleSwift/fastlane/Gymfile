@@ -13,7 +13,7 @@
 scheme("ExampleSwift")
 
 export_options({
-   method: "package",
+   method: "development",
    provisioningProfiles: {
      "com.mercadolibre.*" => "match Development com.mercadolibre.*",
         }
