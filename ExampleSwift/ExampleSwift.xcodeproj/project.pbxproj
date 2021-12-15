@@ -244,9 +244,28 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ExampleSwift/Pods-ExampleSwift-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/MLBusinessComponents/MLBusinessComponentsResources.bundle",
+				"${PODS_ROOT}/MLCardDrawer/Source/Assets/Fonts.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/MLCardDrawer/MLCardDrawerResources.bundle",
+				"${BUILT_PRODUCTS_DIR}/MLCardForm/MLCardForm.framework/MLCardFormViewController.nib",
+				"${PODS_CONFIGURATION_BUILD_DIR}/MLCardForm/MLCardFormResources.bundle",
+				"${BUILT_PRODUCTS_DIR}/MercadoPagoSDKV4/MercadoPagoSDKV4.framework/ErrorViewController.nib",
+				"${BUILT_PRODUCTS_DIR}/MercadoPagoSDKV4/MercadoPagoSDKV4.framework/PXCardSliderPagerCell.nib",
+				"${BUILT_PRODUCTS_DIR}/MercadoPagoSDKV4/MercadoPagoSDKV4.framework/PXOneTapSummaryRowView.nib",
+				"${PODS_CONFIGURATION_BUILD_DIR}/MercadoPagoSDKV4/MercadoPagoSDKResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MLBusinessComponentsResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fonts.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MLCardDrawerResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MLCardFormViewController.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MLCardFormResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ErrorViewController.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PXCardSliderPagerCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PXOneTapSummaryRowView.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MercadoPagoSDKResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -462,7 +481,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/ExampleSwift/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MP_ENVIRONMENT = beta;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mercadolibre.*";
+				PRODUCT_BUNDLE_IDENTIFIER = JS.ExampleSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.mercadolibre.*";
 				SWIFT_VERSION = 4.0;
@@ -481,7 +500,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/ExampleSwift/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MP_ENVIRONMENT = prod;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mercadolibre.*";
+				PRODUCT_BUNDLE_IDENTIFIER = JS.ExampleSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.mercadolibre.*";
 				SWIFT_VERSION = 4.0;
