@@ -13,7 +13,9 @@
 scheme("ExampleSwift")
 
 export_options({
-   method: "development",
+   export_method: "package",
+   configuration: "Debug",
+   scheme: "ExampleSwift",
    provisioningProfiles: {
      "com.mercadolibre.*" => "match Development com.mercadolibre.*",
         }
