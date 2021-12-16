@@ -12,14 +12,15 @@
 
 scheme("ExampleSwift")
 
+export_method("development")
+configuration("Debug")
+scheme("ExampleSwift")
+
 export_options({
-#    export_method: "app-store",
-   configuration: "Debug",
-   scheme: "ExampleSwift",
-   provisioningProfiles: {
+    compileBitcode: false,
+    include_symbols: false,
+    provisioningProfiles: {
      "com.mercadolibre.*" => "match Development com.mercadolibre.*",
         }
 })
 output_directory("./build")
-include_bitcode(false)
-include_symbols(false)
