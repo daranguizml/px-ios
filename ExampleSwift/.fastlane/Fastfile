@@ -23,12 +23,12 @@ platform :ios do
 
   desc "Create ipa"
   lane :build do
-    cocoapods(
-      clean_install: true,
-      podfile: "./Podfile"
-    )
-    match(app_identifier: "com.mercadolibre.*", type: "development", readonly: true)
-    gym
+    # cocoapods(
+    #   clean_install: true,
+    #   podfile: "./Podfile"
+    # )
+    # match(app_identifier: "com.mercadolibre.*", type: "development", readonly: true)
+    # gym
     sh "bash ../scripts/saucelabs.sh"
   end
 end
