@@ -21,7 +21,8 @@ class ViewController: UIViewController {
     private var privateKey: String = ""
 
     // Preference ID
-    private var preferenceId: String = "656525290-a9fa0bcb-da76-4d3f-bfc0-b19b161a8f7b"
+
+    private var preferenceId: String = "656525290-26594781-0d5d-4baf-a3ad-d200e705ed37"
 
     @IBAction func initDefault(_ sender: Any) {
 //         runMercadoPagoCheckout()
@@ -49,6 +50,20 @@ class ViewController: UIViewController {
     private func runMercadoPagoCheckout() {
         // 1) Create Builder with your publicKey and preferenceId.
         let builder = MercadoPagoCheckoutBuilder(publicKey: publicKey, preferenceId: preferenceId).setLanguage("es")
+
+        // Set the payer private key
+        builder.setPrivateKey(key: privateKey)
+
+        // Instantiate a configuration object
+        let configuration = PXAdvancedConfiguration()
+
+        // Add custom PXDynamicViewController component
+        configuration.dynamicViewControllersConfiguration = [CustomPXDynamicComponent()]
+
+        configuration.setProductId(id: "bh31umv10flg01nmhg60")
+
+        // Configure the builder object
+        builder.setAdvancedConfiguration(config: configuration)
 
         // 2) Create Checkout reference
         checkout = MercadoPagoCheckout(builder: builder)
@@ -125,12 +140,12 @@ class ViewController: UIViewController {
 //        let paymentConfiguration = generateScheduledConfiguration()
 //
         // Split configuration
-        let paymentConfiguration = generateSplitConfiguration()
+        let paymentConfiguration = generateCustomConfiguration()
 
         // CHARGE RULES SECTION
 
-//        // Add charge rules
-//        paymentConfiguration.addChargeRules(charges: pxPaymentTypeChargeRules)
+        // Add charge rules
+        paymentConfiguration.addChargeRules(charges: pxPaymentTypeChargeRules)
 
         // PREFERENCE/BUILDER SECTION
 
@@ -139,7 +154,7 @@ class ViewController: UIViewController {
 
 //        let checkoutPreference = PXCheckoutPreference.init(preferenceId: preferenceId)
 
-        let checkoutPreference = PXCheckoutPreference(siteId: "MLA", payerEmail: "1234@gmail.com", items: [PXItem(title: "Taza de té", quantity: 1, unitPrice: 15.0)])
+        let checkoutPreference = PXCheckoutPreference(siteId: "MLA", payerEmail: "1234@gmail.com", items: [PXItem(title: "Xícara do cha", quantity: 1, unitPrice: 3.0)])
 
         // Add excluded methods
 //        checkoutPreference.addExcludedPaymentType(PXPaymentTypes.TICKET.rawValue)
@@ -148,7 +163,7 @@ class ViewController: UIViewController {
 
         let builder = MercadoPagoCheckoutBuilder.init(publicKey: publicKey, checkoutPreference: checkoutPreference, paymentConfiguration: paymentConfiguration)
 
-//        let builder = MercadoPagoCheckoutBuilder(publicKey: publicKey, preferenceId: "656525290-8a2b6b01-da06-417f-8f5c-9441a0e7891d")
+//        let builder = MercadoPagoCheckoutBuilder(publicKey: publicKey, preferenceId: "656525290-8a2b6b01-da06-417f-8f5c-9441a0e7891d", paymentConfiguration: paymentConfiguration)
 
         // Instantiate a configuration object
         let configuration = PXAdvancedConfiguration()
