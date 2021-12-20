@@ -342,7 +342,6 @@ final class PXRemedyView: UIView {
                 }
             }
         } else {
-            // Caso account money
             let string = Utils.getAmountFormated(amount: amountHelper.amountToPay, forCurrency: currency)
             let attributed = NSAttributedString(string: string, attributes: PXNewCustomView.titleAttributes)
             firstString.append(attributed)
