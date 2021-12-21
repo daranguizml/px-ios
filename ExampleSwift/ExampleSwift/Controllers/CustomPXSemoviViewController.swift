@@ -199,41 +199,6 @@ class CustomPXSemoviViewController: UIViewController {
     }
 }
 
-class CustomProcessor: NSObject, PXPaymentProcessor {
-    func startPayment(checkoutStore: PXCheckoutStore, errorHandler: PXPaymentProcessorErrorHandler, successWithBusinessResult: @escaping ((PXBusinessResult) -> Void), successWithPaymentResult: @escaping ((PXGenericPayment) -> Void)) {
-        print("Start payment")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: { [self] in
-            successWithPaymentResult(approvedGenericPayment() as! PXGenericPayment)
-        })
-    }
-    
-    
-
-    func paymentProcessorViewController() -> UIViewController? {
-        return nil
-    }
-
-    func support() -> Bool {
-        return true
-    }
-
-    func approvedGenericPayment () -> PXBasePayment {
-        return PXGenericPayment(paymentStatus: .APPROVED, statusDetail: "Pago aprobado desde procesadora custom!")
-    }
-
-    func rejectedCCAmountRateLimit () -> PXBasePayment {
-        return PXGenericPayment(paymentStatus: .REJECTED, statusDetail: "cc_amount_rate_limit_exceeded")
-    }
-
-//    func startPayment(checkoutStore: PXCheckoutStore, errorHandler: PXPaymentProcessorErrorHandler, successWithBasePayment: @escaping ((PXBasePayment) -> Void)) {
-//        print("Start payment")
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: { [self] in
-//            successWithBasePayment(approvedGenericPayment())
-//        })
-//    }
-}
-
 // MARK: Optional Lifecycle protocol implementation example.
 extension CustomPXSemoviViewController: PXLifeCycleProtocol {
     func finishCheckout() -> ((PXResult?) -> Void)? {
@@ -267,5 +232,29 @@ extension CustomPXSemoviViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.text = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+}
+
+class CustomProcessor: NSObject, PXPaymentProcessor {
+    func startPayment(checkoutStore: PXCheckoutStore, errorHandler: PXPaymentProcessorErrorHandler, successWithBusinessResult: @escaping ((PXBusinessResult) -> Void), successWithPaymentResult: @escaping ((PXGenericPayment) -> Void)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: { [self] in
+            successWithPaymentResult(approvedGenericPayment() as! PXGenericPayment)
+        })
+    }
+
+    func paymentProcessorViewController() -> UIViewController? {
+        return nil
+    }
+
+    func support() -> Bool {
+        return true
+    }
+
+    func approvedGenericPayment () -> PXBasePayment {
+        return PXGenericPayment(paymentStatus: .APPROVED, statusDetail: "Pago aprobado desde procesadora custom!")
+    }
+
+    func rejectedCCAmountRateLimit () -> PXBasePayment {
+        return PXGenericPayment(paymentStatus: .REJECTED, statusDetail: "cc_amount_rate_limit_exceeded")
     }
 }

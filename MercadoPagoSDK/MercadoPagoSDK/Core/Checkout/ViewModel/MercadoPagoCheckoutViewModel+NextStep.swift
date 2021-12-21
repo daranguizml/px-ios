@@ -171,6 +171,14 @@ extension MercadoPagoCheckoutViewModel {
         return false
     }
 
+    func shouldNavigateToPostPaymentFlow() -> Bool {
+        if self.postPaymentNotificationName != nil && (self.businessResult != nil || self.payment != nil || self.paymentResult != nil) {
+            return true
+        }
+
+        return false
+    }
+
     func shouldShowCongrats() -> Bool {
         if self.businessResult != nil {
             return true

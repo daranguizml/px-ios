@@ -11,6 +11,7 @@ enum CheckoutStep: String {
     case SCREEN_ERROR
     case SCREEN_PAYMENT_METHOD_PLUGIN_CONFIG
     case FLOW_ONE_TAP
+    case POST_PAYMENT_FLOW
 }
 
 class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
@@ -96,6 +97,8 @@ class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
     // OneTap Flow
     var onetapFlow: OneTapFlow?
 
+    var postPaymentNotificationName: NSNotification.Name?
+
     lazy var pxNavigationHandler: PXNavigationHandler = PXNavigationHandler.getDefault()
 
     init(checkoutPreference: PXCheckoutPreference, publicKey: String, privateKey: String?, advancedConfig: PXAdvancedConfiguration? = nil, trackingConfig: PXTrackingConfiguration? = nil, checkoutType: String?) {
@@ -128,6 +131,10 @@ class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
 
     func setNavigationHandler(handler: PXNavigationHandler) {
         pxNavigationHandler = handler
+    }
+
+    func setPostPaymentNotification(postPaymentNotificationName: Notification.Name) {
+        self.postPaymentNotificationName = postPaymentNotificationName
     }
 
     func hasError() -> Bool {
@@ -365,6 +372,9 @@ class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
         }
         if needGetRemedy() {
             return .SERVICE_GET_REMEDY
+        }
+        if shouldNavigateToPostPaymentFlow() {
+            return .POST_PAYMENT_FLOW
         }
         if shouldShowCongrats() {
             return .SCREEN_PAYMENT_RESULT

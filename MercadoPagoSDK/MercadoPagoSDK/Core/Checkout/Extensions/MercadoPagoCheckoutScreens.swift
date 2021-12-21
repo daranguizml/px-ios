@@ -32,6 +32,10 @@ extension MercadoPagoCheckout {
         })
     }
 
+    func navigateToPostPaymentFlow() {
+        MercadoPagoCheckout.NotificationCenter.PublishTo.postPaymentAction(withName: viewModel.postPaymentNotificationName ?? .init(""), result: nil)
+    }
+
     func showPaymentResultScreen() {
         if viewModel.businessResult != nil {
             showBusinessResultScreen()

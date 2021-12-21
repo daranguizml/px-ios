@@ -47,6 +47,10 @@ open class MercadoPagoCheckout: NSObject {
         let checkoutType = builder.paymentConfig?.getProcessorType()
         viewModel = MercadoPagoCheckoutViewModel(checkoutPreference: choPref, publicKey: builder.publicKey, privateKey: builder.privateKey, advancedConfig: builder.advancedConfig, trackingConfig: builder.trackingConfig, checkoutType: checkoutType)
 
+        if let notificationName = builder.postPaymentConfig?.postPaymentNotificationName {
+            viewModel.setPostPaymentNotification(postPaymentNotificationName: notificationName)
+        }
+
         // Set Theme.
         if let customTheme = builder.advancedConfig?.theme {
             ThemeManager.shared.setTheme(theme: customTheme)
@@ -144,6 +148,8 @@ extension MercadoPagoCheckout {
                 self.createPayment()
             case .SERVICE_GET_REMEDY:
                 self.getRemedy()
+            case .POST_PAYMENT_FLOW:
+                self.navigateToPostPaymentFlow()
             case .SCREEN_PAYMENT_RESULT:
                 self.showPaymentResultScreen()
             case .ACTION_FINISH:
@@ -264,7 +270,7 @@ public extension MercadoPagoCheckout.NotificationCenter.SubscribeTo {
     }
 }
 internal extension MercadoPagoCheckout.NotificationCenter.PublishTo {
-    static func postPaymentAction(withName aName: NSNotification.Name, result: Any?) {
+    static func postPaymentAction(withName aName: Notification.Name, result: Any?) {
         NotificationCenter.default.post(name: aName, object: nil, userInfo: nil)
     }
 }

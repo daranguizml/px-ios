@@ -25,7 +25,6 @@ extension OneTapFlow {
             executeNextStep()
         } else {
             PXAnimatedButton.animateButtonWith(status: status, statusDetail: statusDetail)
-            MercadoPagoCheckout.NotificationCenter.PublishTo.postPaymentAction(withName: .init("example postpayment"), result: nil)
         }
     }
 }

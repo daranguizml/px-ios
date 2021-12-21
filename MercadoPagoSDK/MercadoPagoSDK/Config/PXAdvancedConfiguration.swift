@@ -2,7 +2,7 @@ import Foundation
 
 @objcMembers
 open class PXPostPaymentConfiguration: NSObject {
-    open var postPaymentNotificationName: NSNotification.Name?
+    open var postPaymentNotificationName: Notification.Name?
 }
 
 /**
