@@ -243,7 +243,7 @@ extension CustomPXSemoviViewController: UITextFieldDelegate {
 class CustomProcessor: NSObject, PXPaymentProcessor {
     func startPayment(checkoutStore: PXCheckoutStore, errorHandler: PXPaymentProcessorErrorHandler, successWithBusinessResult: @escaping ((PXBusinessResult) -> Void), successWithPaymentResult: @escaping ((PXGenericPayment) -> Void)) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: { [self] in
-            successWithPaymentResult(approvedGenericPayment() as! PXGenericPayment)
+            successWithPaymentResult(rejectedCCAmountRateLimit() as! PXGenericPayment)
         })
     }
 
