@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed bug with wrong suggested value for account money remedie
 
-
 ## v4.52.0 
 🚀 Private Release - 4.52.0 date: 16/12/2021 🚀
 
