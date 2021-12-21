@@ -191,7 +191,7 @@ class CustomPXSemoviViewController: UIViewController {
     func suscribeToPostPaymentNotification(postPaymentConfig: PXPostPaymentConfiguration) {
         MercadoPagoCheckout.NotificationCenter.SubscribeTo.postPaymentAction(
             forName: postPaymentConfig.postPaymentNotificationName ?? .init("")
-        ) { _ in
+        ) { resultBlock in
             print("Got the notification")
             let vc = UIViewController()
             vc.view.frame = self.view.frame
@@ -199,7 +199,13 @@ class CustomPXSemoviViewController: UIViewController {
             let label = UILabel(frame: CGRect(x: 20, y: 20, width: 200, height: 30))
             label.text = "Got the notification"
             vc.view.addSubview(label)
-            self.present(vc, animated: true, completion: nil)
+            self.present(vc, animated: true, completion: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    self.presentedViewController?.dismiss(animated: true, completion: {
+                        resultBlock(nil)
+                    })
+                }
+            })
         }
     }
 }
@@ -243,7 +249,8 @@ extension CustomPXSemoviViewController: UITextFieldDelegate {
 class CustomProcessor: NSObject, PXPaymentProcessor {
     func startPayment(checkoutStore: PXCheckoutStore, errorHandler: PXPaymentProcessorErrorHandler, successWithBusinessResult: @escaping ((PXBusinessResult) -> Void), successWithPaymentResult: @escaping ((PXGenericPayment) -> Void)) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: { [self] in
-            successWithPaymentResult(rejectedCCAmountRateLimit() as! PXGenericPayment)
+            successWithPaymentResult(approvedGenericPayment() as! PXGenericPayment)
+//            successWithPaymentResult(rejectedCCAmountRateLimit() as! PXGenericPayment)
         })
     }
 

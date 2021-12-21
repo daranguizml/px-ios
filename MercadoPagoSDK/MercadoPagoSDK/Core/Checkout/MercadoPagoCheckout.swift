@@ -256,6 +256,11 @@ extension MercadoPagoCheckout {
 }
 
 extension MercadoPagoCheckout {
+    public enum PostPayment {
+        public typealias ResultBlock = (PXBasePayment?) -> Void
+        public typealias CompletionBlock = (@escaping ResultBlock) -> Void
+    }
+
     public enum NotificationCenter {
         static let `default` = Foundation.NotificationCenter()
 
@@ -265,13 +270,21 @@ extension MercadoPagoCheckout {
     }
 }
 public extension MercadoPagoCheckout.NotificationCenter.SubscribeTo {
-    static func postPaymentAction(forName name: NSNotification.Name, using block: @escaping (_ result: Any) -> Void) -> NSObjectProtocol {
-        NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main, using: block)
+    static func postPaymentAction(
+        forName name: NSNotification.Name,
+        using block: @escaping MercadoPagoCheckout.PostPayment.CompletionBlock) -> NSObjectProtocol {
+        NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) {
+            let resultBlock = $0.object as! MercadoPagoCheckout.PostPayment.ResultBlock
+            block(resultBlock)
+        }
     }
 }
 internal extension MercadoPagoCheckout.NotificationCenter.PublishTo {
-    static func postPaymentAction(withName aName: Notification.Name, result: Any?) {
-        NotificationCenter.default.post(name: aName, object: nil, userInfo: nil)
+    static func postPaymentAction(
+        withName aName: Notification.Name,
+        result: @escaping MercadoPagoCheckout.PostPayment.ResultBlock
+    ) {
+        NotificationCenter.default.post(name: aName, object: result, userInfo: nil)
     }
 }
 public extension MercadoPagoCheckout.NotificationCenter.UnsubscribeTo {

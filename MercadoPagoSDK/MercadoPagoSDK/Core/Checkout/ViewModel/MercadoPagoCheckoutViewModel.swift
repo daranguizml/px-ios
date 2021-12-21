@@ -97,7 +97,7 @@ class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
     // OneTap Flow
     var onetapFlow: OneTapFlow?
 
-    var postPaymentNotificationName: NSNotification.Name?
+    var postPaymentNotificationName: Notification.Name?
 
     lazy var pxNavigationHandler: PXNavigationHandler = PXNavigationHandler.getDefault()
 
