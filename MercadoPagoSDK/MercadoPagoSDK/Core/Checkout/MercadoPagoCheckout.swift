@@ -248,3 +248,28 @@ extension MercadoPagoCheckout {
         viewModel.pxNavigationHandler.goToRootViewController()
     }
 }
+
+extension MercadoPagoCheckout {
+    public enum NotificationCenter {
+        static let `default` = Foundation.NotificationCenter()
+
+        public enum SubscribeTo {}
+        public enum UnsubscribeTo {}
+        internal enum PublishTo {}
+    }
+}
+public extension MercadoPagoCheckout.NotificationCenter.SubscribeTo {
+    static func postPaymentAction(forName name: NSNotification.Name, using block: @escaping (_ result: Any) -> Void) -> NSObjectProtocol {
+        NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main, using: block)
+    }
+}
+internal extension MercadoPagoCheckout.NotificationCenter.PublishTo {
+    static func postPaymentAction(withName aName: NSNotification.Name, result: Any?) {
+        NotificationCenter.default.post(name: aName, object: nil, userInfo: nil)
+    }
+}
+public extension MercadoPagoCheckout.NotificationCenter.UnsubscribeTo {
+    static func postPaymentAction(_ observer: Any) {
+        NotificationCenter.default.removeObserver(observer)
+    }
+}

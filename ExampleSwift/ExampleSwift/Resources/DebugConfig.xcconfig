@@ -12,7 +12,9 @@
 // Use this file as example to generate needed config files
 
 //PX Environment - [alpha | beta | prod]
-PX_ENVIRONMENT=beta
+PX_ENVIRONMENT=prod
+//PX_ENVIRONMENT=beta
+
 
 // Collector public key
 PX_COLLECTOR_PUBLIC_KEY=TEST-XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX
