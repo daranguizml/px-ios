@@ -24,7 +24,7 @@ extension OneTapFlow {
         if isShowingLoading() {
             executeNextStep()
         } else {
-            PXAnimatedButton.animateButtonWith(status: status, statusDetail: statusDetail)
+            PXAnimatedButton.animateButtonWith(status: status, statusDetail: statusDetail, explode: !model.hasPostPaymentFlow)
         }
     }
 }

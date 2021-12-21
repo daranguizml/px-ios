@@ -3,6 +3,7 @@ import Foundation
 struct PXAnimatedButtonNotificationObject {
     var status: String
     var statusDetail: String?
+    var explode: Bool/* = true*/
 }
 
 struct PXNotificationManager {

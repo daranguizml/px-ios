@@ -50,7 +50,7 @@ extension PXAnimatedButton: ProgressViewDelegate, CAAnimationDelegate {
         status = .loading
     }
 
-    func finishAnimatingButton(color: UIColor, image: UIImage?) {
+    func finishAnimatingButton(color: UIColor, image: UIImage?, explode: Bool) {
         status = .expanding
 
         progressView?.doComplete(completion: { [weak self] _ in
@@ -81,22 +81,46 @@ extension PXAnimatedButton: ProgressViewDelegate, CAAnimationDelegate {
             })
 
             transitionAnimator.addCompletion({ [weak self] _ in
-                self?.explosion(color: color, newFrame: toCircleFrame, image: image)
+                self?.explosion(color: color, newFrame: toCircleFrame, image: image, explode: explode)
             })
 
             transitionAnimator.startAnimation()
         })
     }
 
-    private func explosion(color: UIColor, newFrame: CGRect, image: UIImage?) {
-        guard let animatedView = self.animatedView else { return }
+    private func explosion(color: UIColor, newFrame: CGRect, image: UIImage?, explode: Bool) {
+            guard let animatedView = self.animatedView else { return }
 
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.progressView?.alpha = 0
-            animatedView.backgroundColor = color
-        }, completion: { _ in
+            UIView.animate(withDuration: 0.3, animations: { [weak self] in
+                self?.progressView?.alpha = 0
+                animatedView.backgroundColor = color
+            }, completion: { _ in
+                PXFeedbackGenerator.successNotificationFeedback()
+                self.iconAnimation(newFrame: newFrame, image: image) {
+                    guard explode else {
+                        self.animationDelegate?.didFinishAnimation()
+                        return
+                    }
+                    self.animationDelegate?.expandAnimationInProgress()
+                    self.expandAnimation {
+                        self.animationDelegate?.didFinishAnimation()
+                    }
+                }
+            })
+        }
+
+        private func iconAnimation(newFrame: CGRect, image: UIImage?, completion: @escaping () -> Void) {
+            guard let animatedView = self.animatedView else { return }
+
             let scaleFactor: CGFloat = 0.40
-            let iconImage = UIImageView(frame: CGRect(x: newFrame.width / 2 - (newFrame.width * scaleFactor) / 2, y: newFrame.width / 2 - (newFrame.width * scaleFactor) / 2, width: newFrame.width * scaleFactor, height: newFrame.height * scaleFactor))
+            let iconImage = UIImageView(
+                frame: CGRect(
+                    x: newFrame.width / 2 - (newFrame.width * scaleFactor) / 2,
+                    y: newFrame.width / 2 - (newFrame.width * scaleFactor) / 2,
+                    width: newFrame.width * scaleFactor,
+                    height: newFrame.height * scaleFactor
+                )
+            )
 
             iconImage.image = image
             iconImage.contentMode = .scaleAspectFit
@@ -104,27 +128,24 @@ extension PXAnimatedButton: ProgressViewDelegate, CAAnimationDelegate {
 
             animatedView.addSubview(iconImage)
 
-            PXFeedbackGenerator.successNotificationFeedback()
-
             UIView.animate(withDuration: 0.6, animations: {
                 iconImage.alpha = 1
                 iconImage.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             }, completion: { _ in
                 UIView.animate(withDuration: 0.4, animations: {
                     iconImage.alpha = 0
-                }, completion: { [weak self] _ in
-                    guard let self = self else { return }
-                    self.superview?.layer.masksToBounds = false
-                    self.animationDelegate?.expandAnimationInProgress()
-                    UIView.animate(withDuration: 0.5, animations: {
-                        animatedView.transform = CGAffineTransform(scaleX: 50, y: 50)
-                    }, completion: { [weak self] _ in
-                        self?.animationDelegate?.didFinishAnimation()
-                    })
-                })
+                }, completion: { _ in completion() })
             })
-        })
-    }
+        }
+
+        private func expandAnimation(completion: @escaping () -> Void) {
+            guard let animatedView = self.animatedView else { return }
+
+            self.superview?.layer.masksToBounds = false
+            UIView.animate(withDuration: 0.5, animations: {
+                animatedView.transform = CGAffineTransform(scaleX: 50, y: 50)
+            }, completion: { _ in completion() })
+        }
 
     func didFinishProgress() {
         progressView?.doReset()
@@ -217,7 +238,7 @@ extension PXAnimatedButton {
         if let notificationObject = sender.object as? PXAnimatedButtonNotificationObject {
             let image = ResourceManager.shared.getBadgeImageWith(status: notificationObject.status, statusDetail: notificationObject.statusDetail, clearBackground: true)
             let color = ResourceManager.shared.getResultColorWith(status: notificationObject.status, statusDetail: notificationObject.statusDetail)
-            finishAnimatingButton(color: color, image: image)
+            finishAnimatingButton(color: color, image: image, explode: notificationObject.explode)
         }
     }
 }

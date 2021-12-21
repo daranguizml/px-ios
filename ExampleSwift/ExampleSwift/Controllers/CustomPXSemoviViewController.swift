@@ -75,6 +75,11 @@ class CustomPXSemoviViewController: UIViewController {
         accessTokenTextField.text = privateKey
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.modalPresentationStyle = .fullScreen
+//        self.modalPresentationStyle = .fullScreen
+    }
+
     // MARK: - Checkout Setup
     private func runMercadoPagoCheckoutWithLifecycle() {
         guard let publicKey = publicKeyTextField.text,
