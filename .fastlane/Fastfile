@@ -3,16 +3,12 @@
 fastlane_version "2.199.0"
 
 desc 'Starts a new minor release X.^.0'
-lane: start_new_release do
-  begin 
-    new_release
-  rescue => exception
-    on_error(exception)
-  end
+lane :start_new_release do
+  new_release
 end 
 
 lane :pr_check do
-  run_tests
+  test_check
   danger(
     verbose: true, 
     github_api_token: ENV["GITHUB_API_TOKEN"]
@@ -23,10 +19,10 @@ def new_release
   changelog = read_changelog
 
   if !changelog.gsub(/\s+/, "").empty?
-    run_tests
+    # test_check
     version = bump_podspec
-    pod_push(path: "MercadoPagoSDKV4.podspec", allow_warnings: true)
     create_release_pull_request(version, changelog)
+    pod_release(version)
     github_release(changelog)
     slack_release_notification
   else 
@@ -34,7 +30,7 @@ def new_release
   end
 end
 
-def run_tests
+def test_check
   cocoapods(
     clean_install: true, 
     podfile: "./ExampleSwift/Podfile"
@@ -45,28 +41,34 @@ def run_tests
   )
 end
 
+def pod_release(version)
+  version_bump_podspec(path: "MercadoPagoSDKV4.podspec", version_number: version)
+  pod_push(path: "MercadoPagoSDKV4.podspec", allow_warnings: true)
+end
+
 def bump_podspec
+  sh('git fetch --all')
   last_version = git_tags
-    .select {|tag| /release\/[0-9]+\.[0-9]+\.[0-9]+/.match?(tag) }
+    .select {|tag| /^release\/[0-9]+\.[0-9]+\.[0-9]+$/.match?(tag) }
     .sort
     .last
+    .delete_prefix("release/")
 
   new_version = bump(last_version, ENV["RELEASE_BUMP_TYPE"])
-  version_bump_podspec(path: "MercadoPagoSDKV4.podspec", version_number: new_version)
   return new_version
 end
 
 def create_release_pull_request(new_version, changelog)
   tag_name = "release/#{new_version}"
+  UI.message("tag name: #{tag_name}")
   add_git_tag(tag: tag_name)
   stamp_changelog(
     section_identifier: new_version, 
     git_tag: tag_name, 
-    should_stamp_date: true, 
-    stamp_datetime_format: '%FT%TZ' 
+    should_stamp_date: true
   )
   git_commit(
-    path: ["./CHANGELOG.md"]
+    path: ["./CHANGELOG.md"],
     message: "Release #{new_version}"
   )
   push_to_git_remote(
@@ -76,7 +78,7 @@ def create_release_pull_request(new_version, changelog)
   create_pull_request(
     repo: "mercadopago/px-ios",
     title: "Release #{new_version}",
-    head: "release/#{new_version}"
+    head: "release/#{new_version}",
     base: "develop",
     body: changelog
   )
@@ -101,14 +103,15 @@ def bump(version, type)
     return ""
   end
 
-  if type == "major"
+  case type
+  when "major"
     splited_version[0] += 1
     splited_version[1] = 0
     splited_version[2] = 0
-  elseif type == "minor"
+  when "minor"
     splited_version[1] += 1
     splited_version[2] = 0
-  elseif type == "patch"
+  when "patch"
     splited_version[2] += 1
   else 
     return ""
@@ -133,7 +136,7 @@ def slack_release_notification
             value: "https://github.com/mercadopago/px-ios/releases/tag/release/#{pod_version}"
         }, {
           title: "Release pull request (don't forget to merge it)",
-          value: lane_context[SharedValues::CREATE_PULL_REQUEST_HTML_URL]
+          value: def_context[SharedValues::CREATE_PULL_REQUEST_HTML_URL]
         }
       ]
     }
