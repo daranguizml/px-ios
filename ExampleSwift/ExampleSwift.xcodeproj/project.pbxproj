@@ -23,6 +23,7 @@
 		A36F0F1B24DC3E7D00F3457D /* CongratsSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36F0F1A24DC3E7D00F3457D /* CongratsSelectorViewController.swift */; };
 		F507E41827678DAD000FA306 /* CustomPXSemovi.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F507E41727678DAD000FA306 /* CustomPXSemovi.storyboard */; };
 		F507E41A27678F65000FA306 /* CustomPXSemoviViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F507E41927678F65000FA306 /* CustomPXSemoviViewController.swift */; };
+		F58D1D072772DF7200D5A36E /* CustomPostPaymentProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D1D062772DF7200D5A36E /* CustomPostPaymentProcessor.swift */; };
 		F9DF596424803FFD00B1FDBF /* CustomCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9DF596324803FFD00B1FDBF /* CustomCheckoutViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,7 @@
 		DFDCC3FA5A49D0CD1D1BD714 /* Pods-ExampleSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExampleSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ExampleSwift/Pods-ExampleSwift.debug.xcconfig"; sourceTree = "<group>"; };
 		F507E41727678DAD000FA306 /* CustomPXSemovi.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CustomPXSemovi.storyboard; sourceTree = "<group>"; };
 		F507E41927678F65000FA306 /* CustomPXSemoviViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPXSemoviViewController.swift; sourceTree = "<group>"; };
+		F58D1D062772DF7200D5A36E /* CustomPostPaymentProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPostPaymentProcessor.swift; sourceTree = "<group>"; };
 		F9DF596324803FFD00B1FDBF /* CustomCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCheckoutViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -141,6 +143,7 @@
 				129B9D452615195E00127DC6 /* DataExtensions.swift */,
 				5AACB10F2641B1CA00A20ED5 /* CustomSplitPaymentProcessor.swift */,
 				5A712D6A2768C8B5006A8604 /* ScheduledPaymentProcessor.swift */,
+				F58D1D062772DF7200D5A36E /* CustomPostPaymentProcessor.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -322,6 +325,7 @@
 				5A712D6B2768C8B5006A8604 /* ScheduledPaymentProcessor.swift in Sources */,
 				23EDA1372147DFC90085CA7A /* AppDelegate.swift in Sources */,
 				129B9D462615195E00127DC6 /* DataExtensions.swift in Sources */,
+				F58D1D072772DF7200D5A36E /* CustomPostPaymentProcessor.swift in Sources */,
 				5AE826012590C8FB002C7F74 /* CustomPXDynamicComponent.swift in Sources */,
 				F9DF596424803FFD00B1FDBF /* CustomCheckoutViewController.swift in Sources */,
 			);

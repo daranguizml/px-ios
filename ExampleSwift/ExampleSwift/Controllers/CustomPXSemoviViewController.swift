@@ -9,6 +9,15 @@
 import UIKit
 import MercadoPagoSDKV4
 
+enum CheckoutUseCases: String, CaseIterable {
+    case defaultProcessorSuccess = "Iniciar Checkout Procesadora Default Success"
+    case defaultProcessorError = "Iniciar Checkout Procesadora Default Error"
+    case defaultProcessorWarning = "Iniciar Checkout Procesadora Default Warning"
+    case customProcessorSuccess = "Iniciar Checkout Procesadora Custom Success"
+    case customProcessorError = "Iniciar Checkout Procesadora Custom Error"
+    case customProcessorWarning = "Iniciar Checkout Procesadora Custom Warning"
+}
+
 class CustomPXSemoviViewController: UIViewController {
     // MARK: - Outlets
     @IBOutlet private var localeTextField: UITextField!
@@ -16,9 +25,11 @@ class CustomPXSemoviViewController: UIViewController {
     @IBOutlet private var preferenceIdTextField: UITextField!
     @IBOutlet private var accessTokenTextField: UITextField!
     @IBOutlet private var oneTapSwitch: UISwitch!
+    @IBOutlet private var initCheckoutTableView: UITableView!
 
     // MARK: - Variables
     private var checkout: MercadoPagoCheckout?
+    private var useCases = CheckoutUseCases.allCases
 
     // Collector Public Key
     private var publicKey: String = "TEST-a463d259-b561-45fe-9dcc-0ce320d1a42f"
@@ -26,23 +37,10 @@ class CustomPXSemoviViewController: UIViewController {
     // Preference ID
     private var preferenceId: String = "737302974-34e65c90-62ad-4b06-9f81-0aa08528ec53"
 
-    // Payer private key
+    // Payer private key - Access Token
     private var privateKey: String = "TEST-982391008451128-040514-b988271bf377ab11b0ace4f1ef338fe6-737303098"
 
     // MARK: - Actions
-    @IBAction private func iniciarCheckout(_ sender: Any) {
-        guard localeTextField.text?.count ?? 0 > 0,
-            publicKeyTextField.text?.count ?? 0 > 0,
-            preferenceIdTextField.text?.count ?? 0 > 0 else {
-            let alert = UIAlertController(title: "Error", message: "Complete los campos requeridos para continuar", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-            present(alert, animated: true)
-            return
-        }
-        runMercadoPagoCheckoutWithLifecycleAndCustomProcessor()
-//        runMercadoPagoCheckoutWithLifecycle()
-    }
-
     @IBAction private func restablecerDatos(_ sender: Any) {
         localeTextField.text = ""
         publicKeyTextField.text = ""
@@ -75,12 +73,34 @@ class CustomPXSemoviViewController: UIViewController {
         accessTokenTextField.text = privateKey
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.modalPresentationStyle = .fullScreen
-//        self.modalPresentationStyle = .fullScreen
+    // MARK: - Checkout Setup
+    private func initCheckout(useCase: CheckoutUseCases) {
+        guard localeTextField.text?.count ?? 0 > 0,
+            publicKeyTextField.text?.count ?? 0 > 0,
+            preferenceIdTextField.text?.count ?? 0 > 0
+        else {
+            let alert = UIAlertController(
+                title: "Error",
+                message: "Complete los campos requeridos para continuar",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            present(alert, animated: true)
+            return
+        }
+
+        switch useCase {
+        case .defaultProcessorSuccess, .defaultProcessorError, .defaultProcessorWarning:
+            runMercadoPagoCheckoutWithLifecycle()
+        case .customProcessorSuccess:
+            runMercadoPagoCheckoutWithLifecycleAndCustomProcessor(.approved)
+        case .customProcessorError:
+            runMercadoPagoCheckoutWithLifecycleAndCustomProcessor(.error)
+        case .customProcessorWarning:
+            runMercadoPagoCheckoutWithLifecycleAndCustomProcessor(.warning)
+        }
     }
 
-    // MARK: - Checkout Setup
     private func runMercadoPagoCheckoutWithLifecycle() {
         guard let publicKey = publicKeyTextField.text,
             let preferenceId = preferenceIdTextField.text,
@@ -109,7 +129,7 @@ class CustomPXSemoviViewController: UIViewController {
         }
     }
 
-    private func runMercadoPagoCheckoutWithLifecycleAndCustomProcessor() {
+    private func runMercadoPagoCheckoutWithLifecycleAndCustomProcessor(_ paymentResultUseCase: PaymentResultUseCases) {
         // Create charge rules
         var pxPaymentTypeChargeRules: [PXPaymentTypeChargeRule] = []
 
@@ -121,13 +141,14 @@ class CustomPXSemoviViewController: UIViewController {
         )
 
         // Create an instance of your custom payment processor
-        let paymentProcessor: PXPaymentProcessor = CustomProcessor()
+        let paymentProcessor = CustomPostPaymentProcessor()
+        paymentProcessor.setPaymentResultUseCase(paymentResultUseCase)
 
         // Create a payment configuration instance using the recently created payment processor
         let paymentConfiguration = PXPaymentConfiguration(paymentProcessor: paymentProcessor)
 
         // Add charge rules
-        paymentConfiguration.addChargeRules(charges: pxPaymentTypeChargeRules)
+        _ = paymentConfiguration.addChargeRules(charges: pxPaymentTypeChargeRules)
 
         let checkoutPreference = PXCheckoutPreference(
             siteId: "MLA",
@@ -145,23 +166,20 @@ class CustomPXSemoviViewController: UIViewController {
         checkoutPreference.addExcludedPaymentMethod("master")
 
         guard let publicKey = publicKeyTextField.text,
-            let preferenceId = preferenceIdTextField.text,
-            let language = localeTextField.text else {
+              let privateKey = accessTokenTextField.text,
+              let language = localeTextField.text else {
             return
         }
 
         let builder = MercadoPagoCheckoutBuilder(
             publicKey: publicKey,
-//            checkoutPreference: checkoutPreference,
-            preferenceId: preferenceId,
+            checkoutPreference: checkoutPreference,
             paymentConfiguration: paymentConfiguration
         )
         builder.setLanguage(language)
+        builder.setPrivateKey(key: privateKey)
 
-        if let privateKey = accessTokenTextField.text {
-            builder.setPrivateKey(key: privateKey)
-        }
-
+        // Adding a post payment notification and suscribed it
         let postPaymentConfig = PXPostPaymentConfiguration()
         postPaymentConfig.postPaymentNotificationName = .init("example postpayment")
         builder.setPostPaymentConfiguration(config: postPaymentConfig)
@@ -210,6 +228,27 @@ class CustomPXSemoviViewController: UIViewController {
     }
 }
 
+// MARK: - TableView Delegates
+extension CustomPXSemoviViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return useCases.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "useCases")
+        cell.textLabel?.text = useCases[indexPath.row].rawValue
+        cell.textLabel?.font = UIFont(name: cell.textLabel?.font.fontName ?? "", size: 14.0)
+        return cell
+    }
+}
+
+extension CustomPXSemoviViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedCase = useCases[indexPath.row]
+        initCheckout(useCase: selectedCase)
+    }
+}
+
 // MARK: Optional Lifecycle protocol implementation example.
 extension CustomPXSemoviViewController: PXLifeCycleProtocol {
     func finishCheckout() -> ((PXResult?) -> Void)? {
@@ -232,9 +271,11 @@ extension CustomPXSemoviViewController: UITextFieldDelegate {
         textField.text = ""
     }
 
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
         if string == " " {
             return false
         }
@@ -243,30 +284,5 @@ extension CustomPXSemoviViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.text = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-}
-
-class CustomProcessor: NSObject, PXPaymentProcessor {
-    func startPayment(checkoutStore: PXCheckoutStore, errorHandler: PXPaymentProcessorErrorHandler, successWithBusinessResult: @escaping ((PXBusinessResult) -> Void), successWithPaymentResult: @escaping ((PXGenericPayment) -> Void)) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: { [self] in
-            successWithPaymentResult(approvedGenericPayment() as! PXGenericPayment)
-//            successWithPaymentResult(rejectedCCAmountRateLimit() as! PXGenericPayment)
-        })
-    }
-
-    func paymentProcessorViewController() -> UIViewController? {
-        return nil
-    }
-
-    func support() -> Bool {
-        return true
-    }
-
-    func approvedGenericPayment () -> PXBasePayment {
-        return PXGenericPayment(paymentStatus: .APPROVED, statusDetail: "Pago aprobado desde procesadora custom!")
-    }
-
-    func rejectedCCAmountRateLimit () -> PXBasePayment {
-        return PXGenericPayment(paymentStatus: .REJECTED, statusDetail: "cc_amount_rate_limit_exceeded")
     }
 }

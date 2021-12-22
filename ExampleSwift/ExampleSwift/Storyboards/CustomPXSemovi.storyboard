@@ -82,22 +82,22 @@
                                     <constraint firstAttribute="height" constant="31" id="Up7-aZ-UnO"/>
                                 </constraints>
                             </switch>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gYv-PS-DKc">
-                                <rect key="frame" x="16" y="268" width="382" height="44"/>
-                                <color key="backgroundColor" name="andes-blue-ml-500"/>
-                                <accessibility key="accessibilityConfiguration" label="startButton"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="K8g-02-3Tv"/>
-                                </constraints>
-                                <state key="normal" title="Iniciar Checkout">
-                                    <color key="titleColor" name="andes-text-color-white"/>
-                                </state>
-                                <connections>
-                                    <action selector="iniciarCheckout:" destination="xlw-8I-ncz" eventType="touchUpInside" id="Uob-zp-aj1"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8Wu-0f-ECf">
+                                <rect key="frame" x="16" y="268" width="382" height="304"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="yOD-rg-YTx">
+                                        <rect key="frame" x="0.0" y="0.0" width="382" height="304"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <sections/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="xlw-8I-ncz" id="LTM-Fx-8Qa"/>
+                                            <outlet property="delegate" destination="xlw-8I-ncz" id="8na-dg-7aD"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                            </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jYp-dY-hrS">
-                                <rect key="frame" x="16" y="320" width="382" height="44"/>
+                                <rect key="frame" x="16" y="580" width="382" height="44"/>
                                 <color key="backgroundColor" name="andes-orange-500"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="b10-gl-waa"/>
@@ -113,11 +113,12 @@
                         <viewLayoutGuide key="safeArea" id="X4r-bM-oqh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="8Wu-0f-ECf" firstAttribute="top" secondItem="7Pc-qI-5kc" secondAttribute="bottom" constant="8" id="7oV-rQ-ZCw"/>
                             <constraint firstItem="X4r-bM-oqh" firstAttribute="trailing" secondItem="vwE-Qk-98A" secondAttribute="trailing" constant="16" id="Ajy-iO-K0X"/>
-                            <constraint firstItem="X4r-bM-oqh" firstAttribute="trailing" secondItem="gYv-PS-DKc" secondAttribute="trailing" constant="16" id="BHT-x1-3WX"/>
+                            <constraint firstItem="X4r-bM-oqh" firstAttribute="bottom" secondItem="jYp-dY-hrS" secondAttribute="bottom" constant="238" id="DfK-1g-dAO"/>
                             <constraint firstItem="jUI-bS-xdB" firstAttribute="top" secondItem="z0J-sX-iWs" secondAttribute="bottom" constant="8" id="HIZ-o2-wgm"/>
                             <constraint firstItem="X4r-bM-oqh" firstAttribute="trailing" secondItem="z0J-sX-iWs" secondAttribute="trailing" constant="16" id="LWG-Wc-SFX"/>
-                            <constraint firstItem="gYv-PS-DKc" firstAttribute="top" secondItem="7Pc-qI-5kc" secondAttribute="bottom" constant="8" id="NV9-Af-ZLV"/>
+                            <constraint firstItem="X4r-bM-oqh" firstAttribute="trailing" secondItem="8Wu-0f-ECf" secondAttribute="trailing" constant="16" id="Md9-Y1-WcD"/>
                             <constraint firstItem="7Pc-qI-5kc" firstAttribute="leading" secondItem="X4r-bM-oqh" secondAttribute="leading" constant="16" id="NqV-jc-Bfw"/>
                             <constraint firstItem="vwE-Qk-98A" firstAttribute="leading" secondItem="X4r-bM-oqh" secondAttribute="leading" constant="16" id="Ox9-yk-RgG"/>
                             <constraint firstItem="qtq-SS-peg" firstAttribute="leading" secondItem="X4r-bM-oqh" secondAttribute="leading" constant="16" id="Ozm-Rh-BvF"/>
@@ -126,6 +127,7 @@
                             <constraint firstItem="7Pc-qI-5kc" firstAttribute="centerY" secondItem="Cc3-Ul-Bci" secondAttribute="centerY" id="RHB-M1-zPb"/>
                             <constraint firstItem="X4r-bM-oqh" firstAttribute="trailing" secondItem="jUI-bS-xdB" secondAttribute="trailing" constant="16" id="ROp-T3-ioV"/>
                             <constraint firstItem="jUI-bS-xdB" firstAttribute="leading" secondItem="X4r-bM-oqh" secondAttribute="leading" constant="16" id="VM6-Cl-pXH"/>
+                            <constraint firstItem="jYp-dY-hrS" firstAttribute="top" secondItem="8Wu-0f-ECf" secondAttribute="bottom" constant="8" id="aR6-E8-g9k"/>
                             <constraint firstItem="z0J-sX-iWs" firstAttribute="top" secondItem="X4r-bM-oqh" secondAttribute="top" constant="17" id="bk0-r4-5r4"/>
                             <constraint firstItem="7Pc-qI-5kc" firstAttribute="top" secondItem="qtq-SS-peg" secondAttribute="bottom" constant="8" id="cO5-P1-nvq"/>
                             <constraint firstItem="Cc3-Ul-Bci" firstAttribute="leading" secondItem="7Pc-qI-5kc" secondAttribute="trailing" constant="8" id="dd5-PZ-Q4J"/>
@@ -133,8 +135,7 @@
                             <constraint firstItem="Cc3-Ul-Bci" firstAttribute="top" secondItem="qtq-SS-peg" secondAttribute="bottom" constant="8" id="goc-HH-PMB"/>
                             <constraint firstItem="jYp-dY-hrS" firstAttribute="leading" secondItem="X4r-bM-oqh" secondAttribute="leading" constant="16" id="kP0-ot-YVI"/>
                             <constraint firstItem="X4r-bM-oqh" firstAttribute="trailing" secondItem="jYp-dY-hrS" secondAttribute="trailing" constant="16" id="mlg-hw-kx7"/>
-                            <constraint firstItem="jYp-dY-hrS" firstAttribute="top" secondItem="gYv-PS-DKc" secondAttribute="bottom" constant="8" id="oco-Xx-TpQ"/>
-                            <constraint firstItem="gYv-PS-DKc" firstAttribute="leading" secondItem="X4r-bM-oqh" secondAttribute="leading" constant="16" id="qb6-E0-zYg"/>
+                            <constraint firstItem="8Wu-0f-ECf" firstAttribute="leading" secondItem="X4r-bM-oqh" secondAttribute="leading" constant="16" id="oWt-BB-do1"/>
                             <constraint firstItem="z0J-sX-iWs" firstAttribute="leading" secondItem="X4r-bM-oqh" secondAttribute="leading" constant="16" id="qpw-9m-FF6"/>
                             <constraint firstItem="vwE-Qk-98A" firstAttribute="top" secondItem="jUI-bS-xdB" secondAttribute="bottom" constant="8" id="yZ6-p9-Obi"/>
                         </constraints>
@@ -142,6 +143,7 @@
                     <navigationItem key="navigationItem" title="Ajustes" id="LxZ-1a-cvU"/>
                     <connections>
                         <outlet property="accessTokenTextField" destination="qtq-SS-peg" id="7Cm-OA-g11"/>
+                        <outlet property="initCheckoutTableView" destination="yOD-rg-YTx" id="ZXS-Hh-Di8"/>
                         <outlet property="localeTextField" destination="z0J-sX-iWs" id="5iH-xr-wrr"/>
                         <outlet property="oneTapSwitch" destination="Cc3-Ul-Bci" id="xfN-jG-Y0N"/>
                         <outlet property="preferenceIdTextField" destination="vwE-Qk-98A" id="QJ4-as-Sm6"/>
@@ -154,9 +156,6 @@
         </scene>
     </scenes>
     <resources>
-        <namedColor name="andes-blue-ml-500">
-            <color red="0.20392156862745098" green="0.51372549019607838" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="andes-orange-500">
             <color red="1" green="0.46700000762939453" blue="0.20000000298023224" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
