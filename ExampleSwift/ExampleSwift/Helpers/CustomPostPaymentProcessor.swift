@@ -9,14 +9,12 @@
 import Foundation
 import MercadoPagoSDKV4
 
-enum PaymentResultUseCases {
-    case approved
-    case error
-    case warning
-}
-
 final class CustomPostPaymentProcessor: NSObject, PXPaymentProcessor {
-    private var paymentResultUseCase: PaymentResultUseCases = .approved
+    private var testCase: CustomCheckoutTestCase
+
+    init(with testCase: CustomCheckoutTestCase) {
+        self.testCase = testCase
+    }
 
     func startPayment(
         checkoutStore: PXCheckoutStore,
@@ -25,14 +23,7 @@ final class CustomPostPaymentProcessor: NSObject, PXPaymentProcessor {
         successWithPaymentResult: @escaping ((PXGenericPayment) -> Void)
     ) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: { [self] in
-            switch paymentResultUseCase {
-            case .approved:
-                successWithPaymentResult(approvedGenericPayment())
-            case .error:
-                successWithPaymentResult(rejectedCCAmountRateLimit())
-            case .warning:
-                successWithPaymentResult(rejectedCCAmountRateLimit())
-            }
+            successWithPaymentResult(testCase.genericPayment)
         })
     }
 
@@ -42,17 +33,5 @@ final class CustomPostPaymentProcessor: NSObject, PXPaymentProcessor {
 
     func support() -> Bool {
         return true
-    }
-
-    func approvedGenericPayment () -> PXGenericPayment {
-        return PXGenericPayment(paymentStatus: .APPROVED, statusDetail: "Pago aprobado desde procesadora custom!")
-    }
-
-    func rejectedCCAmountRateLimit () -> PXGenericPayment {
-        return PXGenericPayment(paymentStatus: .REJECTED, statusDetail: "cc_amount_rate_limit_exceeded")
-    }
-
-    func setPaymentResultUseCase(_ useCase: PaymentResultUseCases) {
-        paymentResultUseCase = useCase
     }
 }
