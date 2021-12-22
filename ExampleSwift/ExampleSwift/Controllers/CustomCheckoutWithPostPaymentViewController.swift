@@ -298,12 +298,12 @@ final class PostPaymentViewController: UIViewController {
         )
 
         let rejectedButton = UIButton()
-        rejectedButton.backgroundColor = .red
+        rejectedButton.backgroundColor = UIColor.Andes.red500
         rejectedButton.setTitle("Rechazar", for: .normal)
         rejectedButton.addTarget(self, action: #selector(didTapRejected), for: .touchUpInside)
 
         let approvedButton = UIButton()
-        approvedButton.backgroundColor = .green
+        approvedButton.backgroundColor = UIColor.Andes.green500
         approvedButton.setTitle("Aprobar", for: .normal)
         approvedButton.addTarget(self, action: #selector(didTapApproved), for: .touchUpInside)
 
