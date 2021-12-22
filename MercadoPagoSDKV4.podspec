@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.homepage         = "https://www.mercadopago.com"
   s.license          = { :type => "MIT", :file => "LICENSE" }
   s.author           = "Mercado Pago"
-  s.source           = { :git => 'git@github.com:mercadopago/px-ios.git', :tag => s.version.to_s }
+  s.source           = { :git => 'git@github.com:mercadopago/px-ios.git', :tag => "release/#{s.version.to_s}"}
   s.swift_version = '4.2'
   s.platform     = :ios, '10.0'
   s.requires_arc = true
