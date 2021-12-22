@@ -20,7 +20,6 @@ lane :pr_check do
 end
 
 def new_release
-  ensure_git_branch(branch: 'develop')
   changelog = read_changelog
 
   if !changelog.gsub(/\s+/, "").empty?
@@ -61,10 +60,10 @@ def create_release_pull_request(new_version, changelog)
   tag_name = "release/#{new_version}"
   add_git_tag(tag: tag_name)
   stamp_changelog(
-    section_identifier: new_version, # Specify identifier to stamp the Unreleased section with 
-    git_tag: tag_name, # Specify reference to git tag associated with this section
-    should_stamp_date: true, # Specify whether the current date as per the stamp_datetime_format should be stamped to the section identifier (default is `true`)
-    stamp_datetime_format: '%FT%TZ' # Specify strftime format string to use for the date in the stamped section (default `%FZ`)
+    section_identifier: new_version, 
+    git_tag: tag_name, 
+    should_stamp_date: true, 
+    stamp_datetime_format: '%FT%TZ' 
   )
   git_commit(
     path: ["./CHANGELOG.md"]
