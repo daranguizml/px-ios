@@ -6,12 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+- Fixed bug with wrong suggested value for account money remedie
+
+## v4.52.0 
+🚀 Private Release - 4.52.0 date: 16/12/2021 🚀
+
 ### Changed
+- New way to process payment scheduled
 - Renamed PaymentService and connected PX_ENVIRONMENT
 
 ### Removed
 - Removed every internal keyword occurrence
 - Removed unused Schemas and Configs
+
+### Fixed
+- Fixes restyling
 
 ## v4.51.0
 🚀 Private Release - 4.51.0 date: 02/12/2021 🚀
