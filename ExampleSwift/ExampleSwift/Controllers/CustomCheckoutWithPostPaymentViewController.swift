@@ -121,7 +121,6 @@ final class CustomCheckoutWithPostPaymentViewController: UIViewController {
         }
         if oneTapSwitch.isOn {
             let advancedConfiguration = PXAdvancedConfiguration()
-//            advancedConfiguration.expressEnabled = true
             builder.setAdvancedConfiguration(config: advancedConfiguration)
         }
 
@@ -219,19 +218,13 @@ final class CustomCheckoutWithPostPaymentViewController: UIViewController {
             forName: postPaymentConfig.postPaymentNotificationName ?? .init("")
         ) { resultBlock in
             print("Got the notification")
-            let vc = UIViewController()
-            vc.view.frame = self.view.frame
-            vc.view.backgroundColor = .white
-            let label = UILabel(frame: CGRect(x: 20, y: 20, width: 200, height: 30))
-            label.text = "Got the notification"
-            vc.view.addSubview(label)
-            self.present(vc, animated: true, completion: {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                    self.presentedViewController?.dismiss(animated: true, completion: {
-                        resultBlock(nil)
-                    })
-                }
-            })
+            let postPayment = PostPaymentViewController(with: resultBlock)
+
+            self.present(
+                UINavigationController(rootViewController: postPayment),
+                animated: true,
+                completion: nil
+            )
         }
     }
 }
@@ -282,5 +275,95 @@ extension CustomCheckoutWithPostPaymentViewController: UIPickerViewDelegate, UIP
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return CustomCheckoutTestCase.allCases[row].rawValue
+    }
+}
+final class PostPaymentViewController: UIViewController {
+    private let resultBlock: MercadoPagoCheckout.PostPayment.ResultBlock
+
+    init(with resultBlock: @escaping MercadoPagoCheckout.PostPayment.ResultBlock) {
+        self.resultBlock = resultBlock
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        self.navigationItem.leftBarButtonItem = .init(
+            title: "Cancel",
+            style: .plain,
+            target: self,
+            action: #selector(didTapCancel)
+        )
+
+        let rejectedButton = UIButton()
+        rejectedButton.backgroundColor = .red
+        rejectedButton.setTitle("Rechazar", for: .normal)
+        rejectedButton.addTarget(self, action: #selector(didTapRejected), for: .touchUpInside)
+
+        let approvedButton = UIButton()
+        approvedButton.backgroundColor = .green
+        approvedButton.setTitle("Aprobar", for: .normal)
+        approvedButton.addTarget(self, action: #selector(didTapApproved), for: .touchUpInside)
+
+        let stack = UIStackView(arrangedSubviews: [rejectedButton, approvedButton])
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.distribution = .fillEqually
+        stack.axis = .vertical
+
+        self.view.backgroundColor = .white
+        self.view.addSubview(stack)
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            stack.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            stack.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+
+    @objc
+    func didTapCancel() {
+        dismissWithResult(.cancelled)
+    }
+
+    @objc
+    func didTapRejected() {
+        dismissWithResult(.rejected)
+    }
+
+    @objc
+    func didTapApproved() {
+        dismissWithResult(.approved)
+    }
+
+    private func dismissWithResult(_ testCase: PostPaymentTestCase) {
+        let payment = testCase.genericPayment
+        self.dismiss(animated: true) { [resultBlock] in
+            resultBlock(payment)
+        }
+    }
+}
+
+enum PostPaymentTestCase {
+    case cancelled
+    case rejected
+    case approved
+
+    var genericPayment: PXGenericPayment? {
+        switch self {
+        case .approved:
+            return PXGenericPayment(
+                paymentStatus: .APPROVED,
+                statusDetail: "PostPayment Approved"
+            )
+        case .rejected:
+            return PXGenericPayment(
+                paymentStatus: .REJECTED,
+                statusDetail: "PostPayment Rejected"
+            )
+        case .cancelled:
+            return nil
+        }
     }
 }
