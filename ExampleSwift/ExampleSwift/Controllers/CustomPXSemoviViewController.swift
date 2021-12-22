@@ -10,12 +10,12 @@ import UIKit
 import MercadoPagoSDKV4
 
 enum CheckoutUseCases: String, CaseIterable {
-    case defaultProcessorSuccess = "Iniciar Checkout Procesadora Default Success"
-    case defaultProcessorError = "Iniciar Checkout Procesadora Default Error"
-    case defaultProcessorWarning = "Iniciar Checkout Procesadora Default Warning"
     case customProcessorSuccess = "Iniciar Checkout Procesadora Custom Success"
     case customProcessorError = "Iniciar Checkout Procesadora Custom Error"
     case customProcessorWarning = "Iniciar Checkout Procesadora Custom Warning"
+    case defaultProcessorSuccess = "Iniciar Checkout Procesadora Default Success"
+    case defaultProcessorError = "Iniciar Checkout Procesadora Default Error"
+    case defaultProcessorWarning = "Iniciar Checkout Procesadora Default Warning"
 }
 
 class CustomPXSemoviViewController: UIViewController {

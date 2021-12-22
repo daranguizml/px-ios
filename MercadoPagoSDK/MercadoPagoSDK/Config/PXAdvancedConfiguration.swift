@@ -1,10 +1,5 @@
 import Foundation
 
-@objcMembers
-open class PXPostPaymentConfiguration: NSObject {
-    open var postPaymentNotificationName: Notification.Name?
-}
-
 /**
  Advanced configuration provides you support for custom checkout functionality/configure special behaviour when checkout is running.
  */

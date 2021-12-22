@@ -33,7 +33,10 @@ extension MercadoPagoCheckout {
     }
 
     func navigateToPostPaymentFlow() {
-        MercadoPagoCheckout.NotificationCenter.PublishTo.postPaymentAction(withName: viewModel.postPaymentNotificationName ?? .init("")) { [unowned self] basePayment in
+        guard let notification = viewModel.postPaymentNotificationName else {
+            return
+        }
+        MercadoPagoCheckout.NotificationCenter.PublishTo.postPaymentAction(withName: notification) { [unowned self] basePayment in
             if let businessResult = basePayment as? PXBusinessResult {
                 viewModel.businessResult = businessResult
             } else if let paymentResult = basePayment as? PaymentResult {
