@@ -1,5 +1,5 @@
 //
-//  CustomPXSemoviViewController.swift
+//  CustomCheckoutWithPostPaymentViewController.swift
 //  ExampleSwift
 //
 //  Created by Ricardo Grajales Duque on 13/12/21.
@@ -9,13 +9,37 @@
 import UIKit
 import MercadoPagoSDKV4
 
-class CustomPXSemoviViewController: UIViewController {
+enum CustomCheckoutTestCase: String, CaseIterable {
+    case approved
+    case rejected
+    case error
+
+    var genericPayment: PXGenericPayment {
+        switch self {
+        case .approved:
+            return PXGenericPayment(
+                paymentStatus: .APPROVED,
+                statusDetail: "Pago aprobado desde procesadora custom!"
+            )
+        case .rejected:
+            return PXGenericPayment(
+                paymentStatus: .REJECTED,
+                statusDetail: "cc_amount_rate_limit_exceeded"
+            )
+        case .error:
+            fatalError("genericPayment no debe ser invocado para este caso")
+        }
+    }
+}
+
+final class CustomCheckoutWithPostPaymentViewController: UIViewController {
     // MARK: - Outlets
     @IBOutlet private var localeTextField: UITextField!
     @IBOutlet private var publicKeyTextField: UITextField!
     @IBOutlet private var preferenceIdTextField: UITextField!
     @IBOutlet private var accessTokenTextField: UITextField!
     @IBOutlet private var oneTapSwitch: UISwitch!
+    @IBOutlet private var testCasePicker: UIPickerView!
 
     // MARK: - Variables
     private var checkout: MercadoPagoCheckout?
@@ -73,6 +97,9 @@ class CustomPXSemoviViewController: UIViewController {
         preferenceIdTextField.text = preferenceId
         publicKeyTextField.text = publicKey
         accessTokenTextField.text = privateKey
+
+        self.testCasePicker.delegate = self
+        self.testCasePicker.dataSource = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -121,7 +148,9 @@ class CustomPXSemoviViewController: UIViewController {
         )
 
         // Create an instance of your custom payment processor
-        let paymentProcessor: PXPaymentProcessor = CustomProcessor()
+        let row = testCasePicker.selectedRow(inComponent: 0)
+        let testCase = CustomCheckoutTestCase.allCases[row]
+        let paymentProcessor: PXPaymentProcessor = CustomProcessor(with: testCase)
 
         // Create a payment configuration instance using the recently created payment processor
         let paymentConfiguration = PXPaymentConfiguration(paymentProcessor: paymentProcessor)
@@ -211,7 +240,7 @@ class CustomPXSemoviViewController: UIViewController {
 }
 
 // MARK: Optional Lifecycle protocol implementation example.
-extension CustomPXSemoviViewController: PXLifeCycleProtocol {
+extension CustomCheckoutWithPostPaymentViewController: PXLifeCycleProtocol {
     func finishCheckout() -> ((PXResult?) -> Void)? {
         return nil
     }
@@ -227,18 +256,17 @@ extension CustomPXSemoviViewController: PXLifeCycleProtocol {
     }
 }
 
-extension CustomPXSemoviViewController: UITextFieldDelegate {
+extension CustomCheckoutWithPostPaymentViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.text = ""
     }
 
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
-        if string == " " {
-            return false
-        }
-        return true
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        return string != " "
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -246,11 +274,39 @@ extension CustomPXSemoviViewController: UITextFieldDelegate {
     }
 }
 
-class CustomProcessor: NSObject, PXPaymentProcessor {
-    func startPayment(checkoutStore: PXCheckoutStore, errorHandler: PXPaymentProcessorErrorHandler, successWithBusinessResult: @escaping ((PXBusinessResult) -> Void), successWithPaymentResult: @escaping ((PXGenericPayment) -> Void)) {
+extension CustomCheckoutWithPostPaymentViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return CustomCheckoutTestCase.allCases.count
+    }
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return CustomCheckoutTestCase.allCases[row].rawValue
+    }
+}
+
+final class CustomProcessor: NSObject, PXPaymentProcessor {
+    var testCase: CustomCheckoutTestCase
+
+    init(with testCase: CustomCheckoutTestCase) {
+        self.testCase = testCase
+    }
+
+    func startPayment(
+        checkoutStore: PXCheckoutStore,
+        errorHandler: PXPaymentProcessorErrorHandler,
+        successWithBusinessResult: @escaping ((PXBusinessResult) -> Void),
+        successWithPaymentResult: @escaping ((PXGenericPayment) -> Void)
+    ) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: { [self] in
-            successWithPaymentResult(approvedGenericPayment() as! PXGenericPayment)
-//            successWithPaymentResult(rejectedCCAmountRateLimit() as! PXGenericPayment)
+            guard testCase != .error else {
+                errorHandler.showError()
+                return
+            }
+            successWithPaymentResult(testCase.genericPayment)
         })
     }
 
@@ -260,13 +316,5 @@ class CustomProcessor: NSObject, PXPaymentProcessor {
 
     func support() -> Bool {
         return true
-    }
-
-    func approvedGenericPayment () -> PXBasePayment {
-        return PXGenericPayment(paymentStatus: .APPROVED, statusDetail: "Pago aprobado desde procesadora custom!")
-    }
-
-    func rejectedCCAmountRateLimit () -> PXBasePayment {
-        return PXGenericPayment(paymentStatus: .REJECTED, statusDetail: "cc_amount_rate_limit_exceeded")
     }
 }

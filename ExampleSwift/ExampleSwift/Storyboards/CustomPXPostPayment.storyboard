@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xlw-8I-ncz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xlw-8I-ncz">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -13,7 +13,7 @@
         <!--Ajustes-->
         <scene sceneID="CQS-Nc-1bk">
             <objects>
-                <viewController id="xlw-8I-ncz" customClass="CustomPXSemoviViewController" customModule="ExampleSwift" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="xlw-8I-ncz" customClass="CustomCheckoutWithPostPaymentViewController" customModule="ExampleSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="iU2-DH-uC5">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -109,13 +109,21 @@
                                     <action selector="restablecerDatos:" destination="xlw-8I-ncz" eventType="touchUpInside" id="SnM-dh-Ehs"/>
                                 </connections>
                             </button>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qdK-gb-iAX">
+                                <rect key="frame" x="0.0" y="386" width="414" height="162"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="162" id="IKB-oF-aLf"/>
+                                </constraints>
+                            </pickerView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="X4r-bM-oqh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="qdK-gb-iAX" firstAttribute="trailing" secondItem="X4r-bM-oqh" secondAttribute="trailing" id="4dP-Tl-YOI"/>
                             <constraint firstItem="X4r-bM-oqh" firstAttribute="trailing" secondItem="vwE-Qk-98A" secondAttribute="trailing" constant="16" id="Ajy-iO-K0X"/>
                             <constraint firstItem="X4r-bM-oqh" firstAttribute="trailing" secondItem="gYv-PS-DKc" secondAttribute="trailing" constant="16" id="BHT-x1-3WX"/>
                             <constraint firstItem="jUI-bS-xdB" firstAttribute="top" secondItem="z0J-sX-iWs" secondAttribute="bottom" constant="8" id="HIZ-o2-wgm"/>
+                            <constraint firstItem="qdK-gb-iAX" firstAttribute="top" secondItem="jYp-dY-hrS" secondAttribute="bottom" constant="22" id="J0I-NN-I5R"/>
                             <constraint firstItem="X4r-bM-oqh" firstAttribute="trailing" secondItem="z0J-sX-iWs" secondAttribute="trailing" constant="16" id="LWG-Wc-SFX"/>
                             <constraint firstItem="gYv-PS-DKc" firstAttribute="top" secondItem="7Pc-qI-5kc" secondAttribute="bottom" constant="8" id="NV9-Af-ZLV"/>
                             <constraint firstItem="7Pc-qI-5kc" firstAttribute="leading" secondItem="X4r-bM-oqh" secondAttribute="leading" constant="16" id="NqV-jc-Bfw"/>
@@ -128,6 +136,7 @@
                             <constraint firstItem="jUI-bS-xdB" firstAttribute="leading" secondItem="X4r-bM-oqh" secondAttribute="leading" constant="16" id="VM6-Cl-pXH"/>
                             <constraint firstItem="z0J-sX-iWs" firstAttribute="top" secondItem="X4r-bM-oqh" secondAttribute="top" constant="17" id="bk0-r4-5r4"/>
                             <constraint firstItem="7Pc-qI-5kc" firstAttribute="top" secondItem="qtq-SS-peg" secondAttribute="bottom" constant="8" id="cO5-P1-nvq"/>
+                            <constraint firstItem="qdK-gb-iAX" firstAttribute="leading" secondItem="X4r-bM-oqh" secondAttribute="leading" id="db4-Wv-1bC"/>
                             <constraint firstItem="Cc3-Ul-Bci" firstAttribute="leading" secondItem="7Pc-qI-5kc" secondAttribute="trailing" constant="8" id="dd5-PZ-Q4J"/>
                             <constraint firstItem="X4r-bM-oqh" firstAttribute="trailing" secondItem="Cc3-Ul-Bci" secondAttribute="trailing" constant="16" id="g6P-Fh-f2m"/>
                             <constraint firstItem="Cc3-Ul-Bci" firstAttribute="top" secondItem="qtq-SS-peg" secondAttribute="bottom" constant="8" id="goc-HH-PMB"/>
@@ -146,6 +155,7 @@
                         <outlet property="oneTapSwitch" destination="Cc3-Ul-Bci" id="xfN-jG-Y0N"/>
                         <outlet property="preferenceIdTextField" destination="vwE-Qk-98A" id="QJ4-as-Sm6"/>
                         <outlet property="publicKeyTextField" destination="jUI-bS-xdB" id="flP-TA-7ns"/>
+                        <outlet property="testCasePicker" destination="qdK-gb-iAX" id="DNM-eo-Voc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zrj-ik-ly7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

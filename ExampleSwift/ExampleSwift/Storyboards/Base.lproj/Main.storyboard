@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="nVh-4Y-Mjr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="nVh-4Y-Mjr">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--CustomPXSemovi-->
+        <!--CustomPXPostPayment-->
         <scene sceneID="DGu-f6-gDA">
             <objects>
-                <viewControllerPlaceholder storyboardName="CustomPXSemovi" id="2eu-ki-d8V" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="CustomPXPostPayment" id="2eu-ki-d8V" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="EHb-Wj-a2f"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Ua-TB-6QT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -73,7 +73,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="FbS-3T-feI"/>
                                 </constraints>
-                                <state key="normal" title="Iniciar SEMOVI">
+                                <state key="normal" title="Iniciar con flujo post pago">
                                     <color key="titleColor" name="andes-text-color-white"/>
                                 </state>
                                 <connections>
@@ -118,7 +118,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="congratsRow" rowHeight="46" id="oRc-db-ieJ">
-                                <rect key="frame" x="0.0" y="24.5" width="375" height="46"/>
+                                <rect key="frame" x="0.0" y="44.5" width="375" height="46"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oRc-db-ieJ" id="GXh-gg-CKB">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>

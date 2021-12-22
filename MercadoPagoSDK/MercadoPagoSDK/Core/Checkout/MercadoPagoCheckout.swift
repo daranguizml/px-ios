@@ -270,6 +270,7 @@ extension MercadoPagoCheckout {
     }
 }
 public extension MercadoPagoCheckout.NotificationCenter.SubscribeTo {
+    @discardableResult
     static func postPaymentAction(
         forName name: NSNotification.Name,
         using block: @escaping MercadoPagoCheckout.PostPayment.CompletionBlock) -> NSObjectProtocol {
