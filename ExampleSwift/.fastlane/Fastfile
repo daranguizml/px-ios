@@ -31,4 +31,18 @@ platform :ios do
     gym
     sh "bash ../scripts/saucelabs.sh"
   end
+  lane :build_hue do
+    xcodebuild(
+      {
+        clean: true,
+        build: true,
+        derivedDataPath: "build",
+        workspace: "./ExampleSwift.xcworkspace",
+        output_name: "ExampleSwift.app",
+        scheme: "ExampleSwift",
+        sdk: "iphonesimulator",
+        xcargs: "ONLY_ACTIVE_ARCH=NO"
+      }
+    )
+  end
 end
