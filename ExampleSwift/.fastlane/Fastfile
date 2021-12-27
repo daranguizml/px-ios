@@ -31,7 +31,7 @@ platform :ios do
     gym
     sh "bash ../scripts/saucelabs.sh"
   end
-  lane :build_hue do
+  lane :build_local do
     xcodebuild(
       {
         clean: true,
