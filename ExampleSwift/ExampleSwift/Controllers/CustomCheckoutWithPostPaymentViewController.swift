@@ -59,7 +59,11 @@ final class CustomCheckoutWithPostPaymentViewController: UIViewController {
         guard localeTextField.text?.count ?? 0 > 0,
               publicKeyTextField.text?.count ?? 0 > 0,
               preferenceIdTextField.text?.count ?? 0 > 0 else {
-            let alert = UIAlertController(title: "Error", message: "Complete los campos requeridos para continuar", preferredStyle: .alert)
+            let alert = UIAlertController(
+                title: "Error",
+                message: "Complete los campos requeridos para continuar",
+                preferredStyle: .alert
+            )
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             present(alert, animated: true)
             return
@@ -275,95 +279,5 @@ extension CustomCheckoutWithPostPaymentViewController: UIPickerViewDelegate, UIP
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return CustomCheckoutTestCase.allCases[row].rawValue
-    }
-}
-final class PostPaymentViewController: UIViewController {
-    private let resultBlock: MercadoPagoCheckout.PostPayment.ResultBlock
-
-    init(with resultBlock: @escaping MercadoPagoCheckout.PostPayment.ResultBlock) {
-        self.resultBlock = resultBlock
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLoad() {
-        self.navigationItem.leftBarButtonItem = .init(
-            title: "Cancel",
-            style: .plain,
-            target: self,
-            action: #selector(didTapCancel)
-        )
-
-        let rejectedButton = UIButton()
-        rejectedButton.backgroundColor = UIColor.Andes.red500
-        rejectedButton.setTitle("Rechazar", for: .normal)
-        rejectedButton.addTarget(self, action: #selector(didTapRejected), for: .touchUpInside)
-
-        let approvedButton = UIButton()
-        approvedButton.backgroundColor = UIColor.Andes.green500
-        approvedButton.setTitle("Aprobar", for: .normal)
-        approvedButton.addTarget(self, action: #selector(didTapApproved), for: .touchUpInside)
-
-        let stack = UIStackView(arrangedSubviews: [rejectedButton, approvedButton])
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.distribution = .fillEqually
-        stack.axis = .vertical
-
-        self.view.backgroundColor = .white
-        self.view.addSubview(stack)
-        NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            stack.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            stack.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            stack.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-    }
-
-    @objc
-    func didTapCancel() {
-        dismissWithResult(.cancelled)
-    }
-
-    @objc
-    func didTapRejected() {
-        dismissWithResult(.rejected)
-    }
-
-    @objc
-    func didTapApproved() {
-        dismissWithResult(.approved)
-    }
-
-    private func dismissWithResult(_ testCase: PostPaymentTestCase) {
-        let payment = testCase.genericPayment
-        self.dismiss(animated: true) { [resultBlock] in
-            resultBlock(payment)
-        }
-    }
-}
-
-enum PostPaymentTestCase {
-    case cancelled
-    case rejected
-    case approved
-
-    var genericPayment: PXGenericPayment? {
-        switch self {
-        case .approved:
-            return PXGenericPayment(
-                paymentStatus: .APPROVED,
-                statusDetail: "PostPayment Approved"
-            )
-        case .rejected:
-            return PXGenericPayment(
-                paymentStatus: .REJECTED,
-                statusDetail: "PostPayment Rejected"
-            )
-        case .cancelled:
-            return nil
-        }
     }
 }
