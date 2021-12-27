@@ -41,6 +41,19 @@ extension MercadoPagoCheckout {
                 viewModel.businessResult = businessResult
             } else if let paymentResult = basePayment as? PaymentResult {
                 viewModel.paymentResult = paymentResult
+            } else if let basePayment = basePayment {
+                let paymentResult = PaymentResult(
+                    status: basePayment.getStatus(),
+                    statusDetail: basePayment.getStatusDetail(),
+                    paymentData: .init(),
+                    splitAccountMoney: nil,
+                    payerEmail: nil,
+                    paymentId: basePayment.getPaymentId(),
+                    statementDescription: nil,
+                    paymentMethodId: basePayment.getPaymentMethodId(),
+                    paymentMethodTypeId: basePayment.getPaymentMethodTypeId()
+                )
+                viewModel.paymentResult = paymentResult
             }
 
             viewModel.postPaymentNotificationName = nil
