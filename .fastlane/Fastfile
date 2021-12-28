@@ -45,7 +45,7 @@ def pod_release(version)
   version_bump_podspec(path: "MercadoPagoSDKV4.podspec", version_number: version)
 
   if not `pod repo list`.strip.split("\n").include?("MLPods")
-    unless system("pod repo add mobile-ios_specs https://github.com/mercadolibre/mobile-ios_specs")
+    unless system("pod repo add mobile-ios_specs git@github.com:mercadolibre/mobile-ios_specs.git")
       raise 'Private deploy has failed. Check the above log'
     end 
   end
