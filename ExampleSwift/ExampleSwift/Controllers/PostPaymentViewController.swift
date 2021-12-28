@@ -76,6 +76,9 @@ final class PostPaymentViewController: UIViewController {
             stack.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             stack.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         ])
+
+        // Handling modal dismiss
+        self.navigationController?.presentationController?.delegate = self
     }
 
     @objc
@@ -98,5 +101,11 @@ final class PostPaymentViewController: UIViewController {
         self.dismiss(animated: true) { [resultBlock] in
             resultBlock(payment)
         }
+    }
+}
+
+extension PostPaymentViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        didTapCancel()
     }
 }
