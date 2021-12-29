@@ -11,12 +11,12 @@ import UIKit
 import MercadoPagoSDKV4
 
 class CustomCheckoutViewController: UIViewController {
-    @IBOutlet weak var localeTextField: UITextField!
-    @IBOutlet weak var publicKeyTextField: UITextField!
-    @IBOutlet weak var preferenceIdTextField: UITextField!
-    @IBOutlet weak var accessTokenTextField: UITextField!
-    @IBOutlet weak var oneTapSwitch: UISwitch!
-    
+    @IBOutlet var localeTextField: UITextField!
+    @IBOutlet var publicKeyTextField: UITextField!
+    @IBOutlet var preferenceIdTextField: UITextField!
+    @IBOutlet var accessTokenTextField: UITextField!
+    @IBOutlet var oneTapSwitch: UISwitch!
+
     @IBAction func iniciarCheckout(_ sender: Any) {
         guard localeTextField.text?.count ?? 0 > 0,
             publicKeyTextField.text?.count ?? 0 > 0,
@@ -28,7 +28,7 @@ class CustomCheckoutViewController: UIViewController {
         }
         runMercadoPagoCheckoutWithLifecycle()
     }
-    
+
     @IBAction func restablecerDatos(_ sender: Any) {
         localeTextField.text = ""
         publicKeyTextField.text = ""
@@ -36,25 +36,25 @@ class CustomCheckoutViewController: UIViewController {
         accessTokenTextField.text = ""
         oneTapSwitch.setOn(true, animated: true)
     }
-    
-    override func viewDidLoad() { 
+
+    override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         let gradient = CAGradientLayer()
         gradient.frame = view.bounds
-        let col1 = UIColor(red: 34.0/255.0, green: 211/255.0, blue: 198/255.0, alpha: 1)
-        let col2 = UIColor(red: 145/255.0, green: 72.0/255.0, blue: 203/255.0, alpha: 1)
+        let col1 = UIColor(red: 34.0 / 255.0, green: 211 / 255.0, blue: 198 / 255.0, alpha: 1)
+        let col2 = UIColor(red: 145 / 255.0, green: 72.0 / 255.0, blue: 203 / 255.0, alpha: 1)
         gradient.colors = [col1.cgColor, col2.cgColor]
         view.layer.insertSublayer(gradient, at: 0)
-        
+
         if let path = Bundle.main.path(forResource: "Info", ofType: "plist"), let infoPlist = NSDictionary(contentsOfFile: path) {
             // Initialize values from config
             publicKeyTextField.text = infoPlist["PX_COLLECTOR_PUBLIC_KEY"] as? String
             accessTokenTextField.text = infoPlist["PX_PAYER_PRIVATE_KEY"] as? String
         }
-        
+
         localeTextField.text = "es-AR"
-        preferenceIdTextField.text = "737302974-34e65c90-62ad-4b06-9f81-0aa08528ec53"
+        preferenceIdTextField.text = "566676612-3bbb117b-1f3f-49c9-915d-565a785837d0"
     }
 
     private func runMercadoPagoCheckoutWithLifecycle() {
@@ -72,7 +72,7 @@ class CustomCheckoutViewController: UIViewController {
             advancedConfiguration.expressEnabled = true
             builder.setAdvancedConfiguration(config: advancedConfiguration)
         }
-        
+
         let checkout = MercadoPagoCheckout(builder: builder)
         if let myNavigationController = navigationController {
             checkout.start(navigationController: myNavigationController, lifeCycleProtocol: self)
@@ -108,7 +108,7 @@ extension CustomCheckoutViewController: UITextFieldDelegate {
         }
         return true
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.text = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
     }
