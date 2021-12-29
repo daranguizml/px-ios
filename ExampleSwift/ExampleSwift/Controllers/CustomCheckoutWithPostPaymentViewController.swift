@@ -55,7 +55,7 @@ final class CustomCheckoutWithPostPaymentViewController: UIViewController {
     private var privateKey: String = "TEST-982391008451128-040514-b988271bf377ab11b0ace4f1ef338fe6-737303098"
 
     // MARK: - Actions
-    @IBAction private func iniciarCheckout(_ sender: Any) {
+    @IBAction private func initCheckout(_ sender: Any) {
         guard localeTextField.text?.count ?? 0 > 0,
               publicKeyTextField.text?.count ?? 0 > 0,
               preferenceIdTextField.text?.count ?? 0 > 0 else {
@@ -76,7 +76,7 @@ final class CustomCheckoutWithPostPaymentViewController: UIViewController {
         }
     }
 
-    @IBAction private func restablecerDatos(_ sender: Any) {
+    @IBAction private func resetData(_ sender: Any) {
         localeTextField.text = ""
         publicKeyTextField.text = ""
         preferenceIdTextField.text = ""

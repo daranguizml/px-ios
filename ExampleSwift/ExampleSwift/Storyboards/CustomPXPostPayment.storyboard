@@ -108,7 +108,7 @@
                                     <color key="titleColor" name="andes-text-color-white"/>
                                 </state>
                                 <connections>
-                                    <action selector="iniciarCheckout:" destination="xlw-8I-ncz" eventType="touchUpInside" id="Fmm-m7-R0u"/>
+                                    <action selector="initCheckout:" destination="xlw-8I-ncz" eventType="touchUpInside" id="0sn-ud-QII"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAg-Rj-3MV">
@@ -121,7 +121,7 @@
                                     <color key="titleColor" name="andes-text-color-white"/>
                                 </state>
                                 <connections>
-                                    <action selector="restablecerDatos:" destination="xlw-8I-ncz" eventType="touchUpInside" id="4bP-lw-bCK"/>
+                                    <action selector="resetData:" destination="xlw-8I-ncz" eventType="touchUpInside" id="pqE-7K-IdP"/>
                                 </connections>
                             </button>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qdK-gb-iAX">

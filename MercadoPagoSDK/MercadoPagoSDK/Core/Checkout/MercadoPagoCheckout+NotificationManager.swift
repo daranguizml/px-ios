@@ -18,7 +18,7 @@ extension MercadoPagoCheckout {
 
         public enum SubscribeTo {}
         public enum UnsubscribeTo {}
-        internal enum PublishTo {}
+        enum PublishTo {}
     }
 }
 
@@ -29,13 +29,15 @@ public extension MercadoPagoCheckout.NotificationCenter.SubscribeTo {
         using block: @escaping MercadoPagoCheckout.PostPayment.CompletionBlock
     ) -> NSObjectProtocol {
         NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) {
-            let resultBlock = $0.object as! MercadoPagoCheckout.PostPayment.ResultBlock
+            guard let resultBlock = $0.object as? MercadoPagoCheckout.PostPayment.ResultBlock else {
+                return
+            }
             block(resultBlock)
         }
     }
 }
 
-internal extension MercadoPagoCheckout.NotificationCenter.PublishTo {
+extension MercadoPagoCheckout.NotificationCenter.PublishTo {
     static func postPaymentAction(
         withName aName: Notification.Name,
         result: @escaping MercadoPagoCheckout.PostPayment.ResultBlock

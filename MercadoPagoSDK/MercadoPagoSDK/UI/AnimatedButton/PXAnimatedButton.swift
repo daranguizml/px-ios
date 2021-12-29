@@ -70,10 +70,12 @@ extension PXAnimatedButton: ProgressViewDelegate, CAAnimationDelegate {
             self.animatedView = animatedView
             self.alpha = 0
 
-            let toCircleFrame = CGRect(x: animatedViewFrameInAnchorViewCoordinates.midX - animatedViewFrameInAnchorViewCoordinates.height / 2,
-                                       y: animatedViewFrameInAnchorViewCoordinates.minY,
-                                       width: animatedViewFrameInAnchorViewCoordinates.height,
-                                       height: animatedViewFrameInAnchorViewCoordinates.height)
+            let toCircleFrame = CGRect(
+                x: animatedViewFrameInAnchorViewCoordinates.midX - animatedViewFrameInAnchorViewCoordinates.height / 2,
+                y: animatedViewFrameInAnchorViewCoordinates.minY,
+                width: animatedViewFrameInAnchorViewCoordinates.height,
+                height: animatedViewFrameInAnchorViewCoordinates.height
+            )
 
             let transitionAnimator = UIViewPropertyAnimator(duration: 0.5, dampingRatio: 1, animations: {
                 animatedView.frame = toCircleFrame
