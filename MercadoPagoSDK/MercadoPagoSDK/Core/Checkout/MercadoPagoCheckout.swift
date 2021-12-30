@@ -148,8 +148,6 @@ extension MercadoPagoCheckout {
                 self.createPayment()
             case .SERVICE_GET_REMEDY:
                 self.getRemedy()
-            case .POST_PAYMENT_FLOW:
-                self.navigateToPostPaymentFlow()
             case .SCREEN_PAYMENT_RESULT:
                 self.showPaymentResultScreen()
             case .ACTION_FINISH:

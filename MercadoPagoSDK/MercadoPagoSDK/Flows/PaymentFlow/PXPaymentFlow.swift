@@ -57,10 +57,26 @@ final class PXPaymentFlow: NSObject, PXFlow {
                 self.createPaymentWithPlugin(plugin: self.model.paymentPlugin, programId: self.validationProgramId)
             case .createPaymentPluginScreen:
                 self.showPaymentProcessor(paymentProcessor: self.model.paymentPlugin, programId: self.validationProgramId)
+            case .goToPostPayment:
+                self.goToPostPayment()
             case .getPointsAndDiscounts:
                 self.getPointsAndDiscounts()
             case .finish:
                 self.finishFlow()
+            }
+        }
+    }
+
+    func goToPostPayment() {
+        guard let notification = model.postPaymentNotificationName else {
+            return
+        }
+        MercadoPagoCheckout.NotificationCenter.PublishTo.postPaymentAction(withName: notification) { [unowned self] basePayment in
+            model.postPaymentNotificationName = nil
+            if let basePayment = basePayment {
+                self.handlePayment(basePayment: basePayment)
+            } else {
+                executeNextStep()
             }
         }
     }
