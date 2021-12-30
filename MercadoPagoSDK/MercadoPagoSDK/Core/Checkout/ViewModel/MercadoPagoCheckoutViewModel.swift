@@ -11,7 +11,6 @@ enum CheckoutStep: String {
     case SCREEN_ERROR
     case SCREEN_PAYMENT_METHOD_PLUGIN_CONFIG
     case FLOW_ONE_TAP
-    case POST_PAYMENT_FLOW
 }
 
 class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
@@ -85,7 +84,7 @@ class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
 
     // Payment plugin
     var paymentPlugin: PXSplitPaymentProcessor?
-    var paymentFlow: PXPaymentFlow?
+    private(set) var paymentFlow: PXPaymentFlow?
 
     // Discount and charges
     var chargeRules: [PXPaymentTypeChargeRule]?
@@ -372,9 +371,6 @@ class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
         }
         if needGetRemedy() {
             return .SERVICE_GET_REMEDY
-        }
-        if shouldNavigateToPostPaymentFlow() {
-            return .POST_PAYMENT_FLOW
         }
         if shouldShowCongrats() {
             return .SCREEN_PAYMENT_RESULT
@@ -748,15 +744,28 @@ extension MercadoPagoCheckoutViewModel {
 extension MercadoPagoCheckoutViewModel {
     func createPaymentFlow(paymentErrorHandler: PXPaymentErrorHandlerProtocol) -> PXPaymentFlow {
         guard let paymentFlow = paymentFlow else {
-            let paymentFlow = PXPaymentFlow(paymentPlugin: paymentPlugin, mercadoPagoServices: mercadoPagoServices, paymentErrorHandler: paymentErrorHandler, navigationHandler: pxNavigationHandler, amountHelper: amountHelper, checkoutPreference: checkoutPreference, ESCBlacklistedStatus: search?.configurations?.ESCBlacklistedStatus)
-            if let productId = advancedConfig.productId {
-                paymentFlow.setProductIdForPayment(productId)
-            }
-            self.paymentFlow = paymentFlow
-            return paymentFlow
+            return buildPaymentFlow(with: paymentErrorHandler)
         }
         paymentFlow.model.amountHelper = amountHelper
         paymentFlow.model.checkoutPreference = checkoutPreference
+        return paymentFlow
+    }
+    
+    func buildPaymentFlow(with paymentErrorHandler: PXPaymentErrorHandlerProtocol) -> PXPaymentFlow {
+        let paymentFlow = PXPaymentFlow(
+            paymentPlugin: paymentPlugin,
+            mercadoPagoServices: mercadoPagoServices,
+            paymentErrorHandler: paymentErrorHandler,
+            navigationHandler: pxNavigationHandler,
+            amountHelper: amountHelper,
+            checkoutPreference: checkoutPreference,
+            ESCBlacklistedStatus: search?.configurations?.ESCBlacklistedStatus
+        )
+        if let productId = advancedConfig.productId {
+            paymentFlow.setProductIdForPayment(productId)
+        }
+        paymentFlow.model.postPaymentNotificationName = postPaymentNotificationName
+        self.paymentFlow = paymentFlow
         return paymentFlow
     }
 }

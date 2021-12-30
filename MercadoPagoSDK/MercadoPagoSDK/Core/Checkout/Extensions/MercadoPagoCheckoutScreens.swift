@@ -32,35 +32,6 @@ extension MercadoPagoCheckout {
         })
     }
 
-    func navigateToPostPaymentFlow() {
-        guard let notification = viewModel.postPaymentNotificationName else {
-            return
-        }
-        MercadoPagoCheckout.NotificationCenter.PublishTo.postPaymentAction(withName: notification) { [unowned self] basePayment in
-            if let businessResult = basePayment as? PXBusinessResult {
-                viewModel.businessResult = businessResult
-            } else if let paymentResult = basePayment as? PaymentResult {
-                viewModel.paymentResult = paymentResult
-            } else if let basePayment = basePayment {
-                let paymentResult = PaymentResult(
-                    status: basePayment.getStatus(),
-                    statusDetail: basePayment.getStatusDetail(),
-                    paymentData: .init(),
-                    splitAccountMoney: nil,
-                    payerEmail: nil,
-                    paymentId: basePayment.getPaymentId(),
-                    statementDescription: nil,
-                    paymentMethodId: basePayment.getPaymentMethodId(),
-                    paymentMethodTypeId: basePayment.getPaymentMethodTypeId()
-                )
-                viewModel.paymentResult = paymentResult
-            }
-
-            viewModel.postPaymentNotificationName = nil
-            executeNextStep()
-        }
-    }
-
     func showPaymentResultScreen() {
         if viewModel.businessResult != nil {
             showBusinessResultScreen()

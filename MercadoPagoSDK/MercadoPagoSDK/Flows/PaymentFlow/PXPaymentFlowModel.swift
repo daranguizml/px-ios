@@ -14,6 +14,7 @@ final class PXPaymentFlowModel: NSObject {
 
     var productId: String?
     var shouldSearchPointsAndDiscounts: Bool = true
+    var postPaymentNotificationName: Notification.Name?
     let ESCBlacklistedStatus: [String]?
 
     init(paymentPlugin: PXSplitPaymentProcessor?, mercadoPagoServices: MercadoPagoServices, ESCBlacklistedStatus: [String]?) {
@@ -25,6 +26,7 @@ final class PXPaymentFlowModel: NSObject {
     enum Steps: String {
         case createPaymentPlugin
         case createDefaultPayment
+        case goToPostPayment
         case getPointsAndDiscounts
         case createPaymentPluginScreen
         case finish
@@ -37,6 +39,8 @@ final class PXPaymentFlowModel: NSObject {
             return .createPaymentPluginScreen
         } else if needToCreatePayment() {
             return .createDefaultPayment
+        } else if needToGoToPostPayment() {
+            return .goToPostPayment
         } else if needToGetPointsAndDiscounts() {
             return .getPointsAndDiscounts
         } else {
@@ -69,6 +73,14 @@ final class PXPaymentFlowModel: NSObject {
 
     func needToCreatePayment() -> Bool {
         return paymentResult == nil && businessResult == nil
+    }
+    
+    func needToGoToPostPayment() -> Bool {
+        let hasPostPaymentFlow = postPaymentNotificationName != nil
+        let paymentResultIsApproved = paymentResult?.isApproved() == true
+        let businessResultIsApprovedAndAccepted = businessResult?.isApproved() == true && businessResult?.isAccepted() == true
+
+        return hasPostPaymentFlow && (paymentResultIsApproved || businessResultIsApprovedAndAccepted)
     }
 
     func needToGetPointsAndDiscounts() -> Bool {
