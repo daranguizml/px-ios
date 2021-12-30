@@ -74,7 +74,7 @@ final class PXPaymentFlowModel: NSObject {
     func needToCreatePayment() -> Bool {
         return paymentResult == nil && businessResult == nil
     }
-    
+
     func needToGoToPostPayment() -> Bool {
         let hasPostPaymentFlow = postPaymentNotificationName != nil
         let paymentResultIsApproved = paymentResult?.isApproved() == true

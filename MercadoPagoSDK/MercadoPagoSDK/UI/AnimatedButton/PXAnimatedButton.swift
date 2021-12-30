@@ -2,6 +2,17 @@ import Foundation
 import MLUI
 
 class PXAnimatedButton: UIButton {
+    private enum Constants {
+        static let defaultAnimationDuration = 0.5
+        static let defaultTimeOut = 15.0
+        static let explosionAnimationDuration = 0.3
+        static let showIconAnimationDuration = 0.6
+        static let hideIconAnimationDuration = 0.4
+        static let scaleFactorForIconAnimation = CGFloat(0.40)
+        static let xScaleForIconAnimation = CGFloat(1.0)
+        static let xScaleForExpandAnimation = CGFloat(50)
+    }
+
     weak var animationDelegate: PXAnimatedButtonDelegate?
     var progressView: ProgressView?
     var status: Status = .normal
@@ -43,14 +54,14 @@ class PXAnimatedButton: UIButton {
 
 // MARK: Animations
 extension PXAnimatedButton: ProgressViewDelegate, CAAnimationDelegate {
-    func startLoading(timeOut: TimeInterval = 15.0) {
+    func startLoading(timeOut: TimeInterval = Constants.defaultTimeOut) {
         progressView = ProgressView(forView: self, loadingColor: #colorLiteral(red: 0.2666666667, green: 0.2666876018, blue: 0.2666300237, alpha: 0.4), timeOut: timeOut)
         progressView?.progressDelegate = self
         setTitle(loadingText, for: .normal)
         status = .loading
     }
 
-    func finishAnimatingButton(color: UIColor, image: UIImage?, explode: Bool) {
+    func finishAnimatingButton(color: UIColor, image: UIImage?) {
         status = .expanding
 
         progressView?.doComplete(completion: { [weak self] _ in
@@ -77,75 +88,78 @@ extension PXAnimatedButton: ProgressViewDelegate, CAAnimationDelegate {
                 height: animatedViewFrameInAnchorViewCoordinates.height
             )
 
-            let transitionAnimator = UIViewPropertyAnimator(duration: 0.5, dampingRatio: 1, animations: {
+            let transitionAnimator = UIViewPropertyAnimator(duration: Constants.defaultAnimationDuration, dampingRatio: 1, animations: {
                 animatedView.frame = toCircleFrame
                 animatedView.layer.cornerRadius = toCircleFrame.height / 2
             })
 
             transitionAnimator.addCompletion({ [weak self] _ in
-                self?.explosion(color: color, newFrame: toCircleFrame, image: image, explode: explode)
+                self?.explosion(color: color, newFrame: toCircleFrame, image: image)
             })
 
             transitionAnimator.startAnimation()
         })
     }
 
-    private func explosion(color: UIColor, newFrame: CGRect, image: UIImage?, explode: Bool) {
+    private func explosion(color: UIColor, newFrame: CGRect, image: UIImage?) {
             guard let animatedView = self.animatedView else { return }
 
-            UIView.animate(withDuration: 0.3, animations: { [weak self] in
+        UIView.animate(
+            withDuration: Constants.explosionAnimationDuration,
+            animations: { [weak self] in
                 self?.progressView?.alpha = 0
                 animatedView.backgroundColor = color
             }, completion: { _ in
                 PXFeedbackGenerator.successNotificationFeedback()
                 self.iconAnimation(newFrame: newFrame, image: image) {
-                    guard explode else {
-                        self.animationDelegate?.didFinishAnimation()
-                        return
-                    }
                     self.animationDelegate?.expandAnimationInProgress()
                     self.expandAnimation {
                         self.animationDelegate?.didFinishAnimation()
                     }
                 }
-            })
-        }
+            }
+        )
+    }
 
-        private func iconAnimation(newFrame: CGRect, image: UIImage?, completion: @escaping () -> Void) {
-            guard let animatedView = self.animatedView else { return }
-
-            let scaleFactor: CGFloat = 0.40
-            let iconImage = UIImageView(
-                frame: CGRect(
-                    x: newFrame.width / 2 - (newFrame.width * scaleFactor) / 2,
-                    y: newFrame.width / 2 - (newFrame.width * scaleFactor) / 2,
-                    width: newFrame.width * scaleFactor,
-                    height: newFrame.height * scaleFactor
-                )
+    private func iconAnimation(newFrame: CGRect, image: UIImage?, completion: @escaping () -> Void) {
+        guard let animatedView = self.animatedView else { return }
+        let scaleFactor: CGFloat = Constants.scaleFactorForIconAnimation
+        let iconImage = UIImageView(
+            frame: CGRect(
+                x: newFrame.width / 2 - (newFrame.width * scaleFactor) / 2,
+                y: newFrame.width / 2 - (newFrame.width * scaleFactor) / 2,
+                width: newFrame.width * scaleFactor,
+                height: newFrame.height * scaleFactor
             )
+        )
 
-            iconImage.image = image
-            iconImage.contentMode = .scaleAspectFit
-            iconImage.alpha = 0
+        iconImage.image = image
+        iconImage.contentMode = .scaleAspectFit
+        iconImage.alpha = 0
+        animatedView.addSubview(iconImage)
 
-            animatedView.addSubview(iconImage)
-
-            UIView.animate(withDuration: 0.6, animations: {
+        UIView.animate(
+            withDuration: Constants.showIconAnimationDuration,
+            animations: {
                 iconImage.alpha = 1
-                iconImage.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                iconImage.transform = CGAffineTransform(scaleX: Constants.xScaleForIconAnimation, y: Constants.xScaleForIconAnimation)
             }, completion: { _ in
-                UIView.animate(withDuration: 0.4, animations: {
-                    iconImage.alpha = 0
-                }, completion: { _ in completion() })
-            })
-        }
+                UIView.animate(
+                    withDuration: Constants.hideIconAnimationDuration,
+                    animations: {
+                        iconImage.alpha = 0
+                    }, completion: { _ in completion() }
+                )
+            }
+        )
+    }
 
         private func expandAnimation(completion: @escaping () -> Void) {
             guard let animatedView = self.animatedView else { return }
 
             self.superview?.layer.masksToBounds = false
-            UIView.animate(withDuration: 0.5, animations: {
-                animatedView.transform = CGAffineTransform(scaleX: 50, y: 50)
+            UIView.animate(withDuration: Constants.defaultAnimationDuration, animations: {
+                animatedView.transform = CGAffineTransform(scaleX: Constants.xScaleForExpandAnimation, y: Constants.xScaleForExpandAnimation)
             }, completion: { _ in completion() })
         }
 
@@ -240,7 +254,7 @@ extension PXAnimatedButton {
         if let notificationObject = sender.object as? PXAnimatedButtonNotificationObject {
             let image = ResourceManager.shared.getBadgeImageWith(status: notificationObject.status, statusDetail: notificationObject.statusDetail, clearBackground: true)
             let color = ResourceManager.shared.getResultColorWith(status: notificationObject.status, statusDetail: notificationObject.statusDetail)
-            finishAnimatingButton(color: color, image: image, explode: notificationObject.explode)
+            finishAnimatingButton(color: color, image: image)
         }
     }
 }

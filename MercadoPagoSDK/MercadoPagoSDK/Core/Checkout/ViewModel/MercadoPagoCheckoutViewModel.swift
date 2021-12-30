@@ -750,7 +750,7 @@ extension MercadoPagoCheckoutViewModel {
         paymentFlow.model.checkoutPreference = checkoutPreference
         return paymentFlow
     }
-    
+
     func buildPaymentFlow(with paymentErrorHandler: PXPaymentErrorHandlerProtocol) -> PXPaymentFlow {
         let paymentFlow = PXPaymentFlow(
             paymentPlugin: paymentPlugin,

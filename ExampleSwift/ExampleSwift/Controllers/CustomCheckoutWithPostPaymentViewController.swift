@@ -141,14 +141,12 @@ final class CustomCheckoutWithPostPaymentViewController: UIViewController {
 
     private func runMercadoPagoCheckoutWithLifecycleAndCustomProcessor() {
         // Create charge rules
-        var pxPaymentTypeChargeRules: [PXPaymentTypeChargeRule] = []
-
-        pxPaymentTypeChargeRules.append(
+        let pxPaymentTypeChargeRules = [
             PXPaymentTypeChargeRule.init(
                 paymentTypeId: PXPaymentTypes.CREDIT_CARD.rawValue,
                 amountCharge: 10.00
             )
-        )
+        ]
 
         // Create an instance of your custom payment processor
         let row = testCasePicker.selectedRow(inComponent: 0)
@@ -218,13 +216,13 @@ final class CustomCheckoutWithPostPaymentViewController: UIViewController {
     }
 
     func suscribeToPostPaymentNotification(postPaymentConfig: PXPostPaymentConfiguration) {
-        MercadoPagoCheckout.NotificationCenter.SubscribeTo.postPaymentAction(
+        _ = MercadoPagoCheckout.NotificationCenter.SubscribeTo.postPaymentAction(
             forName: postPaymentConfig.postPaymentNotificationName ?? .init("")
-        ) { resultBlock in
+        ) { [weak self] resultBlock in
             print("Got the notification")
             let postPayment = PostPaymentViewController(with: resultBlock)
 
-            self.present(
+            self?.present(
                 UINavigationController(rootViewController: postPayment),
                 animated: true,
                 completion: nil

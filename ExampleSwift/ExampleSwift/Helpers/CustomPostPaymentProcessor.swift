@@ -10,7 +10,7 @@ import Foundation
 import MercadoPagoSDKV4
 
 final class CustomPostPaymentProcessor: NSObject, PXPaymentProcessor {
-    private var testCase: CustomCheckoutTestCase
+    private let testCase: CustomCheckoutTestCase
 
     init(with testCase: CustomCheckoutTestCase) {
         self.testCase = testCase

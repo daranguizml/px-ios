@@ -21,8 +21,7 @@ extension MercadoPagoCheckout: PXPaymentResultHandlerProtocol {
         viewModel.pointsAndDiscounts = pointsAndDiscounts
 
         if shouldCallAnimateButton() {
-            let shouldExplode = viewModel.postPaymentNotificationName == nil
-            PXAnimatedButton.animateButtonWith(status: paymentResult.status, statusDetail: paymentResult.statusDetail, explode: shouldExplode)
+            PXAnimatedButton.animateButtonWith(status: paymentResult.status, statusDetail: paymentResult.statusDetail)
         } else {
             executeNextStep()
         }
@@ -34,8 +33,7 @@ extension MercadoPagoCheckout: PXPaymentResultHandlerProtocol {
         viewModel.pointsAndDiscounts = pointsAndDiscounts
 
         if shouldCallAnimateButton() {
-            let shouldExplode = viewModel.postPaymentNotificationName == nil
-            PXAnimatedButton.animateButtonWith(status: businessResult.getBusinessStatus().getDescription(), explode: shouldExplode)
+            PXAnimatedButton.animateButtonWith(status: businessResult.getBusinessStatus().getDescription())
         } else {
             executeNextStep()
         }
