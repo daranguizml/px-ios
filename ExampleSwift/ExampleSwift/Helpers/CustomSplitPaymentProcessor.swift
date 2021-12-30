@@ -8,34 +8,36 @@
 
 import MercadoPagoSDKV4
 
-final class CustomSplitPaymentProcessor : NSObject, PXSplitPaymentProcessor {
-    
-    func startPayment(checkoutStore: PXCheckoutStore, errorHandler: PXPaymentProcessorErrorHandler, successWithBasePayment: @escaping ((PXBasePayment) -> Void)) {
+final class CustomSplitPaymentProcessor: NSObject, PXSplitPaymentProcessor {
+    func startPayment(
+        checkoutStore: PXCheckoutStore,
+        errorHandler: PXPaymentProcessorErrorHandler,
+        successWithBasePayment: @escaping ((PXBasePayment) -> Void)
+    ) {
         print("Start payment")
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: { [self] in
-            successWithBasePayment(approvedGenericPayment())
-        })
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
+            successWithBasePayment(self.approvedGenericPayment())
+        }
     }
-    
+
     func paymentProcessorViewController() -> UIViewController? {
-        return nil
+        nil
     }
-    
+
     func support() -> Bool {
-        return true
+        true
     }
-    
+
     func supportSplitPaymentMethodPayment(checkoutStore: PXCheckoutStore) -> Bool {
-        return true
+        true
     }
-    
-    func approvedGenericPayment () -> PXBasePayment {
-        return PXGenericPayment(paymentStatus: .APPROVED, statusDetail: "Pago aprobado desde procesadora custom!")
+
+    func approvedGenericPayment() -> PXGenericPayment {
+        PXGenericPayment(paymentStatus: .APPROVED, statusDetail: "Pago aprobado desde procesadora custom!")
     }
-    
-    func rejectedCCAmountRateLimit () -> PXBasePayment {
-        return PXGenericPayment(paymentStatus: .REJECTED, statusDetail: "cc_amount_rate_limit_exceeded")
+
+    func rejectedCCAmountRateLimit() -> PXBasePayment {
+        PXGenericPayment(paymentStatus: .REJECTED, statusDetail: "cc_amount_rate_limit_exceeded")
     }
-    
 }
