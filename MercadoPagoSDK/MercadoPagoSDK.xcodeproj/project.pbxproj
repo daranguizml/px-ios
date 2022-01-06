@@ -2982,6 +2982,7 @@
 				"es-PE",
 				"es-UY",
 				"es-VE",
+				"pt-BR",
 			);
 			mainGroup = 0F9883001AD2A97A00F750F0;
 			productRefGroup = 0F98830B1AD2A97A00F750F0 /* Products */;
