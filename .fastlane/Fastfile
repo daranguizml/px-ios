@@ -60,15 +60,14 @@ def pod_release(version)
 end
 
 def bump_podspec
-  sh('git fetch --all')
+  sh('git fetch --tags')
   last_version = git_tags
-    .select {|tag| /^release\/[0-9]+\.[0-9]+\.[0-9]+$/.match?(tag) }
-    .sort
+    .select { |tag| /^release\/[0-9]+\.[0-9]+\.[0-9]+$/.match?(tag) }
+    .map { |tag| tag.delete_prefix("release/") }
+    .sort_by { |v| Gem::Version.new(v) }
     .last
-    .delete_prefix("release/")
 
-  new_version = bump(last_version, ENV["RELEASE_BUMP_TYPE"])
-  return new_version
+  return bump(last_version, ENV["RELEASE_BUMP_TYPE"])
 end
 
 def create_release_pull_request(new_version, changelog)
