@@ -60,19 +60,18 @@ def pod_release(version)
 end
 
 def bump_podspec
-  sh('git fetch --all')
+  sh('git fetch --tags')
   last_version = git_tags
-    .select {|tag| /^release\/[0-9]+\.[0-9]+\.[0-9]+$/.match?(tag) }
-    .sort
+    .select { |tag| /^version\/[0-9]+\.[0-9]+\.[0-9]+$/.match?(tag) }
+    .map { |tag| tag.delete_prefix("version/") }
+    .sort_by { |v| Gem::Version.new(v) }
     .last
-    .delete_prefix("release/")
 
-  new_version = bump(last_version, ENV["RELEASE_BUMP_TYPE"])
-  return new_version
+  return bump(last_version, ENV["RELEASE_BUMP_TYPE"])
 end
 
 def create_release_pull_request(new_version, changelog)
-  tag_name = "release/#{new_version}"
+  tag_name = "version/#{new_version}"
   UI.message("tag name: #{tag_name}")
   add_git_tag(tag: tag_name)
   stamp_changelog(
@@ -102,7 +101,7 @@ def github_release(changelog)
     repository_name: 'mercadopago/px-ios',
     api_token: ENV['GITHUB_TOKEN'],
     name: "Release #{new_version}",
-    tag_name: "release/#{new_version}",
+    tag_name: "version/#{new_version}",
     description: changelog,
     commitish: last_git_commit()[:commit_hash]
   )
