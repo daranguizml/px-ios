@@ -148,9 +148,8 @@ extension PXOneTapViewModel {
                 let viewModelCard = PXCardSliderViewModel(cardSliderApplications, targetNode.paymentTypeId, "", PXPaymentTypes.CONSUMER_CREDITS.rawValue, creditsViewModel: creditsViewModel, displayInfo: targetNode.displayInfo, comboSwitch: nil)
 
                 sliderModel.append(viewModelCard)
-            } else if targetNode.offlineTapCard != nil || targetNode.bankTransfer != nil,
-                       let paymentMethodId = targetNode.paymentMethodId {
-                let templateCard = paymentMethodId == "debin_transfer" ? getDebinCardUI(oneTap: targetNode) : getOfflineCardUI(oneTap: targetNode)
+            } else if targetNode.offlineTapCard != nil, let paymentMethodId = targetNode.paymentMethodId {
+                let templateCard = getOfflineCardUI(oneTap: targetNode)
                 let cardData = PXCardDataFactory().create(cardName: "", cardNumber: "", cardCode: "", cardExpiration: "")
                 var cardSliderApplications: [PXApplicationId: PXCardSliderApplicationData] = [:]
                 let applicationName = targetNode.paymentTypeId ?? PXPaymentTypes.BANK_TRANSFER.rawValue
@@ -160,6 +159,27 @@ extension PXOneTapViewModel {
                 let displayMessage = NSAttributedString(string: targetNode.bankTransfer?.displayInfo?.sliderTitle ?? "", attributes: attributes)
 
                 cardSliderApplications[applicationName] = PXCardSliderApplicationData(paymentMethodId: paymentMethodId, paymentTypeId: targetNode.paymentTypeId, cardData: cardData, cardUI: templateCard, payerCost: [], selectedPayerCost: nil, shouldShowArrow: false, amountConfiguration: nil, status: statusConfig, bottomMessage: bottomMessage, benefits: targetNode.benefits, payerPaymentMethod: nil, behaviours: targetNode.behaviours, displayInfo: targetNode.displayInfo, displayMessage: displayMessage)
+
+                let viewModelCard = PXCardSliderViewModel(cardSliderApplications,
+                                                          applicationName,
+                                                          "",
+                                                          "",
+                                                          creditsViewModel: nil,
+                                                          displayInfo: nil,
+                                                          comboSwitch: nil)
+
+                sliderModel.append(viewModelCard)
+            } else if targetNode.bankTransfer != nil, let paymentMethodId = targetNode.paymentMethodId {
+                let templateCard = getDebinCardUI(oneTap: targetNode)
+                let cardData = PXCardDataFactory().create(cardName: "", cardNumber: "", cardCode: "", cardExpiration: "")
+                var cardSliderApplications: [PXApplicationId: PXCardSliderApplicationData] = [:]
+                let applicationName = targetNode.paymentTypeId ?? PXPaymentTypes.BANK_TRANSFER.rawValue
+                let bottomMessage = chargeRuleMessage
+
+                let attributes: [NSAttributedString.Key: AnyObject] = [NSAttributedString.Key.font: UIFont.ml_regularSystemFont(ofSize: installmentsRowMessageFontSize), NSAttributedString.Key.foregroundColor: ThemeManager.shared.greyColor()]
+                let displayMessage = NSAttributedString(string: targetNode.bankTransfer?.displayInfo?.sliderTitle ?? "", attributes: attributes)
+
+                cardSliderApplications[applicationName] = PXCardSliderApplicationData(paymentMethodId: paymentMethodId, paymentTypeId: targetNode.paymentTypeId, cardData: cardData, cardUI: templateCard, payerCost: [], selectedPayerCost: nil, shouldShowArrow: false, amountConfiguration: nil, status: statusConfig, bottomMessage: bottomMessage, benefits: targetNode.benefits, payerPaymentMethod: getPayerPaymentMethod(targetNode.paymentTypeId, targetNode.bankTransfer?.id), behaviours: targetNode.behaviours, displayInfo: targetNode.displayInfo, displayMessage: displayMessage)
 
                 let viewModelCard = PXCardSliderViewModel(cardSliderApplications,
                                                           applicationName,
@@ -500,7 +520,7 @@ extension PXOneTapViewModel {
     private func getDebinCardUI(oneTap: PXOneTapDto) -> CardUI {
         let template = TemplateDebin()
 
-        template.cardBackgroundColor = oneTap.bankTransfer?.displayInfo?.color.hexToUIColor() ?? .white
+        template.cardBackgroundColor = oneTap.bankTransfer?.displayInfo?.color?.hexToUIColor() ?? .white
         template.titleName = oneTap.bankTransfer?.displayInfo?.title?.message ?? ""
         template.titleWeight = oneTap.bankTransfer?.displayInfo?.title?.weight ?? ""
         template.titleTextColor = oneTap.bankTransfer?.displayInfo?.title?.textColor ?? ""
@@ -561,6 +581,10 @@ extension PXOneTapViewModel {
                 if cardID == payerPaymentMethod.id && paymentTypeId == payerPaymentMethod.paymentTypeId {
                     return payerPaymentMethod
                 }
+            case PXPaymentTypes.BANK_TRANSFER.rawValue:
+               if cardID == payerPaymentMethod.id && paymentTypeId == payerPaymentMethod.paymentTypeId {
+                   return payerPaymentMethod
+               }
             default:
                 printDebug("PayerPaymentMethod not found")
             }

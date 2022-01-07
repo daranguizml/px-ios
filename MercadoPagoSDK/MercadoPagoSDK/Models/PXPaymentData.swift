@@ -24,6 +24,7 @@ import UIKit
     var amount: Double?
     var taxFreeAmount: Double?
     var noDiscountAmount: Double?
+    var transactionInfo: PXTransactionInfo?
 
     /// :nodoc:
     public func copy(with zone: NSZone? = nil) -> Any {

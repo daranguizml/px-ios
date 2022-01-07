@@ -679,6 +679,24 @@ extension PXOneTapViewController: PXCardSliderProtocol {
 
             currentPaymentData.paymentOptionId = targetModel.cardId ?? targetModel.selectedApplication?.paymentMethodId
 
+            if selectedApplication.paymentTypeId == PXPaymentTypes.BANK_TRANSFER.rawValue {
+                let transactionInfo = PXTransactionInfo()
+
+                let bankInfo = PXBankInfo()
+
+                bankInfo.accountId = selectedApplication.payerPaymentMethod?.id
+
+                transactionInfo.bankInfo = bankInfo
+
+                if let financialInstitution = newPaymentMethod.financialInstitutions?[0] {
+                    transactionInfo.financialInstitutionId = financialInstitution.id
+                }
+
+                currentPaymentData.transactionInfo = transactionInfo
+            } else {
+                currentPaymentData.transactionInfo = nil
+            }
+
             callbackUpdatePaymentOption(targetModel)
             loadingButtonComponent?.setEnabled()
         } else {

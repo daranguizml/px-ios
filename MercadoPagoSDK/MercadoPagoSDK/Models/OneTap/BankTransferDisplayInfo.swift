@@ -1,14 +1,14 @@
 import Foundation
 
 public struct BankTransferDisplayInfo: Codable {
-    let color: String
+    let color: String?
     let gradientColor: [String]?
     let paymentMethodImageURL: String?
     let title: PXText?
     let subtitle: PXText?
     let description: PXText?
     let sliderTitle: String?
-    
+  
     enum CodingKeys: String, CodingKey {
         case color
         case gradientColor = "gradient_color"
