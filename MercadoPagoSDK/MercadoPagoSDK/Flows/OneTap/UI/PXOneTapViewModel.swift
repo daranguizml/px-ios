@@ -148,14 +148,18 @@ extension PXOneTapViewModel {
                 let viewModelCard = PXCardSliderViewModel(cardSliderApplications, targetNode.paymentTypeId, "", PXPaymentTypes.CONSUMER_CREDITS.rawValue, creditsViewModel: creditsViewModel, displayInfo: targetNode.displayInfo, comboSwitch: nil)
 
                 sliderModel.append(viewModelCard)
-            } else if targetNode.offlineTapCard != nil,
-                      let paymentMethodId = targetNode.paymentMethodId {
-                let templateCard = getOfflineCardUI(oneTap: targetNode)
+            } else if targetNode.offlineTapCard != nil || targetNode.bankTransfer != nil,
+                       let paymentMethodId = targetNode.paymentMethodId {
+                let templateCard = paymentMethodId == "debin_transfer" ? getDebinCardUI(oneTap: targetNode) : getOfflineCardUI(oneTap: targetNode)
                 let cardData = PXCardDataFactory().create(cardName: "", cardNumber: "", cardCode: "", cardExpiration: "")
                 var cardSliderApplications: [PXApplicationId: PXCardSliderApplicationData] = [:]
                 let applicationName = targetNode.paymentTypeId ?? PXPaymentTypes.BANK_TRANSFER.rawValue
+                let bottomMessage = paymentMethodId == "debin_transfer" ? chargeRuleMessage : nil
 
-                cardSliderApplications[applicationName] = PXCardSliderApplicationData(paymentMethodId: paymentMethodId, paymentTypeId: targetNode.paymentTypeId, cardData: cardData, cardUI: templateCard, payerCost: [], selectedPayerCost: nil, shouldShowArrow: false, amountConfiguration: nil, status: statusConfig, bottomMessage: nil, benefits: targetNode.benefits, payerPaymentMethod: nil, behaviours: targetNode.behaviours, displayInfo: targetNode.displayInfo, displayMessage: nil)
+                let attributes: [NSAttributedString.Key: AnyObject] = [NSAttributedString.Key.font: UIFont.ml_regularSystemFont(ofSize: installmentsRowMessageFontSize), NSAttributedString.Key.foregroundColor: ThemeManager.shared.greyColor()]
+                let displayMessage = NSAttributedString(string: targetNode.bankTransfer?.displayInfo?.sliderTitle ?? "", attributes: attributes)
+
+                cardSliderApplications[applicationName] = PXCardSliderApplicationData(paymentMethodId: paymentMethodId, paymentTypeId: targetNode.paymentTypeId, cardData: cardData, cardUI: templateCard, payerCost: [], selectedPayerCost: nil, shouldShowArrow: false, amountConfiguration: nil, status: statusConfig, bottomMessage: bottomMessage, benefits: targetNode.benefits, payerPaymentMethod: nil, behaviours: targetNode.behaviours, displayInfo: targetNode.displayInfo, displayMessage: displayMessage)
 
                 let viewModelCard = PXCardSliderViewModel(cardSliderApplications,
                                                           applicationName,
@@ -489,6 +493,29 @@ extension PXOneTapViewModel {
         template.labelTextColor = oneTap.displayInfo?.tag?.textColor ?? ""
         template.labelBackgroundColor = oneTap.displayInfo?.tag?.backgroundColor ?? ""
         template.logoImageURL = oneTap.offlineTapCard?.displayInfo?.paymentMethodImageUrl ?? ""
+
+        return template
+    }
+
+    private func getDebinCardUI(oneTap: PXOneTapDto) -> CardUI {
+        let template = TemplateDebin()
+
+        template.cardBackgroundColor = oneTap.bankTransfer?.displayInfo?.color.hexToUIColor() ?? .white
+        template.titleName = oneTap.bankTransfer?.displayInfo?.title?.message ?? ""
+        template.titleWeight = oneTap.bankTransfer?.displayInfo?.title?.weight ?? ""
+        template.titleTextColor = oneTap.bankTransfer?.displayInfo?.title?.textColor ?? ""
+        template.subtitleName = oneTap.bankTransfer?.displayInfo?.subtitle?.message ?? ""
+        template.subtitleWeight = oneTap.bankTransfer?.displayInfo?.title?.weight ?? ""
+        template.subtitleTextColor = oneTap.bankTransfer?.displayInfo?.subtitle?.textColor ?? ""
+        template.descriptionName = oneTap.bankTransfer?.displayInfo?.description?.message ?? ""
+        template.descriptionWeight = oneTap.bankTransfer?.displayInfo?.description?.weight ?? ""
+        template.descriptionTextColor = oneTap.bankTransfer?.displayInfo?.description?.textColor ?? ""
+        template.labelName = oneTap.displayInfo?.tag?.message?.uppercased() ?? ""
+        template.labelWeight = oneTap.displayInfo?.tag?.weight ?? ""
+        template.labelTextColor = oneTap.displayInfo?.tag?.textColor ?? ""
+        template.labelBackgroundColor = oneTap.displayInfo?.tag?.backgroundColor ?? ""
+        template.logoImageURL = oneTap.bankTransfer?.displayInfo?.paymentMethodImageURL ?? ""
+        template.gradientColors = oneTap.bankTransfer?.displayInfo?.gradientColor ?? [""]
 
         return template
     }
