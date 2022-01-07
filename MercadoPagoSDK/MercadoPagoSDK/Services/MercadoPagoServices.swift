@@ -113,7 +113,7 @@ class MercadoPagoServices: NSObject {
                                                paymentTypeId: paymentTypeId)
         customService.getPointsAndDiscounts(data: nil, parameters: parameters) { apiResponse in
             switch apiResponse {
-            case .success(let pointsAndDiscounts): callback(pointsAndDiscounts)
+            case .success(let pointsAndDiscounts): failure()
             case .failure: failure()
             }
         }

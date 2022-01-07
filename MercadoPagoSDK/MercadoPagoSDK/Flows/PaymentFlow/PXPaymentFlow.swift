@@ -68,6 +68,11 @@ final class PXPaymentFlow: NSObject, PXFlow {
     }
 
     func goToPostPayment() {
+        PXNotificationManager.SuscribeTo.didFinishButtonAnimation(self, selector: #selector(showPostPayment))
+        PXNotificationManager.Post.animateButton(with: PXAnimatedButtonNotificationObject(status: "", interrupt: .interrupt))
+    }
+
+    @objc func showPostPayment() {
         guard let notification = model.postPaymentNotificationName else {
             return
         }

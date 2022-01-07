@@ -61,40 +61,53 @@ extension PXAnimatedButton: ProgressViewDelegate, CAAnimationDelegate {
         status = .loading
     }
 
-    func finishAnimatingButton(color: UIColor, image: UIImage?) {
+    func finishAnimatingButton(color: UIColor, image: UIImage?, interrupt: PXAnimatedButtonNotificationObject.InterruptedState?) {
+        // Defining frames for animation
+        guard let anchorView = self.anchorView() else { return }
+        let animatedViewOriginInAnchorViewCoordinates = self.convert(CGPoint.zero, to: anchorView)
+        let animatedViewFrameInAnchorViewCoordinates = CGRect(origin: animatedViewOriginInAnchorViewCoordinates, size: self.frame.size)
+
+        let animatedView = UIView(frame: animatedViewFrameInAnchorViewCoordinates)
+        animatedView.backgroundColor = self.backgroundColor
+        animatedView.layer.cornerRadius = self.layer.cornerRadius
+        animatedView.isAccessibilityElement = true
+
+        anchorView.addSubview(animatedView)
+
+        self.animatedView = animatedView
+        self.alpha = 0
+
+        let toCircleFrame = CGRect(
+            x: animatedViewFrameInAnchorViewCoordinates.midX - animatedViewFrameInAnchorViewCoordinates.height / 2,
+            y: animatedViewFrameInAnchorViewCoordinates.minY,
+            width: animatedViewFrameInAnchorViewCoordinates.height,
+            height: animatedViewFrameInAnchorViewCoordinates.height
+        )
+
+        // Continuing to explosion if comming back from post payment flow
+        switch interrupt {
+        case .continuing:
+            self.explosion(color: color, newFrame: toCircleFrame, image: image)
+            return
+        default:
+            break
+        }
+
+        // Animation transition to circle view
         status = .expanding
-
         progressView?.doComplete(completion: { [weak self] _ in
-            guard let self = self,
-                let anchorView = self.anchorView() else { return }
-
-            let animatedViewOriginInAnchorViewCoordinates = self.convert(CGPoint.zero, to: anchorView)
-            let animatedViewFrameInAnchorViewCoordinates = CGRect(origin: animatedViewOriginInAnchorViewCoordinates, size: self.frame.size)
-
-            let animatedView = UIView(frame: animatedViewFrameInAnchorViewCoordinates)
-            animatedView.backgroundColor = self.backgroundColor
-            animatedView.layer.cornerRadius = self.layer.cornerRadius
-            animatedView.isAccessibilityElement = true
-
-            anchorView.addSubview(animatedView)
-
-            self.animatedView = animatedView
-            self.alpha = 0
-
-            let toCircleFrame = CGRect(
-                x: animatedViewFrameInAnchorViewCoordinates.midX - animatedViewFrameInAnchorViewCoordinates.height / 2,
-                y: animatedViewFrameInAnchorViewCoordinates.minY,
-                width: animatedViewFrameInAnchorViewCoordinates.height,
-                height: animatedViewFrameInAnchorViewCoordinates.height
-            )
-
             let transitionAnimator = UIViewPropertyAnimator(duration: Constants.defaultAnimationDuration, dampingRatio: 1, animations: {
                 animatedView.frame = toCircleFrame
                 animatedView.layer.cornerRadius = toCircleFrame.height / 2
             })
 
             transitionAnimator.addCompletion({ [weak self] _ in
-                self?.explosion(color: color, newFrame: toCircleFrame, image: image)
+                switch interrupt {
+                case .interrupt:
+                    PXNotificationManager.Post.didFinishButtonAnimation()
+                default:
+                    self?.explosion(color: color, newFrame: toCircleFrame, image: image)
+                }
             })
 
             transitionAnimator.startAnimation()
@@ -254,7 +267,7 @@ extension PXAnimatedButton {
         if let notificationObject = sender.object as? PXAnimatedButtonNotificationObject {
             let image = ResourceManager.shared.getBadgeImageWith(status: notificationObject.status, statusDetail: notificationObject.statusDetail, clearBackground: true)
             let color = ResourceManager.shared.getResultColorWith(status: notificationObject.status, statusDetail: notificationObject.statusDetail)
-            finishAnimatingButton(color: color, image: image)
+            finishAnimatingButton(color: color, image: image, interrupt: notificationObject.interrupt)
         }
     }
 }

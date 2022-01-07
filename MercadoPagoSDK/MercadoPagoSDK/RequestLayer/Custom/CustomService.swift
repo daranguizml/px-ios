@@ -17,7 +17,7 @@ final class CustomServiceImpl: CustomService {
     func getPointsAndDiscounts(data: Data?, parameters: CustomParametersModel, response: @escaping (Swift.Result<PXPointsAndDiscounts, Error>) -> Void) {
         service.requestObject(model: PXPointsAndDiscounts.self, .getCongrats(data: data, congratsModel: parameters)) { apiResponse in
             switch apiResponse {
-            case .success(let congratsInfos): response(.success(congratsInfos))
+            case .success(let congratsInfos): response(.failure(PXError(domain: "Test", code: 1)))
             case .failure(let error): response(.failure(error))
             }
         }
