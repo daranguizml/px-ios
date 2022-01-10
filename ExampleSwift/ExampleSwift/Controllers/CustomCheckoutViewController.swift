@@ -11,17 +11,19 @@ import UIKit
 import MercadoPagoSDKV4
 
 class CustomCheckoutViewController: UIViewController {
-    @IBOutlet var localeTextField: UITextField!
-    @IBOutlet var publicKeyTextField: UITextField!
-    @IBOutlet var preferenceIdTextField: UITextField!
-    @IBOutlet var accessTokenTextField: UITextField!
-    @IBOutlet var oneTapSwitch: UISwitch!
+    @IBOutlet private var localeTextField: UITextField!
+    @IBOutlet private var publicKeyTextField: UITextField!
+    @IBOutlet private var preferenceIdTextField: UITextField!
+    @IBOutlet private var accessTokenTextField: UITextField!
+    @IBOutlet private var oneTapSwitch: UISwitch!
 
-    @IBAction func iniciarCheckout(_ sender: Any) {
+    @IBAction private func iniciarCheckout(_ sender: Any) {
         guard localeTextField.text?.count ?? 0 > 0,
             publicKeyTextField.text?.count ?? 0 > 0,
             preferenceIdTextField.text?.count ?? 0 > 0 else {
-            let alert = UIAlertController(title: "Error", message: "Complete los campos requeridos para continuar", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Error",
+                                          message: "Complete los campos requeridos para continuar",
+                                          preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             present(alert, animated: true)
             return
@@ -29,7 +31,7 @@ class CustomCheckoutViewController: UIViewController {
         runMercadoPagoCheckoutWithLifecycle()
     }
 
-    @IBAction func restablecerDatos(_ sender: Any) {
+    @IBAction private func restablecerDatos(_ sender: Any) {
         localeTextField.text = ""
         publicKeyTextField.text = ""
         preferenceIdTextField.text = ""
@@ -47,7 +49,8 @@ class CustomCheckoutViewController: UIViewController {
         gradient.colors = [col1.cgColor, col2.cgColor]
         view.layer.insertSublayer(gradient, at: 0)
 
-        if let path = Bundle.main.path(forResource: "Info", ofType: "plist"), let infoPlist = NSDictionary(contentsOfFile: path) {
+        if let path = Bundle.main.path(forResource: "Info", ofType: "plist"),
+           let infoPlist = NSDictionary(contentsOfFile: path) {
             // Initialize values from config
             publicKeyTextField.text = infoPlist["PX_COLLECTOR_PUBLIC_KEY"] as? String
             accessTokenTextField.text = infoPlist["PX_PAYER_PRIVATE_KEY"] as? String
@@ -102,7 +105,9 @@ extension CustomCheckoutViewController: UITextFieldDelegate {
         textField.text = ""
     }
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
         if string == " " {
             return false
         }
