@@ -8,7 +8,7 @@ public struct BankTransferDisplayInfo: Codable {
     let subtitle: PXText?
     let description: PXText?
     let sliderTitle: String?
-  
+
     enum CodingKeys: String, CodingKey {
         case color
         case gradientColor = "gradient_color"

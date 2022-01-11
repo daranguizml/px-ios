@@ -14,6 +14,7 @@ open class PXCustomOptionSearchItem: NSObject, Codable {
     open var firstSixDigits: String
     open var lastFourDigits: String
     open var escStatus: String?
+    open var displayInfo: PXPayerPaymentMethodDisplayInfo?
 
     public init(id: String, description: String?, paymentMethodId: String?, paymentTypeId: String?, discountInfo: String?, defaultAmountConfiguration: String?, amountConfigurations: [String: PXAmountConfiguration]?, comment: String?, issuer: PXIssuer?, firstSixDigits: String, lastFourDigits: String, escStatus: String?) {
         self.id = id
