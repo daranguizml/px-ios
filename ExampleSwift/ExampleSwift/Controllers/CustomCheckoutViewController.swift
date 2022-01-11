@@ -21,9 +21,11 @@ class CustomCheckoutViewController: UIViewController {
         guard localeTextField.text?.count ?? 0 > 0,
             publicKeyTextField.text?.count ?? 0 > 0,
             preferenceIdTextField.text?.count ?? 0 > 0 else {
-            let alert = UIAlertController(title: "Error",
-                                          message: "Complete los campos requeridos para continuar",
-                                          preferredStyle: .alert)
+            let alert = UIAlertController(
+                title: "Error",
+                message: "Complete los campos requeridos para continuar",
+                preferredStyle: .alert
+                )
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             present(alert, animated: true)
             return
@@ -105,9 +107,11 @@ extension CustomCheckoutViewController: UITextFieldDelegate {
         textField.text = ""
     }
 
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
         if string == " " {
             return false
         }
