@@ -116,14 +116,14 @@ lane :pr_check do
     clean_install: true,
     podfile: "./ExampleSwift/Podfile"
   )
-  match(app_identifier: "com.mercadolibre.*", type: "development", readonly: true)
-  gym
-  sh "bash ./scripts/saucelabs.sh"
   run_tests(
     workspace: "./ExampleSwift/ExampleSwift.xcworkspace",
     test_without_building: "true",
     scheme: "MercadoPagoSDKV4-Unit-MercadoPagoSDKTests"
   )
+  match(app_identifier: "com.mercadolibre.*", type: "development", readonly: true)
+  gym
+  sh "bash ./scripts/saucelabs.sh"
   danger(
     danger_id: "danger_pr",
     verbose: true,
