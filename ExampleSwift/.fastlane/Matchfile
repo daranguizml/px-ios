@@ -1,7 +1,0 @@
-git_url("git@github.com:mercadolibre/mobile-ios_certificates.git")
-
-app_identifier("com.mercadolibre.*")
-
-team_id("T9VUHG6RU2")
-
-readonly(true)
