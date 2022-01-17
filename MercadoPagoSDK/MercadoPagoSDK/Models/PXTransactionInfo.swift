@@ -1,8 +1,8 @@
 import Foundation
 
-final class PXTransactionInfo: Codable {
-    var bankInfo: PXBankInfo?
-    var financialInstitutionId: String?
+public final class PXTransactionInfo: Codable {
+    public var bankInfo: PXBankInfo?
+    public var financialInstitutionId: String?
 
     enum CodingKeys: String, CodingKey {
         case bankInfo = "bank_info"
@@ -10,8 +10,8 @@ final class PXTransactionInfo: Codable {
     }
 }
 
-final class PXBankInfo: Codable {
-    var accountId: String?
+public final class PXBankInfo: Codable {
+    public var accountId: String?
 
     enum CodingKeys: String, CodingKey {
         case accountId = "account_id"

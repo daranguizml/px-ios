@@ -44,6 +44,7 @@ import UIKit
         copyObj.amount = amount
         copyObj.taxFreeAmount = taxFreeAmount
         copyObj.noDiscountAmount = noDiscountAmount
+        copyObj.transactionInfo = transactionInfo
         return copyObj
     }
 
@@ -202,6 +203,10 @@ extension PXPaymentData {
             }
         }
         return nil
+    }
+
+    public func getTransactionInfo() -> PXTransactionInfo? {
+        return transactionInfo
     }
 }
 
