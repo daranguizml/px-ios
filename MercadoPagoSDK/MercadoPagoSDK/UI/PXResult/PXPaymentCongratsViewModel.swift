@@ -88,10 +88,7 @@ extension PXPaymentCongratsViewModel: PXNewResultViewModelInterface {
     }
 
     func getHeaderBadgeImage() -> UIImage? {
-        guard let image = paymentCongrats.headerBadgeImage else {
-            return ResourceManager.shared.getBadgeImageWith(status: paymentCongrats.type.getDescription())
-        }
-        return image
+        return paymentCongrats.headerBadgeImage
     }
 
     func getHeaderCloseAction() -> (() -> Void)? {
