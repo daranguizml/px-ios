@@ -12,6 +12,7 @@ target 'ExampleSwift' do
   use_frameworks!
 
   # Pods for ExampleSwift
+  pod 'MLBusinessComponents', :path => '/Users/daranguiz/mlbusiness-components-ios'
   pod 'MercadoPagoSDKV4', :path => '../', :testspecs => ['MercadoPagoSDKTests']
   pod 'SwiftLint', '~> 0.45.0'
 end

@@ -2,7 +2,7 @@ import Foundation
 // Se importa MLCardForm para reutilizar la clase de Reachability
 import MLCardForm
 
-class MercadoPagoServices: NSObject {
+public class MercadoPagoServices: NSObject {
     private var processingModes: [String] = PXServicesURLConfigs.MP_DEFAULT_PROCESSING_MODES
     private var branchId: String?
     private var baseURL: String! = PXServicesURLConfigs.MP_API_BASE_URL
@@ -42,6 +42,22 @@ class MercadoPagoServices: NSObject {
         self.checkoutType = checkoutType ?? PXCheckoutType.DEFAULT_REGULAR.getString()
         super.init()
         addReachabilityObserver()
+    }
+
+    public init(
+        publicKey: String,
+        privateKey: String?,
+        checkoutType: String?
+    ) {
+        self.customService = CustomServiceImpl()
+        self.remedyService = RemedyServiceImpl()
+        self.gatewayService = TokenServiceImpl()
+        self.checkoutType = nil
+        self.checkoutService = CheckoutServiceImpl()
+        self.publicKey = publicKey
+        self.privateKey = privateKey
+        self.checkoutType = checkoutType
+        super.init()
     }
 
     deinit {
@@ -100,7 +116,7 @@ class MercadoPagoServices: NSObject {
         }
     }
 
-    func getPointsAndDiscounts(url: String, uri: String, paymentIds: [String]? = nil, paymentMethodsIds: [String]? = nil, campaignId: String?, prefId: String?, platform: String, ifpe: Bool, merchantOrderId: Int?, headers: [String: String], paymentTypeId: String?, callback : @escaping (PXPointsAndDiscounts) -> Void, failure: @escaping (() -> Void)) {
+    public func getPointsAndDiscounts(url: String, uri: String, paymentIds: [String]? = nil, paymentMethodsIds: [String]? = nil, campaignId: String?, prefId: String?, platform: String, ifpe: Bool, merchantOrderId: Int?, headers: [String: String], paymentTypeId: String?, callback : @escaping (PXPointsAndDiscounts) -> Void, failure: @escaping (() -> Void)) {
         let parameters = CustomParametersModel(privateKey: privateKey,
                                                publicKey: publicKey,
                                                paymentMethodIds: getPaymentMethodsIds(paymentMethodsIds),

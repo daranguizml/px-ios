@@ -35,13 +35,16 @@ final class Request<Target: RequestInfos>: RequestProtocol {
             return
         }
 
+        /*
         #if DEBUG
         let url = target.mockURL ?? targetURL
         #else
         let url = targetURL
         #endif
+        */
 
-        var request = URLRequest(url: url)
+        let url = URL(string: "https://localhost:8080/px_mobile/congrats")
+        var request = URLRequest(url: url!)
 
         if let headers = target.headers {
             for header in headers {
@@ -50,7 +53,7 @@ final class Request<Target: RequestInfos>: RequestProtocol {
         }
 
         do {
-            request = try target.parameterEncoding.encode(request: URLRequest(url: url), parameters: target.parameters)
+            request = try target.parameterEncoding.encode(request: URLRequest(url: url!), parameters: target.parameters)
         } catch {
             completionHandler(.failure(NSError()))
         }

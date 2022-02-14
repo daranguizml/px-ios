@@ -1,6 +1,6 @@
 import Foundation
 
-struct PXPointsAndDiscounts: Codable {
+public struct PXPointsAndDiscounts: Codable {
     let points: PXPoints?
     let discounts: PXDiscounts?
     let crossSelling: [PXCrossSellingItem]?
@@ -16,6 +16,11 @@ struct PXPointsAndDiscounts: Codable {
     let autoReturn: PXAutoReturn?
     let instruction: PXInstruction?
     let infoOperation: InfoOperation?
+    let bannerInfo: PXBannerInfo?
+
+    public func getBanner() -> PXBannerInfo? {
+        return bannerInfo
+    }
 
     init(
         points: PXPoints?,
@@ -32,7 +37,8 @@ struct PXPointsAndDiscounts: Codable {
         backUrl: String?,
         autoReturn: PXAutoReturn?,
         instruction: PXInstruction?,
-        infoOperation: InfoOperation?
+        infoOperation: InfoOperation?,
+        bannerInfo: PXBannerInfo?
     ) {
         self.points = points
         self.discounts = discounts
@@ -49,6 +55,7 @@ struct PXPointsAndDiscounts: Codable {
         self.autoReturn = autoReturn
         self.instruction = instruction
         self.infoOperation = infoOperation
+        self.bannerInfo = bannerInfo
     }
 
     enum PointsAndDiscountsCodingKeys: String, CodingKey {
@@ -67,9 +74,10 @@ struct PXPointsAndDiscounts: Codable {
         case autoReturn = "auto_return"
         case instruction = "instructions"
         case infoOperation = "operation_info"
+        case bannerInfo = "banner"
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: PointsAndDiscountsCodingKeys.self)
         let points: PXPoints? = try container.decodeIfPresent(PXPoints.self, forKey: .points)
         let discounts: PXDiscounts? = try container.decodeIfPresent(PXDiscounts.self, forKey: .discounts)
@@ -86,6 +94,7 @@ struct PXPointsAndDiscounts: Codable {
         let autoReturn: PXAutoReturn? = try container.decodeIfPresent(PXAutoReturn.self, forKey: .autoReturn)
         let instruction: PXInstruction? = try container.decodeIfPresent(PXInstruction.self, forKey: .instruction)
         let infoOperation: InfoOperation? = try container.decodeIfPresent(InfoOperation.self, forKey: .infoOperation)
+        let bannerInfo: PXBannerInfo? = try container.decodeIfPresent(PXBannerInfo.self, forKey: .bannerInfo)
         self.init(
             points: points,
             discounts: discounts,
@@ -101,7 +110,8 @@ struct PXPointsAndDiscounts: Codable {
             backUrl: backUrl,
             autoReturn: autoReturn,
             instruction: instruction,
-            infoOperation: infoOperation
+            infoOperation: infoOperation,
+            bannerInfo: bannerInfo
         )
     }
 }

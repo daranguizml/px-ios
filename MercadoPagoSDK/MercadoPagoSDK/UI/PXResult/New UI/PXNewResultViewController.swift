@@ -383,6 +383,10 @@ extension PXNewResultViewController {
             views.append(ResultViewData(view: autoReturnView, verticalMargin: PXLayout.M_MARGIN, horizontalMargin: PXLayout.L_MARGIN))
         }
 
+        if let bannerInfo = self.viewModel.getBannerInfo() {
+            let banner = MLBusinessBannerView(PXBannerData(bannerInfo: bannerInfo))
+            views.append(ResultViewData(view: banner))
+        }
         return views
     }
 

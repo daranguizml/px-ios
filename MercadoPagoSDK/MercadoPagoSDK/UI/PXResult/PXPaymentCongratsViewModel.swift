@@ -323,6 +323,10 @@ extension PXPaymentCongratsViewModel: PXNewResultViewModelInterface {
     func getAutoReturn() -> PXAutoReturn? {
         return paymentCongrats.autoReturn
     }
+
+    func getBannerInfo() -> PXBannerInfo? {
+        return paymentCongrats.bannerInfo
+    }
 }
 
 extension PXPaymentCongratsViewModel {

@@ -1,4 +1,4 @@
-struct CustomParametersModel {
+public struct CustomParametersModel {
     let privateKey: String?
     let publicKey: String
     let paymentMethodIds: String

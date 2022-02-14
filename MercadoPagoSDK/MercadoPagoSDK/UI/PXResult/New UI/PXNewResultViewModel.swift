@@ -100,4 +100,7 @@ protocol PXNewResultViewModelInterface: PXViewModelTrackingDataProtocol {
 
     /// AndesMessage
     func getAndesMessage() -> InfoOperation?
+
+    /// TYP Banner info
+    func getBannerInfo() -> PXBannerInfo?
 }

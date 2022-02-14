@@ -80,6 +80,8 @@ public final class PXPaymentCongrats: NSObject {
     // AndesMessage
     private(set) var infoOperation: InfoOperation?
 
+    private(set) var bannerInfo: PXBannerInfo?
+
     // MARK: Initializer
     override public init() {
         super.init()
@@ -456,6 +458,17 @@ extension PXPaymentCongrats {
     @discardableResult
     public func withTracking(trackingProperties: PXPaymentCongratsTracking) -> PXPaymentCongrats {
         self.externalTrackingValues = trackingProperties
+        return self
+    }
+
+    /**
+     Indicates status Success, Failure, for more info check `PXCongratsType`.
+     - parameter type: the result status
+     - returns: this builder `PXPaymentCongrats`
+    */
+    @discardableResult
+    public func withBanner(bannerInfo: PXBannerInfo) -> PXPaymentCongrats {
+        self.bannerInfo = bannerInfo
         return self
     }
 
