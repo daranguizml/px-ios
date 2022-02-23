@@ -16,6 +16,7 @@ class PXNewResultViewController: MercadoPagoUIViewController {
     private var touchpointView: MLBusinessTouchpointsView?
     private var autoReturnWorkItem: DispatchWorkItem?
     private var needsTrackCloseModal = true
+    private var bannerView: MLBusinessAdsBannerView?
 
     // Autoreturn
     let autoReturnlabel = UILabel()
@@ -43,6 +44,12 @@ class PXNewResultViewController: MercadoPagoUIViewController {
         super.viewDidAppear(animated)
         animateScrollView()
         animateRing()
+
+        if let bannerView = self.bannerView {
+            if self.contentView.subviews.contains(bannerView) {
+                bannerView.viewDidRender()
+            }
+        }
 
         PXNewResultUtil.trackScreenAndConversion(viewModel: viewModel)
         if viewModel.shouldAutoReturn() {
@@ -384,7 +391,9 @@ extension PXNewResultViewController {
         }
 
         if let bannerInfo = self.viewModel.getBannerInfo() {
-            let banner = MLBusinessBannerView(PXBannerData(bannerInfo: bannerInfo))
+            let banner = MLBusinessAdsBannerView(PXBannerData(bannerInfo: bannerInfo), self)
+            self.bannerView = banner
+
             views.append(ResultViewData(view: banner))
         }
         return views
@@ -823,3 +832,52 @@ extension PXNewResultViewController: ActionViewDelegate {
 
 // MARK: PXTermsAndConditionViewDelegate
 extension PXNewResultViewController: PXTermsAndConditionViewDelegate { }
+
+extension PXNewResultViewController: MLBusinessAdsBannerViewDelegate {
+    func didRender(_ printUrl: String) {
+        if printUrl.isNotEmpty {
+            let url = URL(string: printUrl)!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            let task = URLSession.shared.dataTask(with: request) { _, response, error in
+                if let error = error {
+                    print(error)
+                    return
+                }
+                if let httpResponse = response as? HTTPURLResponse {
+                    if httpResponse.statusCode != 200 {
+                        print("Status: " + httpResponse.statusCode.stringValue)
+                        return
+                    }
+                }
+            }
+            task.resume()
+        }
+
+        print("printed: " + printUrl)
+    }
+
+    func didTap(deepLink: String, clickUrl: String) {
+        if clickUrl.isNotEmpty {
+            let url = URL(string: clickUrl)!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            let task = URLSession.shared.dataTask(with: request) { _, response, error in
+                if let error = error {
+                    print(error)
+                    return
+                }
+                if let httpResponse = response as? HTTPURLResponse {
+                    if httpResponse.statusCode != 200 {
+                        print("Status: " + httpResponse.statusCode.stringValue)
+                        return
+                    }
+                }
+            }
+            task.resume()
+        }
+
+        print("clicked: " + clickUrl)
+        print("deepLinked: " + deepLink)
+    }
+}

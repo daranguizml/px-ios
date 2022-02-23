@@ -30,38 +30,12 @@ class CongratsSelectorViewController: UITableViewController, PXTrackerListener {
         let discounts: PXDiscounts = PXDiscounts(title: "Descuentos por tu nivel", subtitle: "", discountsAction: PXRemoteAction(label: "Ver todos los descuentos", target: "mercadopago://discount_center_payers/list#from=/px/congrats"), downloadAction: PXDownloadAction(title: "Exclusivo con la app de Mercado Libre", action: PXRemoteAction(label: "Descargar", target: "https://852u.adj.st/discount_center_payers/list?adjust_t=ufj9wxn&adjust_deeplink=mercadopago%3A%2F%2Fdiscount_center_payers%2Flist&adjust_label=px-ml")), items: [PXDiscountsItem(icon: "https://mla-s1-p.mlstatic.com/766266-MLA32568902676_102019-O.jpg", title: "Hasta", subtitle: "20 % OFF", target: "mercadopago://discount_center_payers/detail?campaign_id=1018483&user_level=1&mcc=1091102&distance=1072139&coupon_used=false&status=FULL&store_id=13040071&sections=%5B%7B%22id%22%3A%22header%22%2C%22type%22%3A%22header%22%2C%22content%22%3A%7B%22logo%22%3A%22https%3A%2F%2Fmla-s1-p.mlstatic.com%2F766266-MLA32568902676_102019-O.jpg%22%2C%22title%22%3A%22At%C3%A9%20R%24%2010%22%2C%22subtitle%22%3A%22Nutty%20Bavarian%22%7D%7D%5D#from=/px/congrats", campaingId: "1018483"), PXDiscountsItem(icon: "https://mla-s1-p.mlstatic.com/826105-MLA32568902631_102019-O.jpg", title: "Hasta", subtitle: "20 % OFF", target: "mercadopago://discount_center_payers/detail?campaign_id=1018457&user_level=1&mcc=4771701&distance=543968&coupon_used=false&status=FULL&store_id=30316240&sections=%5B%7B%22id%22%3A%22header%22%2C%22type%22%3A%22header%22%2C%22content%22%3A%7B%22logo%22%3A%22https%3A%2F%2Fmla-s1-p.mlstatic.com%2F826105-MLA32568902631_102019-O.jpg%22%2C%22title%22%3A%22At%C3%A9%20R%24%2015%22%2C%22subtitle%22%3A%22Drogasil%22%7D%7D%5D#from=/px/congrats", campaingId: "1018457"), PXDiscountsItem(icon: "https://mla-s1-p.mlstatic.com/761600-MLA32568902662_102019-O.jpg", title: "Hasta", subtitle: "10 % OFF", target: "mercadopago://discount_center_payers/detail?campaign_id=1018475&user_level=1&mcc=5611201&distance=654418&coupon_used=false&status=FULL&store_id=30108872&sections=%5B%7B%22id%22%3A%22header%22%2C%22type%22%3A%22header%22%2C%22content%22%3A%7B%22logo%22%3A%22https%3A%2F%2Fmla-s1-p.mlstatic.com%2F761600-MLA32568902662_102019-O.jpg%22%2C%22title%22%3A%22At%C3%A9%20R%24%2010%22%2C%22subtitle%22%3A%22McDonald%5Cu0027s%22%7D%7D%5D#from=/px/congrats", campaingId: "1018475") ], touchpoint: nil)
         let crosseling: [PXCrossSellingItem] = [PXCrossSellingItem(title: "Gane 200 pesos por sus pagos diarios", icon: "https://mobile.mercadolibre.com/remote_resources/image/merchengine_mgm_icon_ml?density=xxhdpi&locale=es_AR", contentId: "cross_selling_mgm_ml", action: PXRemoteAction(label: "Invita a más amigos a usar la aplicación", target: "meli://invite/wallet"))]
 
-        var bannerInfo = PXBannerInfo(imgUrl: "https://http2.mlstatic.com/D_NQ_983670-MLA48849245111_012022-F.webp", clickUrl: "", printUrl: "", label: "banner")
-
-        let url = URL(string: "http://localhost:8080/px_mobile/congrats?caller.id=242307420&caller.siteId=MLA&platform=android&client.id=0&flow_name=/checkout_web&payment_ids=1231234,1241241")!
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("PX/iOS/4.3.4", forHTTPHeaderField: "user-agent")
-        request.setValue("xxhdpi", forHTTPHeaderField: "x-density")
-        request.setValue("es-AR", forHTTPHeaderField: "accept-language")
-        request.setValue("BJEO9NVBF6RG01IIIOTG", forHTTPHeaderField: "x-product-id")
-
-        let task = URLSession.shared.dataTask(with: request) { data, _, _ in
-            do {
-                // here dataResponse received from a network request
-                let jsonResponse = try JSONSerialization.jsonObject(with:
-                                       data!, options: []) as? [String: Any]
-                if let banner = jsonResponse?["banner"] as? [String: Any] {
-                    if let content = banner["content"] as? [String: String] {
-                        let printUrl = content["print_url"]
-                        let imgUrl = content["image_url"]
-                        let clickUrl = content["destination_url"]
-                        bannerInfo.imgUrl = imgUrl
-                        bannerInfo.clickUrl = clickUrl
-                        bannerInfo.printUrl = printUrl
-                    }
-                }
-                 // Response result
-             } catch let parsingError {
-                print("Error", parsingError)
-           }
-        }
-        task.resume()
+        var bannerInfo = PXBannerInfo(
+            imgUrl: "https://http2.mlstatic.com/D_NQ_983670-MLA48849245111_012022-F.webp",
+            clickUrl: "https://click1.mercadolibre.com.ar/display/clicks/MLA/count?a=iF3%2BG%2BxsnGY0tp8cVL3e0D4tKMkV7O5b%2BQTcEvFTRN01tXru9wFDdfpMgsgteVLpKJ%2BOrRUopirk8d34Uii4MzhU8qU4gA6WPlWIO7TtpeTFWgA%2Betc3E5Sq0t5a2kJslL%2BofSZNzKRonsZz6H1p6lUPNnrxaLdycEtBddYm8YEVMWQrgCXApMCEou%2Fyw%2Fnxl86M0CPhwpShzwZT5selNierzM5y%2FrZOzoD6SwAZDL%2B17AmcFB%2BH3fy9xLAA8GnYnKrYJv2kevA%2BkXr0r%2FwAgtcLnzwJqcdB3tePLv6VUhmW5W4gXr7Ay9%2FI9nfUENoI3pmvKF0%3D",
+            printUrl: "https://click1.mercadolibre.com.ar/display/clicks/MLA/count?a=iF3%2BG%2BxsnGY0tp8cVL3e0D4tKMkV7O5b%2BQTcEvFTRN01tXru9wFDdfpMgsgteVLpKJ%2BOrRUopirk8d34Uii4MzhU8qU4gA6WPlWIO7TtpeTFWgA%2Betc3E5Sq0t5a2kJslL%2BofSZNzKRonsZz6H1p6lUPNnrxaLdycEtBddYm8YEVMWQrgCXApMCEou%2Fyw%2Fnxl86M0CPhwpShzwZT5selNierzM5y%2FrZOzoD6SwAZDL%2B17AmcFB%2BH3fy9xLAA8GnYnKrYJv2kevA%2BkXr0r%2FwAgtcLnzwJqcdB3tePLv6VUhmW5W4gXr7Ay9%2FI9nfUENoI3pmvKF0%3D",
+            deepLink: "mercadopago://mgm/share?program_id=1&from=MLA_MP_BANN-MP_XSELL_W_MGM_ALL_ALL_20211019_KYC-6",
+            label: "banner")
 
         return CongratsType(congratsName: "Congrats Comun", congratsData: PXPaymentCongrats()
                                 .withBanner(bannerInfo: bannerInfo)

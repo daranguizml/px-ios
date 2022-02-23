@@ -8,30 +8,26 @@
 import UIKit
 import MLBusinessComponents
 
-class PXBannerData: NSObject, MLBusinessBannerData {
+class PXBannerData: NSObject, MLBusinessAdsBannerData {
     let bannerInfo: PXBannerInfo
 
     init(bannerInfo: PXBannerInfo) {
         self.bannerInfo = bannerInfo
     }
 
-    func getTitle() -> String {
-        return self.bannerInfo.label!
+    func getImageUrl() -> String {
+        return self.bannerInfo.imgUrl ?? ""
     }
 
-    func getImageURL() -> String {
-        return self.bannerInfo.imgUrl!
+    func getClickUrl() -> String {
+        return self.bannerInfo.clickUrl ?? ""
+    }
+
+    func getPrintUrl() -> String {
+        return self.bannerInfo.printUrl ?? ""
     }
 
     func getDeepLink() -> String {
-         return self.bannerInfo.imgUrl!
-    }
-
-    func getPrint() -> String {
-         return self.bannerInfo.printUrl!
-    }
-
-    func getClick() -> String {
-         return self.bannerInfo.clickUrl!
+        return self.bannerInfo.deepLink ?? ""
     }
 }
